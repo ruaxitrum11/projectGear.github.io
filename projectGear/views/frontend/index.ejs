@@ -4,6 +4,14 @@
 
 <%- include('include/header') %>
 
+<%if(user){%>
+
+<%console.log(" Loginnnnnnn")%>
+<%console.log(user)%>
+<%console.log(" Loginnnnnnn")%>
+	Dear <%= user.userName%>, Đăng nhập thành công !
+<%}%>
+
 <!-- section homepage -->
 <section>
 	<div class="homepage-banner-area">

@@ -34,6 +34,7 @@
     "fs": "0.0.1-security",
     "html-entities": "^1.2.1",
     "lodash": "^4.17.5",
+    "lusca": "^1.6.0",
     "method-override": "^2.3.10",
     "moment": "^2.22.0",
     "mongo-oplog": "^2.1.0",

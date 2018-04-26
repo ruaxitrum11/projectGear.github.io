@@ -4,8 +4,10 @@ const flash = require('express-flash');
 var moment = require('moment');
 var fs = require('fs');
 var app = express();
+const lusca = require('lusca');
 var multer = require('multer');
 const passport = require('passport');
+const passportConfig = require('./config/passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -14,7 +16,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+// app.use(cookieParser());
+app.use(cookieParser('keyboard cat'));
 
 // var csrf = require('csurf');
 
@@ -23,13 +26,21 @@ app.use(cookieParser());
 
 // Sets up a session store with Mongodb
 
-
+app.use(session({
+	secret : "secret",
+	saveUninitialized: true,
+	resave: true,
+	cookie : {
+        maxAge: 3600000 // see below
+    }
+}))
 
 app.use(passport.initialize());
 app.use(passport.session());
 moment().format();
 
-// app.use(flash());
+
+app.use(flash());
 
 /*FRONTEND*/
 var index = require('./routes/frontend/index');
@@ -47,6 +58,11 @@ var admin = require('./routes/backend/admin');
 var backend_users = require('./routes/backend/user');
 var backend_products = require('./routes/backend/product');
 
+
+app.use((req, res, next) => {
+	res.locals.user = req.user;
+	next();
+});
 
 /*FRONTEND Appuse*/
 
