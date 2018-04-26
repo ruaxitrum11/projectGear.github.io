@@ -1,0 +1,510 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
+  .add-newUser {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchUser {
+    margin : 20px 0;
+  }
+  .add-searchUser input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchUser select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchUser span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.upload-avatar {
+  font-size: 2rem; 
+  margin-left: 20px;
+}
+.form-group input {
+  width: 100%;
+}
+.modal-userInfo {
+  background-image: url(/img/homepage/bg-login.jpg);
+  background-position: center ;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+}
+.form-userInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-userInfo-tilte{
+  float: left;
+  width: 30%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-userInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-userInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Danh sách người dùng
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="container">      
+
+      <div class="add-newUser">
+        <a href="/admin/user/add"><span class="label label-primary">+</span></a>
+      </div>      
+
+      <div class="add-searchUser">
+        <span class="search-icon glyphicon glyphicon-search"></span>
+        <input class="input-text user-search-text" type="text" name="" placeholder="Nhập tên tài khoản hoặc email">
+        <select class="user-status">
+          <option value="">Trạng Thái</option>
+          <option value="1">Active</option>
+          <option value="0">Block</option>
+        </select>
+        <select class="user-level">
+          <option value="">Cấp bậc</option>
+          <option value="1">MemberShip</option>
+          <option value="2">Silver MemberShip</option>
+          <option value="3">Gold MemberShip</option>
+          <option value="4">Platinum MemberShip</option>
+        </select>
+        <select class="user-role">
+          <option value="">Quyền</option>
+          <option value="1">Admin</option>
+          <option value="0">User</option>
+        </select>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tài Khoản</th>
+            <th>Email</th>
+            <th>Avatar</th>
+            <th>Cấp Bậc</th>
+            <th>Quyền</th>
+            <th>Trạng thái</th>
+            <th>Thời Gian Tạo</th>
+            <th>Xử Lý</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+      <div class="col-xs-12" style="text-align: center;" id="pagination-list-user">
+
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    listUser(1);
+  });
+
+  $('select').on('change', function() {
+   listUser(1);
+    // alert( this.value );
+  })
+
+  $('.user-search-text').keyup(function() {
+   listUser(1);
+ });
+
+
+  function listUser(page) {
+    var user_status = $('.user-status :selected').val();
+    var user_level = $('.user-level :selected').val();
+    var user_role = $('.user-role :selected').val();
+    var user_search_text = $('.user-search-text').val();
+
+    // alert(user_status)
+    $.ajax({
+      url: '/admin/user/listUser',
+      type: 'GET',
+      data: {
+        page : page,
+        user_status : user_status,
+        user_level : user_level,
+        user_role : user_role,
+        user_search_text:user_search_text
+      },
+      dataType: 'json',
+    }).done(function(results){
+      if (results.status) {
+
+        // console.log(results.status);
+
+        var xhtml = '';
+
+        if (results.listUser && results.listUser.length) {
+          for (var i = 0 ;  i <= results.listUser.length - 1; i++) {
+
+            if(results.listUser[i].createdAt){
+              var date = new Date(results.listUser[i].createdAt);
+              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+            }
+
+            xhtml += '<tr>';
+            xhtml += '<td>'+results.listUser[i].userName+'</td>';
+
+            xhtml += '<td>'+results.listUser[i].email+'</td>';
+
+            if (results.listUser[i].avatar && results.listUser[i].avatar !="") {
+              xhtml += '<td><img src="/upload/avatar/'+results.listUser[i].avatar+'" style="height:60px; width:60px;border-radius:50%"/><button class="upload-avatar btn btn-xs btn-default" data-toggle="modal" data-target="#modal-'+results.listUser[i]._id+'-upload"><i class="fa fa-upload"></i></button></td>';
+            }else{
+              xhtml += '<td><img src="/upload/avatar/noimage.jpg" style="height:60px; width:60px;border-radius:50%"/><button class="upload-avatar btn btn-xs btn-default" data-toggle="modal" data-target="#modal-'+results.listUser[i]._id+'-upload"><i class="fa fa-upload"></i></button></td>';
+            }
+
+
+            if (results.listUser[i].level == 1) {
+              xhtml += '<td><span class="label label-info">MemberShip</span></td>';
+            }
+            else if (results.listUser[i].level == 2){
+              xhtml += '<td><span class="label label-info">Silver MemberShip</span></td>';
+            }
+            else if (results.listUser[i].level == 3){
+              xhtml += '<td><span class="label label-info">Gold MemberShip</span></td>';
+            }
+            else if (results.listUser[i].level == 4){
+              xhtml += '<td><span class="label label-info">Platinum MemberShip</span></td>';
+            }
+            else {
+              xhtml += '<td><span="label"></td>';
+            }
+
+            if (results.listUser[i].role == 1 ){
+              xhtml += '<td><span class="label label-primary">Admin</td>';
+            }else{
+              xhtml += '<td><span class="label label-default">User</td>';
+            }
+
+
+            if (results.listUser[i].status == 1) {
+              xhtml += '<td><span class="label label-success">Active</span></td>';
+            }else{
+              xhtml += '<td><span class="label label-danger">Block</span></td>';
+            }
+
+            xhtml += '<td>'+date_createdAt+'</td>';
+
+            xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listUser[i]._id+'-userInfo"><span class="label label-default"><span class="glyphicon glyphicon-check"></span>Xem</span></a><a href="/admin/user/edit/'+results.listUser[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeUser(\''+results.listUser[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
+
+            //Modal upload : 
+
+            xhtml += '<div class="modal fade" id="modal-'+results.listUser[i]._id+'-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xhtml += '<div class="modal-dialog" role="document">';
+            xhtml += '<div class="modal-content">';
+            xhtml += '<form role="form" id="form-'+results.listUser[i]._id+'" method="post" enctype="multipart/form-data">';
+            xhtml += '<div class="modal-header">';
+            xhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xhtml += '<h4 class="modal-title">Tải ảnh đại diện cho : <strong>'+results.listUser[i].userName+'</strong></h4>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-body">';
+            xhtml += '<div class="box-body">';
+            xhtml += '<div class="form-group">';
+            xhtml += '<div class="alert" role="alert"></div>';
+            xhtml += '<img src="" class="img-preview-'+results.listUser[i]._id+'" style="max-width:50%;">';
+            xhtml += '</div>';
+            xhtml += '<div class="form-group">';
+            xhtml += '<input type="file" name="file" onchange="readURL(this,\''+results.listUser[i]._id+'\');">';
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-footer">';
+            xhtml += '<input type="hidden" name="id" value="'+results.listUser[i]._id+'">';
+            xhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>';
+            xhtml += '<button type="button" class="btn btn-primary" onclick="uploadAvatar(\''+results.listUser[i]._id+'\')">Tải lên</button>';
+            xhtml += '</div>';
+            xhtml += '</form>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            //Modal userInfo : 
+
+            xhtml += '<div class="modal fade" id="modal-'+results.listUser[i]._id+'-userInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xhtml += '<div class="modal-dialog" role="document">';
+            xhtml += '<div class="modal-content modal-userInfo">';
+            xhtml += '<div class="modal-header">';
+            xhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xhtml += '<h4 class="modal-title">Thông tin tài khoản : <strong>'+results.listUser[i].userName+'</strong></h4>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-body">';
+            xhtml += '<div class="box-body">';
+            
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Họ tên</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].nameUser+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Ảnh đại diện</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            if (results.listUser[i].avatar && results.listUser[i].avatar !="") {
+              xhtml += '<span class="form-userInfo-content"><img src="/upload/avatar/'+results.listUser[i].avatar+'" style="height:60px; width:60px;border-radius:50%"/></span>';
+            }else{
+              xhtml += '<span class="form-userInfo-content"><img src="/upload/avatar/noimage.jpg" style="height:60px; width:60px;border-radius:50%"/></span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Email</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].email+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Số điện thoại</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].phoneNumber+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Địa chỉ</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].address+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Ngày sinh</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            xhtml += '<span class="form-userInfo-content">'+moment(results.listUser[i].birthDay).format('DD-MM-YYYY')+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Giới tính</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            if (results.listUser[i].gender == 0) {
+              xhtml += '<span class="form-userInfo-content">Nam</span>';
+            }
+            else{
+              xhtml += '<span class="form-userInfo-content">Nữ</span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Trạng Thái</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            if (results.listUser[i].status == 1) {
+              xhtml += '<span class="form-userInfo-content">Active</span>';
+            }
+            else{
+              xhtml += '<span class="form-userInfo-content">Block</span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Cấp bậc</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            if (results.listUser[i].level == 1) {
+              xhtml += '<span class="form-userInfo-content">MemberShip</span>';
+            }else if (results.listUser[i].level == 2){
+              xhtml += '<span class="form-userInfo-content">Silver MemberShip</span>';
+            }else if (results.listUser[i].level == 3){
+              xhtml += '<span class="form-userInfo-content">Gold MemberShip</span>';
+            }else if (results.listUser[i].level == 4){
+              xhtml += '<span class="form-userInfo-content">Platinum MemberShip</span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Quyền</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            if (results.listUser[i].status == 0) {
+              xhtml += '<span class="form-userInfo-content">User</span>';
+            }else{
+              xhtml += '<span class="form-userInfo-content">Admin</span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+
+            xhtml += '</td>';
+            xhtml += '</tr>';
+          }
+
+          // console.log(xhtml)
+          $("table tbody").html(xhtml)
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listUser(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listUser('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listUser('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listUser('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listUser('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-user').html(pagiHtml);
+      } else {
+        $('#pagination-list-user').html('');
+      }
+
+    }
+  })
+}
+</script>
+
+<script type="text/javascript">
+  function removeUser(id){
+    $.confirm({
+      title: 'Xác nhận!',
+      content: 'Bạn có chắc chắn xóa người dùng này ?',
+      buttons: {
+        'Đồng Ý': function () {
+          $.ajax({
+            url: '/admin/user/delete',
+            type: 'post',
+            data: {
+              id : id
+            },
+            dataType: 'json',
+          }).done(function(results){
+            if (results.status) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
+              })
+              location.reload();
+            }else{
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
+              })
+            }
+          })
+        },
+        'Hủy Bỏ': function () {
+        },
+      }
+    });
+  }
+</script>
+
+<script>
+// Upload avatar
+
+// Img preview
+function readURL(input,id) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('.img-preview-'+id).attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Upload avatar
+function uploadAvatar(id){
+  var form = $('#form-'+id);
+  var formData = new FormData(form[0]);
+
+  // console.log(formData);
+
+  $.ajax({
+    url: '/admin/user/uploadAvatar',
+    method: 'POST',
+    data: formData,
+    dataType:'json',
+    processData: false,
+    contentType: false
+  }).done(function(results){
+    if(results.status){
+      form.find('.alert').addClass('alert-success').text(results.msg);
+
+      setTimeout(function(){
+       window.location.reload();
+     }, 600);
+    }else{
+      form.find('.alert').addClass('alert-danger').text(results.msg);
+    }
+  })
+}
+</script>

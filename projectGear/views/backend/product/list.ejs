@@ -1,0 +1,438 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
+  .add-newProduct {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchProduct {
+    margin : 20px 0;
+  }
+  .add-searchProduct input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchProduct select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchProduct span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.form-productInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-productInfo-tilte{
+  float: left;
+  width: 30%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-productInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-productInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Danh sách sản phẩm
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="container">      
+
+      <div class="add-newProduct">
+        <a href="/admin/product/add"><span class="label label-primary">+</span></a>
+      </div>      
+
+      <div class="add-searchProduct">
+        <span class="search-icon glyphicon glyphicon-search"></span>
+        <input class="input-text product-search-text" type="text" name="" placeholder="Nhập tên sản phẩm">
+        <select class="product-species">
+          <option value="">Loại Sản Phẩm</option>
+          <option value="1">Tai Nghe</option>
+          <option value="2">Bàn Phím</option>
+          <option value="3">Chuột</option>
+          <option value="4">Laptop</option>
+          <option value="5">Phụ Kiện Khác</option>
+        </select>
+        <select class="product-brand">
+          <option value="">Nhãn Hiệu</option>
+          <option value="1">SteelSeries</option>
+          <option value="2">Razer</option>
+          <option value="3">Ozone Gaming</option>
+          <option value="4">MSI Gaming</option>
+        </select>
+        <select class="product-status">
+          <option value="">Trạng Thái</option>
+          <option value="1">Còn Hàng</option>
+          <option value="0">Hết Hàng</option>
+        </select>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tên sản phẩm</th>
+            <th>Loại sản phẩm</th>
+            <th>Nhãn hiệu</th>
+            <th>Trạng thái</th>
+            <th>Thời gian tạo</th>
+            <th>Xử Lý</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+      <div class="col-xs-12" style="text-align: center;" id="pagination-list-product">
+
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    listProduct(1);
+  });
+
+  $('select').on('change', function() {
+     listProduct(1);
+    // alert( this.value );
+  })
+
+  $('.product-search-text').keyup(function() {
+   listProduct(1);
+});
+
+function listProduct(page) {
+  var product_species = $('.product-species :selected').val();
+  var product_brand = $('.product-brand :selected').val();
+  var product_status = $('.product-status :selected').val();
+  var product_search_text = $('.product-search-text').val();
+
+    $.ajax({
+      url: '/admin/product/listProduct',
+      type: 'GET',
+      data: {
+        page : page,
+        product_species : product_species,
+        product_brand : product_brand,
+        product_status : product_status,
+        product_search_text:product_search_text
+      },
+      dataType: 'json',
+    }).done(function(results){
+      if (results.status) {
+
+        // console.log(results.status);
+
+        var xhtml = '';
+
+        if (results.listProduct && results.listProduct.length) {
+          for (var i = 0 ;  i <= results.listProduct.length - 1; i++) {
+
+            if(results.listProduct[i].createdAt){
+              var date = new Date(results.listProduct[i].createdAt);
+              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+            }
+
+            xhtml += '<tr>';
+            xhtml += '<td>'+results.listProduct[i].productName+'</td>';
+
+
+            if (results.listProduct[i].productSpecies == 1) {
+              xhtml += '<td><span class="label label-info">Tai nghe</span></td>';
+            }
+            else if (results.listProduct[i].productSpecies == 2){
+              xhtml += '<td><span class="label label-info">Bàn phím</span></td>';
+            }
+            else if (results.listProduct[i].productSpecies == 3){
+              xhtml += '<td><span class="label label-info">Chuột</span></td>';
+            }
+            else if (results.listProduct[i].productSpecies == 4){
+              xhtml += '<td><span class="label label-info">Laptop</span></td>';
+            }
+            else if (results.listProduct[i].productSpecies == 5){
+              xhtml += '<td><span class="label label-info">Phụ kiện khác</span></td>';
+            }
+            else {
+              xhtml += '<td><span="label"></span></td>';
+            }
+
+            if (results.listProduct[i].brand == 1) {
+              xhtml += '<td><span class="label label-primary">SteelSeries</span></td>';
+            }
+            else if (results.listProduct[i].brand == 2){
+              xhtml += '<td><span class="label label-success">Razer</span></td>';
+            }
+            else if (results.listProduct[i].brand == 3){
+              xhtml += '<td><span class="label label-danger">Ozone Gaming</span></td>';
+            }
+            else if (results.listProduct[i].brand == 4){
+              xhtml += '<td><span class="label label-warning">MSI Gaming</span></td>';
+            }
+            else {
+              xhtml += '<td><span="label"></td>';
+            }
+
+            if (results.listProduct[i].status == 1) {
+              xhtml += '<td><span class="label label-success">Còn hàng</span></td>';
+            }else {
+              xhtml += '<td><span="label label-danger">Hết hàng</span></td>';
+            }
+
+
+            xhtml += '<td>'+date_createdAt+'</td>';
+
+            // xhtml += '<td>'+results.listProduct[i].description+'</td>';
+
+            xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listProduct[i]._id+'-productInfo"><span class="label label-default"><span class="glyphicon glyphicon-check"></span> Xem</span></a> <a href="/admin/product/edit/'+results.listProduct[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeProduct(\''+results.listProduct[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
+
+            //Modal productInfo
+
+            xhtml += '<div class="modal fade" id="modal-'+results.listProduct[i]._id+'-productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xhtml += '<div class="modal-dialog" role="document">';
+            xhtml += '<div class="modal-content modal-productInfo">';
+            xhtml += '<div class="modal-header">';
+            xhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xhtml += '<h4 class="modal-title">Thông tin sản phẩm : <strong>'+results.listProduct[i].productName+'</strong></h4>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-body">';
+            xhtml += '<div class="box-body">';
+            
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Hình ảnh</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if(results.listProduct[i] && results.listProduct[i].productThumb){
+              xhtml += '<span class="form-productInfo-content"><img src="/upload/thumbProduct/'+results.listProduct[i].productThumb+'" style="height:auto; width:100%;"/></span>';
+            }
+            xhtml += '</div>';
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Loại sản phẩm</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProduct[i].productSpecies == 1) {
+              xhtml += '<span class="form-productInfo-content">Tai nghe</span>';
+            } else if (results.listProduct[i].productSpecies == 2) {
+              xhtml += '<span class="form-productInfo-content">Bàn phím</span>';
+            } 
+            else if (results.listProduct[i].productSpecies == 3) {
+              xhtml += '<span class="form-productInfo-content">Chuột</span>';
+            } 
+            else if (results.listProduct[i].productSpecies == 4) {
+              xhtml += '<span class="form-productInfo-content">Laptop</span>';
+            } 
+            else if (results.listProduct[i].productSpecies == 5) {
+              xhtml += '<span class="form-productInfo-content">Phụ kiện khác</span>';
+            } 
+            else {
+              xhtml += '<span class="form-productInfo-content"></span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Nhãn hiệu</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProduct[i].brand == 1) {
+              xhtml += '<span class="form-productInfo-content">SteelSeries</span>';
+            }else if (results.listProduct[i].brand == 2){
+              xhtml += '<span class="form-productInfo-content">Razer</span>';
+            }else if (results.listProduct[i].brand == 3){
+              xhtml += '<span class="form-productInfo-content">Ozone Gaming</span>';
+            }else if (results.listProduct[i].brand == 4){
+              xhtml += '<span class="form-productInfo-content">MSI Gaming</span>';
+            }
+            xhtml += '</div>';
+
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Màu sắc</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProduct[i].color == 1) {
+              xhtml += '<span class="form-productInfo-content">Đen</span>';
+            } else if (results.listProduct[i].color == 2) {
+              xhtml += '<span class="form-productInfo-content">Trắng</span>';
+            } 
+            else if (results.listProduct[i].color == 3) {
+              xhtml += '<span class="form-productInfo-content">Đổ</span>';
+            } 
+            else if (results.listProduct[i].color == 4) {
+              xhtml += '<span class="form-productInfo-content">Xanh da trời</span>';
+            } 
+            else if (results.listProduct[i].color == 5) {
+              xhtml += '<span class="form-productInfo-content">Da cam</span>';
+            } 
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Giá tiền</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            xhtml += '<span class="form-productInfo-content">'+results.listProduct[i].price+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Số lượng</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            xhtml += '<span class="form-productInfo-content">'+results.listProduct[i].quantity+'</span>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Mô tả</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            xhtml += '<span class="form-productInfo-content">'+results.listProduct[i].description+'</span>';
+            xhtml += '</div>';
+
+            
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Trạng Thái</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProduct[i].status == 1) {
+              xhtml += '<span class="form-productInfo-content">Còn hàng</span>';
+            }
+            else{
+              xhtml += '<span class="form-productInfo-content">Hết hàng</span>';
+            }
+            xhtml += '</div>';
+
+
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+          }
+          $("table tbody").html(xhtml)
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProduct(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProduct('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listProduct('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProduct('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProduct('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-product').html(pagiHtml);
+      } else {
+        $('#pagination-list-product').html('');
+      }
+
+    }
+  })
+}
+
+</script>
+
+<script>
+  function removeProduct(id){
+    $.confirm({
+      title : 'Xác nhận !',
+      content : 'Bạn có chắc chắn muốn xóa sản phẩm này',
+      buttons: {
+        'Đồng Ý': function () {
+          $.ajax({
+            url: '/admin/product/delete',
+            type: 'post',
+            data: {
+              id : id
+            },
+            dataType: 'json',
+          }).done(function(results){
+            if (results.status) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
+              })
+              location.reload();
+            }else{
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
+              })
+            }
+          })
+        },
+        'Hủy Bỏ': function () {
+        },
+      }
+    })
+  }
+</script>
