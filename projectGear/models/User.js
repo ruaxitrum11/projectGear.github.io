@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   nameUser : String,
   phoneNumber : String,
   address: String,
-  birthDay : Date,
+  birthDay :{type : Date , default : 0 },
   gender : {type : Number , default : 0}, // 0 : Nam , 1 : Nữ
   role : {type: Number, default: 0}, // 0 : Normal, 1 : Admin
   level : {type: Number, default: 1}, // 1: Normal, 2: Silver, 3: Gold, 4: Platinum

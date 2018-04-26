@@ -45,8 +45,8 @@ exports.create = async (req, res) => {
         password: req.body.password
       });
 
-      console.log(req.body.userName);
-      console.log(req.body.email);
+      
+     
 
       let existingUser = await User.findOne({userName: req.body.userName});
       let existingEmail = await User.findOne({email: req.body.email});

@@ -240,14 +240,9 @@
         });
       }else{
         console.log(results)
-        $.confirm({
+        $.alert({
           title: 'Thông Báo !',
           content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors+'</span>',
-          buttons: {
-            'Ok': function () {
-              // window.location.reload();
-            }
-          }
         })
       }
     })

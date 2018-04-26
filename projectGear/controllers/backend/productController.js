@@ -202,13 +202,13 @@ exports.getProductEdit = async (req,res) =>{
 exports.postProductEdit = async (req,res) => {
 	upload (req,res,async function(err) {
 		if(err) {
-			console.log(err);
+			// console.log(err);
 			return res.send({status:false, err : err});
 		}
 
 		try{
 			if (req.body) {
-				console.log(req.body)
+				// console.log(req.body)
 				if (req.body.productName == "") {
 					let errors = [{msg:"Tên sản phẩm không được để trống"}]
 					return res.send({status:false, errors : errors});
@@ -253,7 +253,7 @@ exports.postProductEdit = async (req,res) => {
 		}
 
 		catch(errors){
-			console.log(errors);
+			// console.log(errors);
 			return res.send({status:false, errors : errors});
 		}
 
