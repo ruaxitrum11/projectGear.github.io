@@ -75,6 +75,52 @@ exports.create = async (req, res) => {
   }
 }
 
+exports.validatorLoginUser = [
+check('username', 'Tài khoản không được để trống').isLength({ min: 1 }),
+check('password', 'Mật khẩu không được để trống').isLength({ min: 1 }),
+]
 
+exports.postLogin = async (req,res, next)=>{
+  console.log(req.body)
+  const errors = validationResult(req);
 
+  if (!errors.isEmpty()) {
+    return res.send({status:false, errors : errors.array()});
+  }
 
+  passport.authenticate('local', function(err, user, info) {
+    // console.log('authenticate ========== err');
+    //   console.log(err);
+      // console.log('authenticate ========== user');
+      // console.log(user);
+      // console.log('authenticate ========== info');
+      // console.log(info);
+      if (err) {
+        // console.log('ERROR ========== 001');
+        // console.log(err);
+        return res.send({status: false, msg: 'Đăng nhập thất bại. Vui lòng thử lại!'});
+      }
+      if (!user) {
+        // console.log('ERROR ========== 002');
+        return res.send({status: false, msg: 'Đăng nhập thất bại. Vui lòng thử lại!'});
+      }
+
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+
+      req.logIn(user, function(err) {
+        if (err) {
+          // console.log('ERROR ========== 003');
+          // console.log(err);
+          return res.send({status: false, msg: 'Đăng nhập thất bại. Vui lòng thử lại!'});
+        }
+        // return res.send({status: true, redirect: '/'});
+        req.flash("Đăng nhập thành công");
+        return res.redirect('/');
+      });
+    })(req, res, next);
+}
+
+exports.logOut = (req,res) =>{
+    req.logout();
+  res.redirect('/');
+}
