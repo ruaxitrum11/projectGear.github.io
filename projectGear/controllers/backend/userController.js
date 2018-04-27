@@ -186,7 +186,6 @@ exports.getUserAdd = async (req,res) =>{
         role : req.body.new_role
       }
 
-      console.log(req.body.new_birthDay);
 
       let updateUser = await User.update({ _id: req.body.id}, { $set: dataUpdate});
 

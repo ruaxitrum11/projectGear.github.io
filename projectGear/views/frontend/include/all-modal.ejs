@@ -1,4 +1,4 @@
-	<div class="all-modal">
+<div class="all-modal">
 		<!-- modal header -->
 		<div id="login-modal" class="modal fade" role="dialog">
 			<div class="modal-dialog modal-dialog-login">
@@ -9,19 +9,19 @@
 							<h5 class="form-login-title">
 								đăng nhập
 							</h5>
-							<form action="/user/login" method="POST">
+							<div class="form">
 								<div class="form-input-wrapper">
-									<input type="text" name="username" placeholder="Email">
+									<input type="text" name="username" placeholder="Tài khoản">
 								</div>
 								<div class="form-input-wrapper">
-									<input type="text" name="password" placeholder="Mật khẩu">
+									<input type="password" name="password" placeholder="Mật khẩu">
 								</div>
 								<div class="form-button-wrapper">
-									<input type="submit" name="" value="đăng nhập">
+									<input type="submit" name="" value="đăng nhập" onclick= "loginUser()">
 									<a href="">quên mật khẩu?</a>
 								</div>
 								<input type="hidden" class="ignore" name='_csrf' value="" />
-							</form>
+							</div>
 						</div>
 					</div>
 					<div class="modal-login-right col-md-6">

@@ -88,7 +88,7 @@ let upload = multer({
  	try{
  		let [count, data] = await Promise.all([
  			Product.count(query),
- 			Product.find(query).sort({createdAt : -1}).skip(skip).limit(limit)
+ 			Product.find(query).sort({numberPurchased : -1}).skip(skip).limit(limit)
  			])
 
  		let listProduct = [];
@@ -161,7 +161,7 @@ exports.postProductAdd = async (req,res) => {
 						price : req.body.price,
 						quantity : req.body.quantity ,
 						brand : req.body.brand ,
-						description : req.body.description
+						description : req.body.description 
 					});
 
 					if (req.file) {
@@ -233,6 +233,7 @@ exports.postProductEdit = async (req,res) => {
 						color : req.body.color,
 						price : req.body.price,
 						quantity : req.body.quantity ,
+						numberPurchased : req.body.numberPurchased,
 						brand : req.body.brand ,
 						description : req.body.description
 					};

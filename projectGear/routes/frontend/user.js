@@ -13,7 +13,8 @@ const userController = require('../../controllers/frontend/userController');
 
 // Route is : /user/
 router.post('/create', userController.validatorCreateUser, userController.create);
-router.post('/login', userController.validatorLoginUser, userController.postLogin);
+router.post('/login',  userController.postLogin);
 router.get('/logout', userController.logOut);
+
 
 module.exports = router;

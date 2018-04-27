@@ -10,12 +10,14 @@
 
 // Models
 const User = require('../../models/User');
+const Product = require('../../models/Product');
 // Method
 /**
  * GET /
  * Home page.
  */
- exports.index = (req, res) => {
-
-  return res.render('frontend/index');
-}
+ exports.index = async (req, res) => {
+ 	let product = await Product.find({}).sort({numberPurchased:-1}).limit(3).lean();
+ 	return res.render('frontend/index' , {product:product});
+ 	console.log(product);
+ }

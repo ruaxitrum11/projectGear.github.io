@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
 	productName : String ,
 	productThumb : String ,
   productBanner : String,
+  numberPurchased : { type : Number , default : 0},
   	color : {type : Number , default : 1} , //1 : Màu số 1 , 2 : màu số 2 , .... n : màu số n
   	price : Number,
   	quantity: Number,

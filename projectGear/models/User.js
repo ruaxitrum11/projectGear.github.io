@@ -35,18 +35,36 @@ const userSchema = new mongoose.Schema({
 });
 
  userSchema.pre('update', function update(next) {
-  const user = this;
-
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
+  const password = this.getUpdate().$set.password;
+  if (!password) {
+    return next();
+  }
+  try {
+    bcrypt.genSalt(10, (err, salt) => {
       if (err) { return next(err); }
-      user.password = hash;
-      this.update({},{ $set: { password: user.password } });
-      next();
-      // console.log(user.password)
-    });
-  });
+      bcrypt.hash(password, salt, null, (err, hash) => {
+        console.log(password);
+        this.getUpdate().$set.password = hash;
+        console.log(hash)
+        next();
+      });
+    })
+  } catch (error) {
+    return next(error);
+  }
+  //const user = this;
+  //console.log(user)
+  //bcrypt.genSalt(10, (err, salt) => {
+  //  if (err) { return next(err); }
+  //  bcrypt.hash(user.password, salt, null, (err, hash) => {
+  //    console.log(user.password)
+  //    if (err) { return next(err); }
+  //    user.password = hash;
+  //    this.update({},{ $set: { password: user.password } });
+  //    console.log(user.password)
+  //    next();
+  //  });
+  //});
 });
 
 

@@ -1,0 +1,7 @@
+.navbar-nav-right>li {
+    margin-left: 5px!important;
+}
+.dropdown-content-user {
+	min-width: 200px;
+	text-align: center;
+}

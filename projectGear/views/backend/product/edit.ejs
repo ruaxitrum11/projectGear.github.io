@@ -150,6 +150,10 @@
         <input type="number" name="quantity" value="<%=product.quantity%>">
       </div>
       <div class="form-product-edit">
+        <span>Số lượt mua</span>
+        <input type="number" name="numberPurchased" value="<%=product.numberPurchased%>">
+      </div>
+      <div class="form-product-edit">
         <span>Nhãn hiệu</span>
         <div class="active">
           <input class="status-active" type="radio" name="brand" value="1"<%if(product.brand == 1){%>checked<%}%>>
@@ -203,6 +207,7 @@
     var quantity = $("input[name=quantity]").val();
     var brand = $("input[name=brand]:checked").val(); 
     var description = $("textarea[name=description]").val();
+    var numberPurchased = $("input[name=numberPurchased]").val();
     var thumb =  $('input[type=file]')[0].files[0]
     var formData = new FormData();
     var id = id;
@@ -213,6 +218,7 @@
     formData.append('color', color)
     formData.append('price', price)
     formData.append('quantity', quantity)
+    formData.append('numberPurchased', numberPurchased)
     formData.append('brand', brand)
     formData.append('description', description)
 

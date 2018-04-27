@@ -89,7 +89,7 @@ body{
 	display: block;
 }
 .navbar-nav-right>li{
-	margin-left: 15px!important;
+	margin-left: 5px!important;
 }
 .modal-dialog-login{
 	width: 900px;

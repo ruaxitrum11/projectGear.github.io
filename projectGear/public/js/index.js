@@ -310,6 +310,60 @@ function registerUser() {
 	}
 }
 
+//Login 
+function loginUser() {
+	var username = $("input[name=username]").val();
+	var password = $("input[name=password]").val();
+	if (username == "") {
+		$.alert({
+			title: '<span class="text-danger">Lỗi !</span>',
+			content: 'Vui lòng nhập tên tài khoản',
+			type: 'red',
+			typeAnimated: true,
+		});
+	}else if (password == ""){
+		$.alert({
+			title: '<span class="text-danger">Lỗi !</span>',
+			content: 'Vui lòng nhập mật khẩu',
+			type: 'red',
+			typeAnimated: true,
+		});
+	} else {
+		$.ajax({
+			url: '/user/login',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				username : username,
+				password : password,
+				_csrf: "<%= _csrf %>"
+			}
+		}).done(function(result){
+			if (result.status == false) {
+				$.alert({
+					title: '<span class="text-danger">Lỗi !</span>',
+					content: ''+result.msg+'',
+					type: 'red',
+					typeAnimated: true,
+				});
+			}else{
+				$.confirm({
+					title: '<span class="text-success">Thông báo !</span>',
+					content: 'Đăng nhập thành công',
+					type: 'green',
+					typeAnimated: true,
+					buttons : {
+						'Ok': function () {
+							window.location.reload()
+						}
+					}
+				});
+
+			}
+		})
+	}
+}
+
 function isEmail(email) {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	return regex.test(email);

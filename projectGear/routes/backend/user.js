@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const passportConfig = require('../../config/passport');
+const passportConfig = require('../../config/passport'); 
 const passport = require('passport');
 var path = require('path');
 const mongoose = require('mongoose');
@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 const userController = require('../../controllers/backend/userController');
 
 // Route is : /admin/user/
-router.get('/list', userController.list);
+router.get('/list',  userController.list);
 router.get('/listUser', userController.listUser);
 router.post('/delete', userController.deleteUser);
 router.get('/edit/:id', userController.getUserEdit);

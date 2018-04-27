@@ -127,23 +127,38 @@
 				</div>
 				<div class="navbar-menu-right col-md-2">
 					<ul class="nav navbar-nav navbar-nav-right" >
+						<%if(!user){%>
 						<li class="navbar-item">
 							<a href="#" class="btn btn-lg" data-toggle="modal" data-target="#login-modal">
 								<i class="fa fa-user" aria-hidden="true"></i>
 							</a>
 						</li>
-						<li class="navbar-item">
-							<a href="#" data-toggle="modal" data-target="#search-modal">
-								<i class="fa fa-search" aria-hidden="true"></i>
+						<%}else{%>
+						<li class="navbar-item navbar-item-dropdown">
+							<a href="#" class="btn btn-lg">
+								<i class="fa fa-user" aria-hidden="true"></i>
+								<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							</a>
-						</li>
-						<li class="navbar-item ">
-							<a href="#" data-toggle="modal" data-target="#cart-modal" data-direction='right'>
-								<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div>
+							<div class="dropdown-content dropdown-content-user" style="right: 0;min-width: 200px;
+							text-align: center;">
+							<a href="#">Tổng Quan</a>
+							<a href="#">lịch sử giao dịch</a>
+							<a href="/user/logout">Thoát</a>
+						</div>
+					</li>
+					<%}%>
+					<li class="navbar-item">
+						<a href="#" data-toggle="modal" data-target="#search-modal">
+							<i class="fa fa-search" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li class="navbar-item ">
+						<a href="#" data-toggle="modal" data-target="#cart-modal" data-direction='right'>
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+						</a>
+					</li>
+				</ul>
 			</div>
-		</nav>
-	</header>
+		</div>
+	</nav>
+</header>
