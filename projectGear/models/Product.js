@@ -2,19 +2,21 @@ const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const mconnect = require('../config/connDB');
+const Schema = mongoose.Schema;
+
+
 const productSchema = new mongoose.Schema({
 	productName : String ,
 	productThumb : String ,
   productBanner : String,
   numberPurchased : { type : Number , default : 0},
-  	color : {type : Number , default : 1} , //1 : Màu số 1 , 2 : màu số 2 , .... n : màu số n
-  	price : Number,
-  	quantity: Number,
-  	description : String,
-  	brand : Number, // 1 : Steelseries, 2 : Razer , 3: Ozone , 4: MSI
-  	productSpecies : Number, //1 : Tai nghe , 2 : Bàn phím , 3 : Chuột , 4 : Laptop , //5 : Phụ kiện khác
+  price : Number,
+  quantity: Number,
+  description : String,
+  productBrand : { type: Schema.Types.ObjectId, ref: 'Brand' },
+  productCategory : [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+  productColor : { type: Schema.Types.ObjectId, ref: 'Color' },
   	status : {type : Number , default : 1} , //1 : còn hàng , 0: hết hàng  
-
 
   }, { timestamps: true });
 

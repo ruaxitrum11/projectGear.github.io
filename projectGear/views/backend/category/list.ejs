@@ -1,0 +1,403 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
+  .add-newCategory {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchCategory {
+    margin : 20px 0;
+  }
+  .add-searchCategory input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchCategory select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchCategory span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.form-CategoryInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-CategoryInfo-tilte{
+  float: left;
+  width: 30%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-CategoryInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-CategoryInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+.box-body {
+  text-align: left;
+}
+.form-category-edit {
+  margin-bottom : 20px;
+}
+.form-category-edit span{
+  width: 20%;
+  display: inline-block;
+
+}
+.form-category-edit input{
+  width: 50%;
+  display: inline-block;
+}
+.active span {
+  font-size: 90%!important;
+  width: 30%;
+}
+.active {
+  display: inline-block; 
+  width: 79%;
+  margin-bottom: 20px;
+}
+
+.active-block {
+  margin-left: 20.1%;
+}
+input.status-active {
+  width: 5%!important;
+}
+
+/*span.label {
+  font-size: 90%!important;
+  }*/
+  .button-active a {
+    display: inline-block;
+    font-size: 2rem;
+    padding: 10px 30px;
+    background-color: #dd4b39;
+    color: #fff;
+  }
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Danh mục sản phẩm
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="container">      
+
+      <div class="add-newCategory">
+        <a style="cursor: pointer;" data-toggle="modal" data-target="#modal-category-add">
+          <span class="label label-primary">+</span>
+        </a>
+      </div>      
+
+      <div class="add-searchCategory">
+        <span class="search-icon glyphicon glyphicon-search"></span>
+        <input class="input-text category-search-text" type="text" name="" placeholder="Nhập tên danh mục sản phẩm">
+        <select class="category-species">
+          <option value="">Loại danh mục</option>
+          <option value="1">Danh mục chính</option>
+          <option value="0">Danh mục phụ</option>
+        </select>
+        <select class="category-status">
+          <option value="">Trạng Thái</option>
+          <option value="1">Active</option>
+          <option value="0">Block</option>
+        </select>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tên danh mục</th>
+            <th>Loại danh mục</th>
+            <th>Trạng thái</th>
+            <th>Thời gian tạo</th>
+            <th>Xử Lý</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+      <div class="col-xs-12" style="text-align: center;" id="pagination-list-category">
+
+      </div>
+
+    </div>
+
+    <div class="modal fade" id="modal-category-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content modal-productInfo">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title"><strong>Thêm danh mục</strong></h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="box-body">
+              <div class="form-category-edit">
+                <span>Tên danh mục</span>
+                <input id="new-newCategoryName" type="text" name="newCategoryName" value="">
+              </div>
+              <div class="form-category-edit">
+                <span>Loại danh mục</span>
+                <div class="active">
+                  <input class="status-active" type="radio" name="species" value="1">
+                  <span class="label label-info">Danh mục chính</span>
+                </div>
+                <div class="active active-block">
+                  <input class="status-active" type="radio" name="species" value="0" checked="">
+                  <span class="label label-info">Danh mục phụ</span>
+                </div>
+              </div>
+              <div class="form-category-edit button-active">
+                <a href="javascript:void(0)" onclick="postCategoryAdd()">
+                  Thêm danh mục
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-edit">
+    </div>
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    listCategory(1);
+  });
+
+  $('select').on('change', function() {
+   listCategory(1);
+    // alert( this.value );
+  })
+
+  $('.category-search-text').keyup(function() {
+   listCategory(1);
+ });
+
+  function listCategory(page) {
+    var category_status = $('.category-status :selected').val();
+    var category_species = $('.category-species :selected').val();
+    var category_search_text = $('.category-search-text').val();
+    $.ajax({
+      url: '/admin/category/listCategory',
+      type: 'GET',
+      data: {
+        page : page,
+        category_status : category_status,
+        category_search_text:category_search_text,
+        category_species : category_species
+      },
+      dataType: 'json',
+    }).done(function(results){
+      if (results.status) {
+        // console.log(result s.status);
+
+        var xhtml = ''; var xmodal ='';
+
+        if (results.listCategory && results.listCategory.length) {
+          for (var i = 0 ;  i <= results.listCategory.length - 1; i++) {
+
+            if(results.listCategory[i].createdAt){
+              var date = new Date(results.listCategory[i].createdAt);
+              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+            }
+
+            xhtml += '<tr>';
+            xhtml += '<td>'+results.listCategory[i].categoryName+'</td>';
+
+            if (results.listCategory[i].isCategoryMenu == 1) {
+              xhtml += '<td><span class="label label-primary">Danh mục chính</span></td>';
+            }else {
+              xhtml += '<td><span class="label label-primary"></span></td>';
+            }
+
+            if (results.listCategory[i].status == 1) {
+              xhtml += '<td><span class="label label-success">Active</span></td>';
+            }else {
+              xhtml += '<td><span class="label label-danger">Block</span></td>';
+            }
+
+
+
+            xhtml += '<td>'+date_createdAt+'</td>';
+
+
+
+            xhtml += '<td><a href="/admin/category/edit/'+results.listCategory[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeCategory(\''+results.listCategory[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
+
+
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+            
+
+          }
+          $("table tbody").html(xhtml)
+
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listCategory(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listCategory('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listCategory('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listCategory('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listCategory('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-category').html(pagiHtml);
+      } else {
+        $('#pagination-list-category').html('');
+      }
+
+    }
+  })
+  }
+
+</script>
+
+<script>
+ function postCategoryAdd(){
+
+  var categoryName = $( "input[name=newCategoryName]").val();
+  var isCategoryMenu = $("input[name=species]:checked").val();
+
+
+
+  $.ajax({
+    url: '/admin/category/addCategory',
+    type: 'post',
+    data: {
+      categoryName : categoryName ,
+      isCategoryMenu : isCategoryMenu
+    },
+    dataType: 'json',
+  }).done(function(results){
+
+    if (results.status == true) {
+      $.confirm({
+        title: 'Thông báo!',
+        content:'<span class="text-success"><strong class="fa fa-check"></strong>Thêm danh mục sản phẩm thành công !</span>',
+        buttons: {
+          'Ok': function () {
+            window.location.replace('/admin/category/list');
+          }
+        }
+      });
+    }else{
+      console.log(results)
+      $.alert({
+        title: 'Thông Báo !',
+        content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+      })
+    }
+  })
+}
+
+</script>
+
+<script>
+  function removeCategory(id){
+    $.confirm({
+      title : 'Xác nhận !',
+      content : 'Bạn có chắc chắn muốn xóa danh mục sản phẩm này',
+      buttons: {
+        'Đồng Ý': function () {
+          $.ajax({
+            url: '/admin/category/delete',
+            type: 'post',
+            data: {
+              id : id
+            },
+            dataType: 'json',
+          }).done(function(results){
+            if (results.status) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
+              })
+              location.reload();
+            }else{
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
+              })
+            }
+          })
+        },
+        'Hủy Bỏ': function () {
+        },
+      }
+    })
+  }
+</script>

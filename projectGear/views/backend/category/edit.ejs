@@ -1,0 +1,208 @@
+  <%- include('../include/admin-header-top') %>
+
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style>
+
+  .form-product-edit {
+    margin-top: 30px;
+    width: 100%;
+    float: left;
+    padding: 0 10%;
+  }
+  .form-product-edit>span {
+    font-size: 1.6rem;
+    width: 15%;
+    float: left;
+  }
+  .form-product-add-input>a {
+    font-size: 5rem;
+  }
+  .form-product-add-input>img {
+    width: 100%;
+  }
+  .form-product-edit>input  , .form-product-edit>textarea{
+    border-radius: 5px;
+    border : none;
+    padding: 5px 0;
+    width: 40%;
+    padding-left: 20px;
+    float: left;
+  }
+  .form-product-edit>textarea {
+    height: 150px;
+  }
+  .form-product-edit>input:focus , .form-product-edit>textarea:focus{
+    outline: none;
+  }
+  .form-product-add-input {
+    width: 80%;
+    display: inline-block;
+  }
+  .active {
+    margin-bottom: 20px;
+  }
+
+  .active-block {
+    margin-left: 15.1%;
+  }
+  input.status-active {
+    width: 5%!important;
+  }
+  span.label {
+    width: 5%!important;
+    font-size: 90%!important;
+  }
+  .button-active {
+    float: left;
+    margin-left: 10%;
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+  .button-active a {
+    display: inline-block;
+    font-size: 2rem;
+    padding: 10px 30px;
+    background-color: #dd4b39;
+    color: #fff;
+  }
+
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+  }
+
+
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Cập nhật tài khoản người dùng
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content ">
+
+    <div class="container content-edit">     
+      <div class="form-product-edit">
+        <span>Tên danh mục</span>
+        <input id="new-categoryName" type="text" name="categoryName" value="<%=category.categoryName%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Loại danh mục</span>
+        <div class="form-product-add-input">
+          <div class="active">
+            <input class="status-active" type="radio" name="isCategoryMenu" value="1" 
+            <%if(category.isCategoryMenu == 1){%>checked <%}%> 
+            <%if(countCategoryMenu >= 4){%>disabled <%}%>
+            >
+            <span class="label label-info">Danh mục chính</span>
+          </div>
+          <div class="active">
+            <input class="status-active" type="radio" name="isCategoryMenu" value="0"  
+            <%if(category.isCategoryMenu == 0){%>checked <%}%> 
+            >
+            <span class="label label-info">Danh mục phụ</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-product-edit">
+        <span>Trạng thái</span>
+        <div class="form-product-add-input">
+          <div class="active">
+            <input class="status-active" type="radio" name="status" value="1" 
+            <%if(category.status == 1){%>checked <%}%> 
+            >
+            <span class="label label-info">Active</span>
+          </div>
+          <div class="active">
+            <input class="status-active" type="radio" name="status" value="0"  
+            <%if(category.status == 0){%>checked <%}%> 
+            >
+            <span class="label label-info">Block</span>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="form-user-add button-active">
+        <a href="javascript:void(0)" onclick="postCategoryEdit('<%=category._id%>')">Cập Nhật</a>
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+
+<script type="text/javascript">
+
+
+  function postCategoryEdit(id){
+    var categoryName = $('input[name=categoryName]').val();
+    var status = $('input[name=status]:checked').val();
+    var isCategoryMenu = $('input[name=isCategoryMenu]:checked').val();
+
+    $.ajax({
+      url: '/admin/category/edit',
+      type: 'post',
+      data: {
+        id : id,
+        categoryName : categoryName ,
+        isCategoryMenu : isCategoryMenu ,
+        status : status ,
+      },
+      dataType: 'json',
+    }).done(function(results){
+      console.log(results);
+      if (results.status == true) {
+        $.confirm({
+          title: 'Thông báo!',
+          content:'<span class="text-success"><strong class="fa fa-check"></strong> Cập nhật thành công !</span>',
+          buttons: {
+            'Ok': function () {
+              window.location.replace('/admin/category/list');
+            }
+          }
+        });
+      }else{
+        console.log(results)
+        $.alert({
+          title: 'Thông Báo !',
+          content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+        })
+      }
+    })
+  }
+
+
+
+</script>
+
+
+
+<!-- <script>
+  $('.jconfirm-buttons').(function(){
+    window.location.href = "http://www.google.com";
+  })
+</script> -->

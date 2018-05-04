@@ -30,7 +30,7 @@
 			<a href="">Laptop</a>
 			<a href="">bàn phím</a>
 			<a href="">chuột</a>
-			<a href="category.html">tai nghe</a>
+			<a href="">tai nghe</a>
 			<a href="">mousepads</a>
 			<a href="">cặp , ba lô , túi gaming</a>
 			<a href="">game pad</a>
@@ -105,10 +105,11 @@
 				</div>
 				<div class="navbar-menu navbar-menu-items col-md-8">
 					<ul class="nav navbar-nav" >
-						<li class="navbar-item"><a href="category.html">laptop</a></li>
-						<li class="navbar-item"><a href="category.html">bàn phím</a></li>
-						<li class="navbar-item"><a href="category.html">chuột</a></li>
-						<li class="navbar-item"><a href="category.html">tai nghe</a></li>
+						<% if(categoryMenu && categoryMenu.length) {%>
+						<% for(var i=0 ; i<categoryMenu.length; i++) {%>
+						<li class="navbar-item"><a href="#"><%=categoryMenu[i].categoryName%></a></li>
+						<%}%>
+						<%}%>
 						
 						<li class="navbar-item navbar-item-dropdown">
 							<a href="#" class="dropbtn">
@@ -116,11 +117,11 @@
 								<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							</a>
 							<div class="dropdown-content">
-								<a href="#">mousepads</a>
-								<a href="#">cặp , ba lô , túi gaming</a>
-								<a href="#">tay cầm chơi game ( game pad)</a>
-								<a href="#">Combo Gaming Gear</a>
-								<a href="#">Sản phẩm giảm giá</a>
+								<% if(categoryDropDown && categoryDropDown.length) {%>
+								<% for(var i=0 ; i < categoryDropDown.length; i++) {%>
+								<a href="#"><%=categoryDropDown[i].categoryName%></a>
+								<%}%>
+								<%}%>
 							</div>
 						</li>	
 					</ul>

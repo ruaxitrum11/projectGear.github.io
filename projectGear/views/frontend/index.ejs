@@ -3,7 +3,6 @@
 
 <%- include('include/header') %>
 
-
 <!-- section homepage -->
 <section>
 	<div class="homepage-banner-area">
@@ -87,403 +86,285 @@
 						</div>
 						<div class="new-product-right col-xs-8 col-md-7">
 							<ul>
-								<li class="product-active" id="new-headset">Tai Nghe</li>
-								<li id="new-keyboard" >Bàn Phím</li>
-								<li id="new-mice">Chuột</li>
-								<li id="new-other">Laptop & phụ kiện</li>
+								<li class="product-active" id="product-<%=categoryMenu[0]._id%>"><%=categoryMenu[0].categoryName%></li>
+								<%if(categoryMenu && categoryMenu.length){%>
+								<%for(var i = 1 ; i < categoryMenu.length ; i++){%>
+								<li class="" id="product-<%=categoryMenu[i]._id%>"><%=categoryMenu[i].categoryName%></li>
+								<%}%>
+								<%}%>
 							</ul>
 						</div>
 					</div>
 				</div>
-				<div class="new-product-content new-headset">
+				<div class="new-product-content new-product-content-<%=categoryMenu[0]._id%>">
 					<div class="row">
-						<%if(product && product.length){%>
-						<%for(var i = 0; i< product.length; i++){%>
-						<div class="new-item col-xs-12 col-sm-4 ">
-							<div class="product-thubnail">
-								<img src="../upload/thumbProduct/<%= product[i].productThumb%>">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
-								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
-								</div>
-							</div>
-							<div class="product-information">
-								<h3><%=product[i].productName%></h3>
-								<p><%=product[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%> VNĐ</p>
-							</div>
-						</div>
-						<%}%>
-						<%}%>
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 					</div>
 				</div>
-				<div class="new-product-content new-keyboard">
+				<%if(categoryMenu && categoryMenu.length){%>
+				<%for(var i = 1 ; i < categoryMenu.length ; i++){%>
+				<div class="new-product-content new-product-content-<%=categoryMenu[i]._id%>" >
 					<div class="row">
-						<div class="new-item col-xs-12 col-sm-4">
-							<div class="product-thubnail">
-								<img src="../img/homepage/keyboard1.png">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
-								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
-								</div>
-							</div>
-							<div class="product-information">
-								<h3>Apex M750 TKL</h3>
-								<p>2.500.000 VNĐ</p>
-							</div>
-						</div>
-						<div class="new-item col-xs-12 col-sm-4">
-							<div class="product-thubnail">
-								<img src="../img/homepage/keyboard1.png">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
-								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
-								</div>
-							</div>
-							<div class="product-information">
-								<h3>Apex M750 TKL</h3>
-								<p>2.500.000 VNĐ</p>
-							</div>
-						</div>
-						<div class="new-item col-xs-12 col-sm-4">
-							<div class="product-thubnail">
-								<img src="../img/homepage/keyboard1.png">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
-								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
-								</div>
-							</div>
-							<div class="product-information">
-								<h3>Apex M750 TKL</h3>
-								<p>2.500.000 VNĐ</p>
-							</div>
-						</div>
+						<%=categoryMenu[i].categoryName%>
 					</div>
 				</div>
-				<div class="new-product-content new-mice">
-					<div class="row">
-						<div class="new-item col-xs-12 col-sm-4">
-							<div class="product-thubnail">
-								<img src="../img/homepage/mice1.png">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
-								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
-								</div>
-							</div>
-							<div class="product-information">
-								<h3>Sensei 310</h3>
-								<p>1.800.000 VNĐ</p>
-							</div>
-						</div>
-						<div class="new-item col-xs-12 col-sm-4">
-							<div class="product-thubnail">
-								<img src="../img/homepage/mice1.png">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
-								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
-								</div>							</div>
-								<div class="product-information">
-									<h3>Sensei 310</h3>
-									<p>1.800.000 VNĐ</p>
-								</div>
-							</div>
-							<div class="new-item col-xs-12 col-sm-4">
-								<div class="product-thubnail">
-									<img src="../img/homepage/mice1.png">
-									<div class="product-thubnail-hover product-thubnail-hover-cart">
-										<a href="#" class="">Mua Hàng</a>
-									</div>
-									<div class="product-thubnail-hover product-thubnail-hover-more">
-										<a href="product.html" class="">Xem Thêm</a>
-									</div>
-								</div>
-								<div class="product-information">
-									<h3>Sensei 310</h3>
-									<p>1.800.000 VNĐ</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="new-product-content new-other">
-						<div class="row">
-							<div class="new-item col-xs-12 col-sm-4">
-								<div class="product-thubnail">
-									<img src="../img/homepage/keyboard1.png">
-									<div class="product-thubnail-hover product-thubnail-hover-cart">
-										<a href="#" class="">Mua Hàng</a>
-									</div>
-									<div class="product-thubnail-hover product-thubnail-hover-more">
-										<a href="product.html" class="">Xem Thêm</a>
-									</div>
-								</div>
-								<div class="product-information">
-									<h3>Apex M750 TKL</h3>
-									<p>2.500.000 VNĐ</p>
-								</div>
-							</div>
-							<div class="new-item col-xs-12 col-sm-4">
-								<div class="product-thubnail">
-									<img src="../img/homepage/keyboard1.png">
-									<div class="product-thubnail-hover product-thubnail-hover-cart">
-										<a href="#" class="">Mua Hàng</a>
-									</div>
-									<div class="product-thubnail-hover product-thubnail-hover-more">
-										<a href="product.html" class="">Xem Thêm</a>
-									</div>
-								</div>
-								<div class="product-information">
-									<h3>Apex M750 TKL</h3>
-									<p>2.500.000 VNĐ</p>
-								</div>
-							</div>
-							<div class="new-item col-xs-12 col-sm-4">
-								<div class="product-thubnail">
-									<img src="../img/homepage/keyboard1.png">
-									<div class="product-thubnail-hover product-thubnail-hover-cart">
-										<a href="#" class="">Mua Hàng</a>
-									</div>
-									<div class="product-thubnail-hover product-thubnail-hover-more">
-										<a href="#" class="">Xem Thêm</a>
-									</div>
-								</div>
-								<div class="product-information">
-									<h3>Apex M750 TKL</h3>
-									<p>2.500.000 VNĐ</p>
-								</div>
-							</div>
-						</div>
-					</div>
+				<%}%>
+				<%}%>
+				
 
-				</div>
 			</div>
 		</div>
-		<div class="product-combo-area">
-			<div class="container-fluid">
-				<div class="product-combo-left col-sm-6"  >
-					<div class="product-combo-thumb">
-						<img src="../img/homepage/apexEG.png">
-					</div>
-					<div class="product-combo-icon">
-						<span>+</span>
-					</div>
-					<div class="product-combo-thumb">
-						<img src="../img/homepage/artics5.png">
-					</div>
-					<div class="product-combo-thumb">
-						<img src="../img/homepage/rival300EG.png">
-					</div>
-					<div class="product-combo-icon">
-						<span>+</span>
-					</div>
-					<div class="product-combo-thumb">
-						<img src="../img/homepage/QCK.png">
-					</div>
+	</div>
+	<div class="product-combo-area">
+		<div class="container-fluid">
+			<div class="product-combo-left col-sm-6"  >
+				<div class="product-combo-thumb">
+					<img src="../img/homepage/apexEG.png">
+				</div>
+				<div class="product-combo-icon">
+					<span>+</span>
+				</div>
+				<div class="product-combo-thumb">
+					<img src="../img/homepage/artics5.png">
+				</div>
+				<div class="product-combo-thumb">
+					<img src="../img/homepage/rival300EG.png">
+				</div>
+				<div class="product-combo-icon">
+					<span>+</span>
+				</div>
+				<div class="product-combo-thumb">
+					<img src="../img/homepage/QCK.png">
+				</div>
 
-				</div>
-				<div class="product-combo-right col-sm-6" >	
-					<div class="product-combo-content">
-						<a>Combo Gaming Gear Evil Geniuses Edition</a>
-						<p class="old_price">6.500.000 VNĐ</p>
-						<p class="new_price">6.000.000 VNĐ</p>
-						<ul class="product-combo-description">
-							<li>Bàn phím cơ SteelSeries Apex M500</li>
-							<li>Chuột Rival 300 Evil Genius Edition</li>
-							<li>Tai Nghe Arictis 5</li>
-							<li>Pad chuột QCK+</li>
-						</ul>					
-						<a class="art_to_cart">mua sản phẩm</a>
-					</div>
+			</div>
+			<div class="product-combo-right col-sm-6" >	
+				<div class="product-combo-content">
+					<a>Combo Gaming Gear Evil Geniuses Edition</a>
+					<p class="old_price">6.500.000 VNĐ</p>
+					<p class="new_price">6.000.000 VNĐ</p>
+					<ul class="product-combo-description">
+						<li>Bàn phím cơ SteelSeries Apex M500</li>
+						<li>Chuột Rival 300 Evil Genius Edition</li>
+						<li>Tai Nghe Arictis 5</li>
+						<li>Pad chuột QCK+</li>
+					</ul>					
+					<a class="art_to_cart">mua sản phẩm</a>
 				</div>
 			</div>
 		</div>
-		<div class="background-product-area">
-			<div class="background-product-content">
-				<h2 >Arcsitc 3 Bluetooth</h2>
-				<p >Wired for Gaming. Bluetooth for Life.</p>
-				<a href="product.html">Chi Tiết Sản Phẩm</a>
-			</div>
+	</div>
+	<div class="background-product-area">
+		<div class="background-product-content">
+			<h2 >Arcsitc 3 Bluetooth</h2>
+			<p >Wired for Gaming. Bluetooth for Life.</p>
+			<a href="product.html">Chi Tiết Sản Phẩm</a>
 		</div>
-		<div class="social-area">
-			<div class="container-fluid">
-				<div class="follow-social">
-					<div class="follow-logo">
-						<ul>
-							<li>
-								<a class="twitter" href="">
-									<i class="fa fa-twitter" aria-hidden="true"></i>
-								</a>
-							</li>
-							<li>
-								<a class="facebook" href="">
-									<i class="fa fa-facebook-official" aria-hidden="true"></i>
-								</a>
-							</li>
-							<li>
-								<a class="twitch" href="">
-									<i class="fa fa-twitch" aria-hidden="true"></i>
-								</a>
-							</li>
-							<li>
-								<a class="instagram" href="">
-									<i class="fa fa-instagram" aria-hidden="true"></i>
-								</a>
-							</li>
-							<li>
-								<a class="youtube" href="">
-									<i class="fa fa-youtube-play" aria-hidden="true"></i>
-								</a>
-							</li>
-						</ul>				
-					</div>
-					<div class="follow-text">
-						<p>For Gamers . By Gamers .</p>
-					</div>
+	</div>
+	<div class="social-area">
+		<div class="container-fluid">
+			<div class="follow-social">
+				<div class="follow-logo">
+					<ul>
+						<li>
+							<a class="twitter" href="">
+								<i class="fa fa-twitter" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a class="facebook" href="">
+								<i class="fa fa-facebook-official" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a class="twitch" href="">
+								<i class="fa fa-twitch" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a class="instagram" href="">
+								<i class="fa fa-instagram" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a class="youtube" href="">
+								<i class="fa fa-youtube-play" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>				
 				</div>
-				<div class="review-social hidden-xs">
-					<div class="review-gallery">
-						<ul>
-							<li class="review-gallery-user" id="gallery-user1" Stt="0">
-								<img src="">
-							</li>
-							<li class="review-gallery-user" id="gallery-user2" Stt="1">
-								<img src="">
-							</li>
-							<li class="review-gallery-user" id="gallery-user3" Stt="2">
-								<img src="">
-							</li>
-							<li class="review-gallery-user review-active" id="gallery-user4" Stt="3">
-								<img src="">
-							</li>
-							<li class="review-gallery-user" id="gallery-user5" Stt ="4">
-								<img src="">
-							</li>
-							<li class="review-gallery-user" id="gallery-user6" Stt="5">
-								<img src="">
-							</li>
-							<li class="review-gallery-user" id="gallery-user7" Stt="6">
-								<img src="">
-							</li>
-						</ul>
-					</div>
-					<div class="review-user" stt="0" style="display: none">
-						<p class="review-user-name">
-							Evany
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-user" stt="1" style="display: none">
-						<p class="review-user-name">
-							Shoxx
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-user" stt="2" style="display: none">
-						<p class="review-user-name">
-							Arterzy
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-user" stt="3">
-						<p class="review-user-name">
-							KennyS
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-user" stt="4" style="display: none">
-						<p class="review-user-name">
-							Niko
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-user" stt="5" style="display: none">
-						<p class="review-user-name">
-							Dev1ce
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-user" stt="6" style="display: none">
-						<p class="review-user-name">
-							Kjaerbye
-						</p>
-						<p class="review-user-address">
-							Hà Nội
-						</p>
-					</div>
-					<div class="review-information">
-						<span class="review-button review-previous"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-						<span class="review-content" stt="0" style="display: none;">
-							Evany : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
-						</span>
-						<span class="review-content" stt="1" style="display: none;">
-							Shoxx : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-						</span>
-						<span class="review-content" stt="2" style="display: none;">
-							RTZ : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to makeaaaaaaaaa 
-						</span>
-						<span class="review-content" stt="3">
-							KennyS : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make 
-						</span>
-						<span class="review-content" stt="4" style="display: none;">
-							Niko : Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-						</span>
-						<span class="review-content" stt="5" style="display: none;">
-							Dev1ce : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when to make a type specimen book
-						</span>
-						<span class="review-content" stt="6" style="display: none;">
-							KjaerBye : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when 
-						</span>
-						<span class="review-button review-next"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-					</div>
+				<div class="follow-text">
+					<p>For Gamers . By Gamers .</p>
 				</div>
 			</div>
-		</div>
-		<div class="other-product-category">
-			<div class="other-product-category-item">
-				<div class="other-product-category-scale other-product-category-keyboard">
-					<p>Bàn Phím</p>
+			<div class="review-social hidden-xs">
+				<div class="review-gallery">
+					<ul>
+						<li class="review-gallery-user" id="gallery-user1" Stt="0">
+							<img src="">
+						</li>
+						<li class="review-gallery-user" id="gallery-user2" Stt="1">
+							<img src="">
+						</li>
+						<li class="review-gallery-user" id="gallery-user3" Stt="2">
+							<img src="">
+						</li>
+						<li class="review-gallery-user review-active" id="gallery-user4" Stt="3">
+							<img src="">
+						</li>
+						<li class="review-gallery-user" id="gallery-user5" Stt ="4">
+							<img src="">
+						</li>
+						<li class="review-gallery-user" id="gallery-user6" Stt="5">
+							<img src="">
+						</li>
+						<li class="review-gallery-user" id="gallery-user7" Stt="6">
+							<img src="">
+						</li>
+					</ul>
 				</div>
-			</div>
-			<div class="other-product-category-item">
-				<div class="other-product-category-scale other-product-category-mice">
-					<p>Chuột</p>
+				<div class="review-user" stt="0" style="display: none">
+					<p class="review-user-name">
+						Evany
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
 				</div>
-			</div>
-			<div class="other-product-category-item">
-				<div class="other-product-category-scale other-product-category-laptop">
-					<p>Laptop</p>
+				<div class="review-user" stt="1" style="display: none">
+					<p class="review-user-name">
+						Shoxx
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
 				</div>
-			</div>
-			<div class="other-product-category-item">
-				<div class="other-product-category-scale other-product-category-headset">
-					<p>Tai Nghe</p>
+				<div class="review-user" stt="2" style="display: none">
+					<p class="review-user-name">
+						Arterzy
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
+				</div>
+				<div class="review-user" stt="3">
+					<p class="review-user-name">
+						KennyS
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
+				</div>
+				<div class="review-user" stt="4" style="display: none">
+					<p class="review-user-name">
+						Niko
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
+				</div>
+				<div class="review-user" stt="5" style="display: none">
+					<p class="review-user-name">
+						Dev1ce
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
+				</div>
+				<div class="review-user" stt="6" style="display: none">
+					<p class="review-user-name">
+						Kjaerbye
+					</p>
+					<p class="review-user-address">
+						Hà Nội
+					</p>
+				</div>
+				<div class="review-information">
+					<span class="review-button review-previous"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+					<span class="review-content" stt="0" style="display: none;">
+						Evany : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
+					</span>
+					<span class="review-content" stt="1" style="display: none;">
+						Shoxx : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+					</span>
+					<span class="review-content" stt="2" style="display: none;">
+						RTZ : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to makeaaaaaaaaa 
+					</span>
+					<span class="review-content" stt="3">
+						KennyS : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make 
+					</span>
+					<span class="review-content" stt="4" style="display: none;">
+						Niko : Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+					</span>
+					<span class="review-content" stt="5" style="display: none;">
+						Dev1ce : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when to make a type specimen book
+					</span>
+					<span class="review-content" stt="6" style="display: none;">
+						KjaerBye : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when 
+					</span>
+					<span class="review-button review-next"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+	<div class="other-product-category">
+		<div class="other-product-category-item">
+			<div class="other-product-category-scale other-product-category-keyboard">
+				<p>Bàn Phím</p>
+			</div>
+		</div>
+		<div class="other-product-category-item">
+			<div class="other-product-category-scale other-product-category-mice">
+				<p>Chuột</p>
+			</div>
+		</div>
+		<div class="other-product-category-item">
+			<div class="other-product-category-scale other-product-category-laptop">
+				<p>Laptop</p>
+			</div>
+		</div>
+		<div class="other-product-category-item">
+			<div class="other-product-category-scale other-product-category-headset">
+				<p>Tai Nghe</p>
+			</div>
+		</div>
+	</div>
+</section>
 
-	<%- include('include/all-modal') %>
+<%- include('include/all-modal') %>
 
-	<%- include('include/footer') %>
+<%- include('include/footer') %>
+
+<script type="text/javascript">
+	$('.new-product-content-<%=categoryMenu[1]._id%>').hide(500);
+	$('.new-product-content-<%=categoryMenu[2]._id%>').hide(500);
+	$('.new-product-content-<%=categoryMenu[3]._id%>').hide(500);
+
+	$('#product-<%=categoryMenu[0]._id%>').click(function () {
+		$('.new-product-content-<%=categoryMenu[1]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[2]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[3]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[0]._id%>').show(500);
+	})
+	$('#product-<%=categoryMenu[1]._id%>').click(function () {
+		$('.new-product-content-<%=categoryMenu[0]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[2]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[3]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[1]._id%>').show(500);
+	})
+
+	$('#product-<%=categoryMenu[2]._id%>').click(function () {
+		$('.new-product-content-<%=categoryMenu[1]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[0]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[3]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[2]._id%>').show(500);
+	})
+
+	$('#product-<%=categoryMenu[3]._id%>').click(function () {
+		$('.new-product-content-<%=categoryMenu[1]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[2]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[0]._id%>').hide(500);
+		$('.new-product-content-<%=categoryMenu[3]._id%>').show(500);
+	})
+
+</script>

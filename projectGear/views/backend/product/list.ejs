@@ -78,20 +78,21 @@ span.form-productInfo-content  {
       <div class="add-searchProduct">
         <span class="search-icon glyphicon glyphicon-search"></span>
         <input class="input-text product-search-text" type="text" name="" placeholder="Nhập tên sản phẩm">
-        <select class="product-species">
+        <select class="product-category">
           <option value="">Loại Sản Phẩm</option>
-          <option value="1">Tai Nghe</option>
-          <option value="2">Bàn Phím</option>
-          <option value="3">Chuột</option>
-          <option value="4">Laptop</option>
-          <option value="5">Phụ Kiện Khác</option>
+          <%if (category && category.length){%>
+          <%for( var i = 0 ; i < category.length ; i++){%>
+          <option value="<%=category[i]._id%>"><%=category[i].categoryName%></option>
+          <%}%>
+          <%}%>
         </select>
         <select class="product-brand">
           <option value="">Nhãn Hiệu</option>
-          <option value="1">SteelSeries</option>
-          <option value="2">Razer</option>
-          <option value="3">Ozone Gaming</option>
-          <option value="4">MSI Gaming</option>
+          <%if (brand && brand.length){%>
+          <%for( var i = 0 ; i < brand.length ; i++){%>
+          <option value="<%=brand[i]._id%>"><%=brand[i].brandName%></option>
+          <%}%>
+          <%}%>
         </select>
         <select class="product-status">
           <option value="">Trạng Thái</option>
@@ -139,26 +140,26 @@ span.form-productInfo-content  {
   });
 
   $('select').on('change', function() {
-     listProduct(1);
+   listProduct(1);
     // alert( this.value );
   })
 
   $('.product-search-text').keyup(function() {
    listProduct(1);
-});
+ });
 
-function listProduct(page) {
-  var product_species = $('.product-species :selected').val();
-  var product_brand = $('.product-brand :selected').val();
-  var product_status = $('.product-status :selected').val();
-  var product_search_text = $('.product-search-text').val();
+  function listProduct(page) {
+    var product_category = $('.product-category :selected').val();
+    var product_brand = $('.product-brand :selected').val();
+    var product_status = $('.product-status :selected').val();
+    var product_search_text = $('.product-search-text').val();
 
     $.ajax({
       url: '/admin/product/listProduct',
       type: 'GET',
       data: {
         page : page,
-        product_species : product_species,
+        product_category : product_category,
         product_brand : product_brand,
         product_status : product_status,
         product_search_text:product_search_text
@@ -183,38 +184,17 @@ function listProduct(page) {
             xhtml += '<td>'+results.listProduct[i].productName+'</td>';
 
 
-            if (results.listProduct[i].productSpecies == 1) {
-              xhtml += '<td><span class="label label-info">Tai nghe</span></td>';
-            }
-            else if (results.listProduct[i].productSpecies == 2){
-              xhtml += '<td><span class="label label-info">Bàn phím</span></td>';
-            }
-            else if (results.listProduct[i].productSpecies == 3){
-              xhtml += '<td><span class="label label-info">Chuột</span></td>';
-            }
-            else if (results.listProduct[i].productSpecies == 4){
-              xhtml += '<td><span class="label label-info">Laptop</span></td>';
-            }
-            else if (results.listProduct[i].productSpecies == 5){
-              xhtml += '<td><span class="label label-info">Phụ kiện khác</span></td>';
-            }
-            else {
+            if (results.listProduct[i].productCategory && results.listProduct[i].productCategory.length) {
+              for (var ii = 0 ; ii < results.listProduct[i].productCategory.length ; ii++ ) {
+                xhtml += '<td><span class="label label-info">'+results.listProduct[i].productCategory[ii].categoryName+'</span></td>';
+              }
+            }else {
               xhtml += '<td><span="label"></span></td>';
             }
 
-            if (results.listProduct[i].brand == 1) {
-              xhtml += '<td><span class="label label-primary">SteelSeries</span></td>';
-            }
-            else if (results.listProduct[i].brand == 2){
-              xhtml += '<td><span class="label label-success">Razer</span></td>';
-            }
-            else if (results.listProduct[i].brand == 3){
-              xhtml += '<td><span class="label label-danger">Ozone Gaming</span></td>';
-            }
-            else if (results.listProduct[i].brand == 4){
-              xhtml += '<td><span class="label label-warning">MSI Gaming</span></td>';
-            }
-            else {
+            if (results.listProduct[i].productBrand) {
+              xhtml += '<td><span class="label label-info">'+results.listProduct[i].productBrand.brandName+'</span></td>';
+            }else {
               xhtml += '<td><span="label"></td>';
             }
 
@@ -255,21 +235,11 @@ function listProduct(page) {
             xhtml += '<div class="form-productInfo">';
             xhtml += '<span class="form-productInfo-tilte">Loại sản phẩm</span>';
             xhtml += '<span class="form-productInfo-icon">:</span>';
-            if (results.listProduct[i].productSpecies == 1) {
-              xhtml += '<span class="form-productInfo-content">Tai nghe</span>';
-            } else if (results.listProduct[i].productSpecies == 2) {
-              xhtml += '<span class="form-productInfo-content">Bàn phím</span>';
-            } 
-            else if (results.listProduct[i].productSpecies == 3) {
-              xhtml += '<span class="form-productInfo-content">Chuột</span>';
-            } 
-            else if (results.listProduct[i].productSpecies == 4) {
-              xhtml += '<span class="form-productInfo-content">Laptop</span>';
-            } 
-            else if (results.listProduct[i].productSpecies == 5) {
-              xhtml += '<span class="form-productInfo-content">Phụ kiện khác</span>';
-            } 
-            else {
+            if (results.listProduct[i].productCategory && results.listProduct[i].productCategory.length) {
+              for (var ii = 0 ; ii < results.listProduct[i].productCategory.length ; ii++ ) {
+                xhtml += '<span class="form-productInfo-content">'+results.listProduct[i].productCategory[ii].categoryName+'</span>';
+              }
+            } else {
               xhtml += '<span class="form-productInfo-content"></span>';
             }
             xhtml += '</div>';
@@ -277,35 +247,18 @@ function listProduct(page) {
             xhtml += '<div class="form-productInfo">';
             xhtml += '<span class="form-productInfo-tilte">Nhãn hiệu</span>';
             xhtml += '<span class="form-productInfo-icon">:</span>';
-            if (results.listProduct[i].brand == 1) {
-              xhtml += '<span class="form-productInfo-content">SteelSeries</span>';
-            }else if (results.listProduct[i].brand == 2){
-              xhtml += '<span class="form-productInfo-content">Razer</span>';
-            }else if (results.listProduct[i].brand == 3){
-              xhtml += '<span class="form-productInfo-content">Ozone Gaming</span>';
-            }else if (results.listProduct[i].brand == 4){
-              xhtml += '<span class="form-productInfo-content">MSI Gaming</span>';
+            if (results.listProduct[i].productBrand) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProduct[i].productBrand.brandName+'</span>';
             }
             xhtml += '</div>';
 
 
             xhtml += '<div class="form-productInfo">';
-            xhtml += '<span class="form-productInfo-tilte">Màu sắc</span>';
+            xhtml += '<span class="form-productInfo-tilte">Màu</span>';
             xhtml += '<span class="form-productInfo-icon">:</span>';
-            if (results.listProduct[i].color == 1) {
-              xhtml += '<span class="form-productInfo-content">Đen</span>';
-            } else if (results.listProduct[i].color == 2) {
-              xhtml += '<span class="form-productInfo-content">Trắng</span>';
-            } 
-            else if (results.listProduct[i].color == 3) {
-              xhtml += '<span class="form-productInfo-content">Đổ</span>';
-            } 
-            else if (results.listProduct[i].color == 4) {
-              xhtml += '<span class="form-productInfo-content">Xanh da trời</span>';
-            } 
-            else if (results.listProduct[i].color == 5) {
-              xhtml += '<span class="form-productInfo-content">Da cam</span>';
-            } 
+            if (results.listProduct[i].productColor) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProduct[i].productColor.colorName+'</span>';
+            }
             xhtml += '</div>';
 
             xhtml += '<div class="form-productInfo">';

@@ -146,6 +146,18 @@
 	height: 300px;
 	position: relative;
 }
+.new-headset .product-thubnail {
+	height: 365px!important;
+}
+.new-keyboard .product-thubnail {
+	height: 200px!important;
+}
+.new-keyboard .product-thubnail-hover-cart {
+	top: 20%!important;
+}
+.new-keyboard .product-thubnail-hover-more {
+	top: 50%!important;
+}
 .product-thubnail img{
 	width: 100%;
 	transition: all .3s ease-in-out;

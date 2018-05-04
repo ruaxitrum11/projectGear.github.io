@@ -62,35 +62,6 @@ $(document).ready(function(){
 	});
 });
 
-$(".new-keyboard").fadeOut();
-$(".new-mice").fadeOut();
-$(".new-other").fadeOut();
-
-$("#new-headset").click(function(){
-	$(".new-headset").fadeIn(1000);
-	$(".new-keyboard").fadeOut();
-	$(".new-mice").fadeOut();
-	$(".new-other").fadeOut();
-});
-$("#new-mice").click(function(){
-	$(".new-mice").fadeIn(1000);
-	$(".new-keyboard").fadeOut();
-	$(".new-headset").fadeOut();
-	$(".new-other").fadeOut();
-});
-$("#new-other").click(function(){
-	$(".new-other").fadeIn(1000);
-	$(".new-keyboard").fadeOut();
-	$(".new-mice").fadeOut();
-	$(".new-headset").fadeOut();
-});
-$("#new-keyboard").click(function(){
-	$(".new-keyboard").fadeIn(1000);
-	$(".new-headset").fadeOut();
-	$(".new-mice").fadeOut();
-	$(".new-other").fadeOut();
-});
-
 
 
 //review 
@@ -368,3 +339,4 @@ function isEmail(email) {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	return regex.test(email);
 }
+

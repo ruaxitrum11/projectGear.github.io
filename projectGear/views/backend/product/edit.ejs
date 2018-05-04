@@ -18,6 +18,12 @@
     width: 15%;
     float: left;
   }
+  .form-product-add-input>a {
+    font-size: 5rem;
+  }
+  .form-product-add-input>img {
+    width: 100%;
+  }
   .form-product-edit>input  , .form-product-edit>textarea{
     border-radius: 5px;
     border : none;
@@ -32,9 +38,11 @@
   .form-product-edit>input:focus , .form-product-edit>textarea:focus{
     outline: none;
   }
-  .active {
-    display: inline-block; 
+  .form-product-add-input {
     width: 80%;
+    display: inline-block;
+  }
+  .active {
     margin-bottom: 20px;
   }
 
@@ -91,54 +99,59 @@
         <input id="new-productName" type="text" name="productName" value="<%=product.productName%>">
       </div>
       <div class="form-product-edit">
-        <span>Loại sản phẩm</span>
-        <div class="active">
-          <input class="status-active" type="radio" name="productSpecies" value="1" <%if(product.productSpecies == 1){%>checked<%}%> >
-          <span class="label label-info">Tai nghe</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="2" <%if(product.productSpecies == 2){%>checked<%}%>>
-          <span class="label label-info">Bàn phím</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="3" <%if(product.productSpecies == 3){%>checked<%}%>>
-          <span class="label label-info">Chuột</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="4" <%if(product.productSpecies == 4){%>checked<%}%>>
-          <span class="label label-info">Laptop</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="5" <%if(product.productSpecies == 5){%>checked<%}%>>
-          <span class="label label-info">Phụ kiện khác</span>
+        <span>Hình ảnh</span>
+        <div class="form-product-add-input">
+          <input type="file" id = "fileImage" name="fileImage" value="" style="width: 85%;">
+          <img src="/upload/thumbProduct/<%=product.productThumb%>" class="productImage-upload" >
         </div>
       </div>
       <div class="form-product-edit">
-        <span>Hình ảnh</span>
-        <input type="file" id = "file" name="file" value="" style="width: 85%;">
-        <img src="/upload/thumbProduct/<%=product.productThumb%>" class="productImage-upload" >
+        <span>Loại sản phẩm</span>
+        <div class="form-product-add-input">
+          <%if(category && category.length){%>
+          <%for(var i = 0 ; i < category.length ; i++){%>
+          <div class="active">
+            <input class="status-active" type="radio" name="productCategory" value="<%=category[i]._id%>" 
+            <%if(JSON.stringify(product.productCategory) ==  JSON.stringify(category[i]._id)){%>checked <%}%> 
+            >
+            <span class="label label-info"><%=category[i].categoryName%></span>
+          </div>
+          <%}%>
+          <%}%>
+          
+        </div>
       </div>
+      <div class="form-product-edit">
+        <span>Loại sản phẩm</span>
+        <div class="form-product-add-input">
+          <%if(brand && brand.length){%>
+          <%for(var i = 0 ; i < brand.length ; i++){%>
+          <div class="active">
+            <input class="status-active" type="radio" name="productBrand" value="<%=brand[i]._id%>" 
+            <%if(JSON.stringify(product.productBrand) ==  JSON.stringify(brand[i]._id)){%>checked <%}%> 
+            >
+            <span class="label label-info"><%=brand[i].brandName%></span>
+          </div>
+          <%}%>
+          <%}%>
+          
+        </div>
+      </div>
+      
       <div class="form-product-edit">
         <span>Màu sắc</span>
-        <div class="active">
-          <input class="status-active" type="radio" name="color" value="1" <%if(product.color == 1){%>checked<%}%>>
-          <span class="label label-info">Đen</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="2" <%if(product.color == 2){%>checked<%}%>>
-          <span class="label label-info">Trắng</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="3" <%if(product.color == 3){%>checked<%}%>>
-          <span class="label label-info">Đỏ</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="4" <%if(product.color == 4){%>checked<%}%>>
-          <span class="label label-info">Xanh da trời</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="5" <%if(product.color == 5){%>checked<%}%>>
-          <span class="label label-info">Da Cam</span>
+        <div class="form-product-add-input">
+          <%if(color && color.length){%>
+          <%for(var i = 0 ; i < color.length ; i++){%>
+          <div class="active">
+            <input class="status-active" type="radio" name="productColor" value="<%=color[i]._id%>" 
+            <%if(JSON.stringify(product.productColor) ==  JSON.stringify(color[i]._id)){%>checked <%}%> 
+            >
+            <span class="label label-info"><%=color[i].colorName%></span>
+          </div>
+          <%}%>
+          <%}%>
+          
         </div>
       </div>
       <div class="form-product-edit">
@@ -152,25 +165,6 @@
       <div class="form-product-edit">
         <span>Số lượt mua</span>
         <input type="number" name="numberPurchased" value="<%=product.numberPurchased%>">
-      </div>
-      <div class="form-product-edit">
-        <span>Nhãn hiệu</span>
-        <div class="active">
-          <input class="status-active" type="radio" name="brand" value="1"<%if(product.brand == 1){%>checked<%}%>>
-          <span class="label label-info">SteelSeries</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="brand" value="2"<%if(product.brand == 2){%>checked<%}%>>
-          <span class="label label-info">Razer</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="brand" value="3"<%if(product.brand == 3){%>checked<%}%>>
-          <span class="label label-info">Ozone Gaming</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="brand" value="4"<%if(product.brand == 4){%>checked<%}%>>
-          <span class="label label-info">MSI Gaming</span>
-        </div>
       </div>
       <div class="form-product-edit">
         <span>Mô tả</span>
@@ -201,25 +195,25 @@
   function updateProduct(id) {
 
     var productName = $("input[name=productName]").val();
-    var productSpecies = $("input[name=productSpecies]:checked").val(); 
-    var color = $("input[name=color]:checked").val();
+    var productCategory = $("input[name=productCategory]:checked").val(); 
+    var productColor = $("input[name=productColor]:checked").val();
     var price = $("input[name=price]").val();
     var quantity = $("input[name=quantity]").val();
-    var brand = $("input[name=brand]:checked").val(); 
+    var productBrand = $("input[name=productBrand]:checked").val(); 
     var description = $("textarea[name=description]").val();
     var numberPurchased = $("input[name=numberPurchased]").val();
-    var thumb =  $('input[type=file]')[0].files[0]
+    var thumb =  $('input[type=file]')[0].files[0];
     var formData = new FormData();
     var id = id;
     formData.append('id',id)
-    formData.append('file',thumb)
+    formData.append('fileImage',thumb)
     formData.append('productName', productName)
-    formData.append('productSpecies', productSpecies)
-    formData.append('color', color)
+    formData.append('productCategory', productCategory)
+    formData.append('productColor', productColor)
     formData.append('price', price)
     formData.append('quantity', quantity)
     formData.append('numberPurchased', numberPurchased)
-    formData.append('brand', brand)
+    formData.append('productBrand', productBrand)
     formData.append('description', description)
 
 
@@ -273,13 +267,15 @@
   }
 }
 
-$("#file").change(function() {
+$("#fileImage").change(function() {
   readURL(this);
 });
 
 
 
 </script>
+
+
 
 <!-- <script>
   $('.jconfirm-buttons').(function(){

@@ -47,6 +47,9 @@ let upload = multer({
 
  // Models
  const Product = require('../../models/Product');
+ const Category = require('../../models/Category');
+ const Brand = require('../../models/Brand');
+ const Color = require('../../models/Color');
 
 
 // Method
@@ -55,8 +58,15 @@ let upload = multer({
  * Admin/product/list.
  */
 
- exports.list = (req, res) => {
- 	return res.render('backend/product/list');
+ exports.list = async (req, res) => {
+ 	let category = await Category.find({}).select({_id : 1, status :1, categoryName: 1}).lean();
+ 	let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
+ 	let color = await Color.find({}).select({_id : 1 , status : 1 ,  color : 1 }).lean();
+ 	return res.render('backend/product/list', {
+ 		category : category ,
+ 		brand :  brand ,
+ 		color : color
+ 	});
  }
 
  exports.listProduct = async (req,res) =>{
@@ -77,10 +87,10 @@ let upload = multer({
  		query['status'] = req.query.product_status;
  	}
  	if(req.query.product_brand && req.query.product_brand !=""){
- 		query['brand'] = req.query.product_brand;
+ 		query['productBrand'] = req.query.product_brand;
  	}
- 	if(req.query.product_species && req.query.product_species !=""){
- 		query['productSpecies'] = req.query.product_species;
+ 	if(req.query.product_category && req.query.product_category !=""){
+ 		query['productCategory'] = req.query.product_category;
  	} 
 
  	let skip = (page - 1)*limit;
@@ -88,7 +98,11 @@ let upload = multer({
  	try{
  		let [count, data] = await Promise.all([
  			Product.count(query),
- 			Product.find(query).sort({numberPurchased : -1}).skip(skip).limit(limit)
+ 			Product.find(query)
+ 			.populate('productCategory')
+ 			.populate('productBrand')
+ 			.populate('productColor')
+ 			.sort({numberPurchased : -1}).skip(skip).limit(limit)
  			])
 
  		let listProduct = [];
@@ -100,6 +114,7 @@ let upload = multer({
  		if (data && data.length) {
  			listProduct = data;
  		}
+ 		// console.log(listProduct[0])
 
  		res.send({status: true, page : page, totalPage : totalPage, listProduct : listProduct});
 
@@ -114,9 +129,14 @@ let upload = multer({
 }
 
 exports.getProductAdd = async (req,res) =>{
-	// req.flash('success', { msg: ' successed.' });
-	// req.flash('errors', { msg: 'Error uploading file.' });
-	res.render('backend/product/add');
+	let category = await Category.find({}).select({_id : 1, status :1, categoryName: 1}).lean();
+	let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
+	let color = await Color.find({}).select({_id : 1 , status : 1 ,  colorName : 1 }).lean();
+	return res.render('backend/product/add', {
+		category : category ,
+		brand :  brand , 
+		color : color
+	});
 }
 
 
@@ -129,11 +149,11 @@ exports.postProductAdd = async (req,res) => {
 			console.log(err);
 			return res.send({status:false, err : err});
 		}
-		console.log(req.file)
+		
 
 		try{
 			if (req.body) {
-				console.log(req.body)
+				
 				if (req.body.productName == "") {
 					let errors = [{msg:"Tên sản phẩm không được để trống"}]
 					return res.send({status:false, errors : errors});
@@ -156,11 +176,11 @@ exports.postProductAdd = async (req,res) => {
 
 					const product = new Product({
 						productName : req.body.productName,
-						productSpecies : req.body.productSpecies,
-						color : req.body.color,
+						productCategory : req.body.productCategory,
+						productColor : req.body.productColor,
 						price : req.body.price,
 						quantity : req.body.quantity ,
-						brand : req.body.brand ,
+						productBrand : req.body.productBrand ,
 						description : req.body.description 
 					});
 
@@ -192,7 +212,17 @@ exports.getProductEdit = async (req,res) =>{
 	if (req.params && req.params.id) {
 		try{
 			let product = await Product.find({_id : req.params.id});
-			res.render('backend/product/edit',{product:product[0],moment:moment})
+			let category = await Category.find({}).select({_id : 1, status :1, categoryName: 1}).lean();
+			let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
+			let color = await Color.find({}).select({_id : 1 , status : 1 ,  colorName : 1 }).lean();
+			// console.log(product);
+			res.render('backend/product/edit',{
+				product:product[0],
+				category : category ,
+				brand : brand ,
+				color : color,
+				moment:moment
+			})
 		}catch(err){
 		}
 	}
@@ -205,9 +235,11 @@ exports.postProductEdit = async (req,res) => {
 			// console.log(err);
 			return res.send({status:false, err : err});
 		}
-
+		// console.log(req.file)
 		try{
 			if (req.body) {
+				// console.log(req.files)
+				// console.log('=========================')
 				// console.log(req.body)
 				if (req.body.productName == "") {
 					let errors = [{msg:"Tên sản phẩm không được để trống"}]
@@ -229,17 +261,18 @@ exports.postProductEdit = async (req,res) => {
 
 					const productDataUpdate = {
 						productName : req.body.productName,
-						productSpecies : req.body.productSpecies,
-						color : req.body.color,
+						productCategory : req.body.productCategory,
+						productColor : req.body.productColor,
 						price : req.body.price,
 						quantity : req.body.quantity ,
 						numberPurchased : req.body.numberPurchased,
-						brand : req.body.brand ,
+						productBrand : req.body.productBrand ,
 						description : req.body.description
 					};
 
 					if (req.file) {
 						productDataUpdate.productThumb = req.file.filename;
+						
 					}
 
 					// console.log(productDataUpdate)

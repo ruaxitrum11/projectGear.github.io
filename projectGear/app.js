@@ -45,7 +45,7 @@ app.use(flash());
 /*FRONTEND*/
 var index = require('./routes/frontend/index');
 var frontend_users = require('./routes/frontend/user');
-// var frontend_trade = require('./routes/frontend/trade');
+var frontend_categories = require('./routes/frontend/category');
 // var frontend_case = require('./routes/frontend/case');
 // var frontend_match = require('./routes/frontend/match');
 // var frontend_coupon = require('./routes/frontend/coupon');
@@ -57,6 +57,9 @@ var frontend_users = require('./routes/frontend/user');
 var admin = require('./routes/backend/admin');
 var backend_users = require('./routes/backend/user');
 var backend_products = require('./routes/backend/product');
+var backend_categories = require('./routes/backend/category');
+var backend_brands = require('./routes/backend/brand');
+var backend_colors = require('./routes/backend/color');
 
 
 app.use((req, res, next) => {
@@ -68,13 +71,16 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/user', frontend_users);
+// app.use('/' , frontend_categories);
 
 /*BACKEND Appuse*/
 
 app.use('/admin', admin);
 app.use('/admin/user',backend_users);
 app.use('/admin/product',backend_products);
-
+app.use('/admin/category',backend_categories);
+app.use('/admin/brand',backend_brands);
+app.use('/admin/color',backend_colors);
 
 app.listen(4000);
 console.log('listening port 4000');

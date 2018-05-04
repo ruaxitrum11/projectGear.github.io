@@ -13,10 +13,17 @@
     float: left;
     padding: 0 10%;
   }
+
   .form-product-add>span {
     font-size: 1.6rem;
     width: 15%;
     float: left;
+  }
+  .form-product-add-input>a {
+    font-size: 5rem;
+  }
+  .form-product-add-input>img {
+    width: 100%;
   }
   .form-product-add>input  , .form-product-add>textarea{
     border-radius: 5px;
@@ -32,9 +39,11 @@
   .form-product-add>input:focus , .form-product-add>textarea:focus{
     outline: none;
   }
+  .form-product-add-input {
+    width: 50%;
+    display: inline-block;
+  }
   .active {
-    display: inline-block; 
-    width: 80%;
     margin-bottom: 20px;
   }
 
@@ -91,32 +100,40 @@
         <input id="new-productName" type="text" name="productName" value="">
       </div>
       <div class="form-product-add">
-        <span>Loại sản phẩm</span>
-        <div class="active">
-          <input class="status-active" type="radio" name="productSpecies" value="1">
-          <span class="label label-info">Tai nghe</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="2">
-          <span class="label label-info">Bàn phím</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="3">
-          <span class="label label-info">Chuột</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="4">
-          <span class="label label-info">Laptop</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="productSpecies" value="5">
-          <span class="label label-info">Phụ kiện khác</span>
+        <span>Hình ảnh</span>
+        <div class="form-product-add-input">
+          <input type="file" id = "fileImage" name="fileImage" value="" style="width: 85%;">
+          <img src="" class="productImage-upload" >
         </div>
       </div>
       <div class="form-product-add">
-        <span>Hình ảnh</span>
-        <input type="file" id = "fileImage" name="fileImage" value="" style="width: 85%;">
-        <img src="" class="productImage-upload" >
+        <span>Loại sản phẩm</span>
+        <div class="form-product-add-input">
+          <%if(category && category.length){%>
+          <%for(var i = 0 ; i < category.length ; i++){%>
+          <div class="active">
+            <input class="status-active" type="radio" name="productCategory" value="<%=category[i]._id%>">
+            <span class="label label-info"><%=category[i].categoryName%></span>
+          </div>
+          <%}%>
+          <%}%>
+          
+        </div>
+      </div>
+
+      <div class="form-product-add">
+        <span>Nhãn hiệu</span>
+        <div class="form-product-add-input">
+          <%if(brand && brand.length){%>
+          <%for(var i = 0 ; i < brand.length ; i++){%>
+          <div class="active">
+            <input class="status-active" type="radio" name="productBrand" value="<%=brand[i]._id%>">
+            <span class="label label-info"><%=brand[i].brandName%></span>
+          </div>
+          <%}%>
+          <%}%>
+          
+        </div>
       </div>
       <!-- <div class="form-product-add">
         <span>Banner</span>
@@ -125,25 +142,16 @@
       </div> -->
       <div class="form-product-add">
         <span>Màu sắc</span>
-        <div class="active">
-          <input class="status-active" type="radio" name="color" value="1">
-          <span class="label label-info">Đen</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="2">
-          <span class="label label-info">Trắng</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="3">
-          <span class="label label-info">Đỏ</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="4">
-          <span class="label label-info">Xanh da trời</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="color" value="5">
-          <span class="label label-info">Da Cam</span>
+        <div class="form-product-add-input">
+          <%if(color && color.length){%>
+          <%for(var i = 0 ; i < color.length ; i++){%>
+          <div class="active">
+            <input class="status-active" type="radio" name="productColor" value="<%=color[i]._id%>">
+            <span class="label label-info"><%=color[i].colorName%></span>
+          </div>
+          <%}%>
+          <%}%>
+        
         </div>
       </div>
       <div class="form-product-add">
@@ -154,28 +162,10 @@
         <span>Số lượng</span>
         <input type="number" name="quantity" value="">
       </div>
-      <div class="form-product-add">
-        <span>Nhãn hiệu</span>
-        <div class="active">
-          <input class="status-active" type="radio" name="brand" value="1">
-          <span class="label label-info">SteelSeries</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="brand" value="2">
-          <span class="label label-info">Razer</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="brand" value="3">
-          <span class="label label-info">Ozone Gaming</span>
-        </div>
-        <div class="active active-block">
-          <input class="status-active" type="radio" name="brand" value="4">
-          <span class="label label-info">MSI Gaming</span>
-        </div>
-      </div>
+
       <div class="form-product-add">
         <span>Mô tả</span>
-        <textarea id="new-description"  name="description" ></textarea>
+        <textarea id="new-description" name="description" ></textarea>
       </div>
        <!--  <div class="form-product-add button-active">
           <button id="submit" type="submit">Tạo sản phẩm</button>
@@ -202,11 +192,11 @@
 
     function postProductAdd() {
       var productName = $("input[name=productName]").val();
-      var productSpecies = $("input[name=productSpecies]:checked").val(); 
-      var color = $("input[name=color]:checked").val();
+      var productCategory = $("input[name=productCategory]:checked").val(); 
+      var productColor = $("input[name=productColor]:checked").val();
       var price = $("input[name=price]").val();
       var quantity = $("input[name=quantity]").val();
-      var brand = $("input[name=brand]:checked").val(); 
+      var productBrand = $("input[name=productBrand]:checked").val(); 
       var description = $("textarea[name=description]").val();
       var thumb =  $('input[type=file]')[0].files[0];
       // var banner = $('input[type=file]')[1].files[0];
@@ -214,11 +204,11 @@
       formData.append('fileImage',thumb)
       // formData.append('fileBanner',banner)
       formData.append('productName', productName)
-      formData.append('productSpecies', productSpecies)
-      formData.append('color', color)
+      formData.append('productCategory', productCategory)
+      formData.append('productColor', productColor)
       formData.append('price', price)
       formData.append('quantity', quantity)
-      formData.append('brand', brand)
+      formData.append('productBrand', productBrand)
       formData.append('description', description)
 
       $.ajax({
@@ -277,7 +267,7 @@
     readURLImage(this);
   });
 
-   function readURLBanner(input) {
+  function readURLBanner(input) {
 
     if (input.files && input.files[0]) {
       var reader = new FileReader();
