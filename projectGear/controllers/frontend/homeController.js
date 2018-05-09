@@ -24,17 +24,19 @@ const Color = require('../../models/Color');
  	// let productKeyboard = await Product.find({}).sort({numberPurchased :-1}).limit(3).lean();
  	// let productMouse = await Product.find({}).sort({numberPurchased :-1}).limit(3).lean();
  	// let productLaptop = await Product.find({}).sort({numberPurchased :-1}).limit(3).lean();
- 	let categoryMenu = await Category.find({isCategoryMenu : 1 }).sort({createdAt:1}).limit(4).lean();
- 	let categoryDropDown = await Category.find({isCategoryMenu : 0}).sort({createdAt:1}).lean();
+ 	let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+ 	let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+ 	let category = await Category.find({status:1}).sort({createdAt:1}).lean();
+ 	let product = await Product.find({}).populate('productCategory').sort({numberPurchased:-1}).limit(3).lean();
+ 	console.log(product);
  	
  	
- 	let product = await Product.find({}).sort({numberPurchased:-1}).limit(3).lean()
- 	console.log(product)
-
-
+ 	// let product = await Product.find({}).sort({numberPurchased:-1}).limit(3).lean()
  	return res.render('frontend/index' , {
  		categoryMenu : categoryMenu , 
- 		categoryDropDown : categoryDropDown
+ 		categoryDropDown : categoryDropDown,
+ 		category : category ,
+ 		product : product
  	});
  }
 

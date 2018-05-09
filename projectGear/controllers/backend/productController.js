@@ -43,13 +43,14 @@ let upload = multer({
 		// }
 		cb(null, true);
 	}
-}).single('fileImage');
+}).array("files", 100);
 
  // Models
  const Product = require('../../models/Product');
  const Category = require('../../models/Category');
  const Brand = require('../../models/Brand');
  const Color = require('../../models/Color');
+ const Gallery = require('../../models/Gallery');
 
 
 // Method
@@ -62,10 +63,15 @@ let upload = multer({
  	let category = await Category.find({}).select({_id : 1, status :1, categoryName: 1}).lean();
  	let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
  	let color = await Color.find({}).select({_id : 1 , status : 1 ,  color : 1 }).lean();
+ 	let gallery = await  Gallery.find({}).select({_id : 1 , galleryName : 1 }).lean();
+
+ 	
+ 	
  	return res.render('backend/product/list', {
  		category : category ,
  		brand :  brand ,
- 		color : color
+ 		color : color , 
+ 		gallery : gallery
  	});
  }
 
@@ -102,6 +108,7 @@ let upload = multer({
  			.populate('productCategory')
  			.populate('productBrand')
  			.populate('productColor')
+ 			.populate('productThumb')
  			.sort({numberPurchased : -1}).skip(skip).limit(limit)
  			])
 
@@ -132,18 +139,17 @@ exports.getProductAdd = async (req,res) =>{
 	let category = await Category.find({}).select({_id : 1, status :1, categoryName: 1}).lean();
 	let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
 	let color = await Color.find({}).select({_id : 1 , status : 1 ,  colorName : 1 }).lean();
+	let gallery = await  Gallery.find({}).select({_id : 1 , galleryName : 1 }).lean();
+	
+
 	return res.render('backend/product/add', {
 		category : category ,
 		brand :  brand , 
-		color : color
+		color : color ,
+		gallery : gallery 
 	});
 }
-
-
-
-
-
-exports.postProductAdd = async (req,res) => {
+exports.uploadImages = async(req,res) =>{
 	upload (req,res,async function(err) {
 		if(err) {
 			console.log(err);
@@ -152,19 +158,156 @@ exports.postProductAdd = async (req,res) => {
 		
 
 		try{
-			if (req.body) {
+			// console.log(req.files)
+			if (req.files) {
+				var saveGallery = await Promise.all(req.files.map(async file => {
+					console.log(file.filename)
+					await new Gallery({
+						galleryName: file.filename
+					}).save()
+				}))
+				if(!saveGallery) {
+					let errors = [{msg:"Tải ảnh thất bại"}]
+					return res.send({status:false, errors : errors});
+				}
+				else return res.send({status:true});
 				
-				if (req.body.productName == "") {
+			}
+		}
+
+
+		catch(errors){
+			console.log(errors);
+			return res.send({status:false, errors : errors});
+		}
+
+	})
+}
+exports.listFileManager = async(req,res) =>{
+
+	let page = 1;
+	let limit = 16;
+	let totalPage = 1;
+	let query = {};
+	if (req.query.page) {
+		page = parseInt(req.query.page);
+	}
+
+
+
+	if(req.query.search_image && req.query.search_image !=""){
+		let regex = new RegExp(req.query.search_image.trim(), 'i')
+		query = {galleryName: {$regex : regex}}
+
+	} 
+
+
+
+	let skip = (page - 1)*limit;
+
+	try{
+
+		let [count, data] = await Promise.all([
+			Gallery.count(query),
+			Gallery.find(query)
+			.sort({createdAt:1}).skip(skip).limit(limit).select({_id : 1 , galleryName : 1 }).lean()
+			])
+
+		let listFileManager = [];
+
+
+		if (count && count >0) {
+			totalPage = Math.ceil(count/limit);
+			
+		}
+
+		if (data && data.length) {
+			listFileManager = data;
+
+		}
+		// console.log(totalPage);
+		// console.log(page);
+		// console.log(listFileManager)
+
+		res.send({status: true, page : page, totalPage : totalPage, listFileManager : listFileManager});
+	}catch(err){
+		res.send({status:false})
+    // console.log("===============err=========================")
+    console.log(err)
+    // console.log("===============err=========================")
+}
+
+}
+exports.postProductAddImageThumb = async (req,res) =>{
+	if (req.body) {
+		try{
+			console.log(req.body.imageThumb)
+			if(req.body.imageThumb == undefined){
+				let errors = [{msg:"Vui lòng chọn ảnh"}];
+				return res.send({status:false,errors:errors});
+			}else {
+				let data = req.body.imageThumb
+				return res.send({status:true , data : data});
+			}
+		}
+		catch(errors) {
+			console.log(errors)
+			return res.send({status:false, errors : errors});
+		}
+	}
+
+}
+exports.postProductRemoveImageThumb = async (req,res) =>{
+	if (req.body.imageThumb) {
+		try{
+			let deleteGallery = await Gallery.remove({galleryName : req.body.imageThumb});
+			if (deleteGallery.result) {
+				res.send({status:true});
+			}else{
+				res.send({status:false});
+			}
+		}catch(err){
+			res.send({status:false})
+		}
+	}
+}
+
+
+exports.postProductAdd = async (req,res) => {
+	upload (req,res,async function(err) {
+		if(err) {
+			console.log(err);
+			return res.send({status:false, err : err});
+		}
+
+
+		try{
+			// req.files.forEach((f,i) => {
+			// 	console.log(i, f)
+			// })
+			if (req.body) {
+				console.log(req.body)
+				
+				if (req.body.productName && req.body.productName == "") {
 					let errors = [{msg:"Tên sản phẩm không được để trống"}]
 					return res.send({status:false, errors : errors});
-				} else if (req.body.price == "" ) {
+				}else if (!req.files) {
+					let errors = [{msg:"Vui lòng tải ảnh sản phẩm"}]
+					return res.send({status:false, errors : errors});
+				} else if (req.body.productCategory && req.body.productCategory == "" ) {
+					let errors = [{msg:"Vui lòng chọn danh mục sản phẩm"}]
+					return res.send({status:false, errors : errors});
+				}else if (req.body.productBrand && req.body.productBrand == ""  ) {
+					let errors = [{msg:"Vui lòng chọn nhãn hiệu sản phẩm"}]
+					return res.send({status:false, errors : errors});
+				}else if (req.body.productColor && req.body.productColor == ""  ) {
+					let errors = [{msg:"Vui lòng chọn màu sản phẩm"}]
+					return res.send({status:false, errors : errors});
+				}else if (req.body.colorPrice && req.body.colorPrice == ""  ) {
 					let errors = [{msg:"Giá sản phẩm không được để trống"}]
 					return res.send({status:false, errors : errors});
-				}else if (req.body.quantity == ""  ) {
+				}else if (req.body.colorQuantity && req.body.colorQuantity == ""  ) {
 					let errors = [{msg:"Số lượng sản phẩm không được để trống"}]
-					return res.send({status:false, errors : errors});
-				}else if (!req.file) {
-					let errors = [{msg:"Vui lòng tải ảnh sản phẩm"}]
 					return res.send({status:false, errors : errors});
 				}else{
 					let existingProduct = await Product.findOne({ productName : req.body.productName});
@@ -173,19 +316,21 @@ exports.postProductAdd = async (req,res) => {
 						let errors = [{msg:"Tên sản phẩm đã tồn tại"}]
 						return res.send({status:false, errors : errors});
 					}
-
+					console.log('dang o day')
 					const product = new Product({
 						productName : req.body.productName,
 						productCategory : req.body.productCategory,
-						productColor : req.body.productColor,
-						price : req.body.price,
-						quantity : req.body.quantity ,
 						productBrand : req.body.productBrand ,
+						productColor : req.body.productColor,
+						productPrice : req.body.productPrice,
+						productPromotion : req.body.productPromotion,
+						productQuantity : req.body.productQuantity ,
 						description : req.body.description 
 					});
 
-					if (req.file) {
-						product.productThumb = req.file.filename;
+					if (req.files) {
+						product.productThumb = req.files.filename;
+						product.productColor = req.files.filename;
 					}
 
 					let saveProduct = await product.save();

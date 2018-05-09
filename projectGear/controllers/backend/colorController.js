@@ -190,7 +190,7 @@ exports.postColorEdit = async (req,res) => {
 			if (req.body) {
 				// console.log(req.files)
 				// console.log('=========================')
-				console.log(req.body)
+				// console.log(req.body)
 				if (req.body.colorName == "") {
 					let errors = [{msg:"Tên màu không được để trống"}]
 					return res.send({status:false, errors : errors});

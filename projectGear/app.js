@@ -60,7 +60,7 @@ var backend_products = require('./routes/backend/product');
 var backend_categories = require('./routes/backend/category');
 var backend_brands = require('./routes/backend/brand');
 var backend_colors = require('./routes/backend/color');
-
+var backend_galleries = require('./routes/backend/gallery');
 
 app.use((req, res, next) => {
 	res.locals.user = req.user;
@@ -81,6 +81,7 @@ app.use('/admin/product',backend_products);
 app.use('/admin/category',backend_categories);
 app.use('/admin/brand',backend_brands);
 app.use('/admin/color',backend_colors);
+app.use('/admin/gallery',backend_galleries);
 
 app.listen(4000);
 console.log('listening port 4000');

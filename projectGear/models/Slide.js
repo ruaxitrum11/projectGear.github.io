@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const mconnect = require('../config/connDB');
 var Schema = mongoose.Schema;
 
-const colorSchema = new mongoose.Schema({
-	colorName : String ,
-	colorCode : String ,
+const slideSchema = new mongoose.Schema({
+	slideName : String ,
+	slideImage : String,
   status : {type : Number , default : 1} , //1 : active , 0: block 
-  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
+  product: { type: Schema.Types.ObjectId, ref: 'Product' }
 }, { timestamps: true });
 
-const Color = mconnect.model('Color', colorSchema);
+const Slide = mconnect.model('Slide', slideSchema);
 
-module.exports = Color;
+module.exports = Slide;

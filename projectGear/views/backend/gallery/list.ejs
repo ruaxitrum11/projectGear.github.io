@@ -1,0 +1,409 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+
+  .gallery-content {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    margin: 0 auto;
+
+  }
+  .gallery-item {
+    width: 22%;
+    margin-left: 3%;
+    float: left;
+    margin-bottom: 30px;
+  }
+  .gallery-thumb {
+    text-align: center;
+    border: 1px ridge #0000003d;
+    padding: 15px 0px;
+    background-color: #fff;
+    float: left;
+    width: 100%;
+  }
+  .gallery-description{
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .gallery-thumb img{
+    width: 50%
+  }
+  .galleryPreview img {
+    width: 25%;
+  }
+  .add-newColor {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-newColor a{
+    margin-right : 20px;
+    font-size: 3rem;
+  }
+  .add-searchColor {
+    margin : 20px 0;
+  }
+  .add-searchColor input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+
+ .add-searchColor span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.form-ColorInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-ColorInfo-tilte{
+  float: left;
+  width: 30%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-ColorInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-ColorInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+.box-body {
+  text-align: left;
+}
+.form-color-edit {
+  margin-bottom : 20px;
+}
+.form-color-edit span{
+  width: 20%;
+  display: inline-block;
+
+}
+.form-color-edit input{
+  width: 50%;
+  display: inline-block;
+}
+.active span {
+  font-size: 90%!important;
+}
+.active {
+  display: inline-block; 
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.active-block {
+  margin-left: 20.1%;
+}
+input.status-active {
+  width: 5%!important;
+}
+  /*span.label {
+    font-size: 90%!important;
+    }*/
+    .button-active a {
+      display: inline-block;
+      font-size: 2rem;
+      padding: 10px 30px;
+      background-color: #dd4b39;
+      color: #fff;
+    }
+  </style>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Thông tin hình ảnh 
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="container">      
+
+        <div class="add-newColor">
+          <a style="cursor: pointer;" data-toggle="modal" data-target="#modal-color-add">
+            <span class="label label-primary">+</span>
+          </a>
+        </div>      
+
+        <div class="add-searchColor">
+          <span class="search-icon glyphicon glyphicon-search"></span>
+          <input class="input-text gallery-search-text" type="text" name="" placeholder="Nhập tên hình ảnh">
+        </div>
+
+        <div class="gallery-content">
+
+        </div>
+
+        <div class="col-xs-12" style="text-align: center;" id="pagination-list-gallery">
+
+        </div>
+
+      </div>
+
+      <div class="modal fade" id="modal-color-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content modal-productInfo">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title"><strong>Thêm hình ảnh</strong></h4>
+            </div>
+
+            <div class="modal-body">
+              <div class="box-body">
+                <div class="form-color-edit">
+                  <span>Hình ảnh</span>
+                  <input id="newImages" type="file" name="files" value="" multiple>
+                  <div class="galleryPreview"></div>
+                </div>
+                <div class="form-color-edit button-active">
+                  <a href="javascript:void(0)" onclick="postImages()">
+                    Tải ảnh lên
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-edit">
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <%- include('../include/admin-footer') %>
+
+  <%- include('../include/admin-control-sidebar') %>
+
+  <%- include('../include/admin-js.ejs') %>
+
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      listGallery(1);
+    });
+
+
+    $('.gallery-search-text').keyup(function() {
+     listGallery(1);
+   });
+
+    function listGallery(page) {
+      var gallery_search_text = $('.gallery-search-text').val();
+
+      $.ajax({
+        url: '/admin/gallery/listGallery',
+        type: 'GET',
+        data: {
+          page : page,
+          gallery_search_text : gallery_search_text
+        },
+        dataType: 'json',
+      }).done(function(results){
+        if (results.status) {
+
+        // console.log(results.status);
+
+        var xhtml = ''; 
+
+        if (results.listGallery && results.listGallery.length) {
+          for (var i = 0 ;  i <= results.listGallery.length - 1; i++) {
+
+            if(results.listGallery[i].createdAt){
+              var date = new Date(results.listGallery[i].createdAt);
+              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+            }
+
+            xhtml += '<div class="gallery-item">';
+            xhtml += '<div class="gallery-thumb">';
+            xhtml += '<img src="/upload/thumbProduct/'+results.listGallery[i].galleryName+'">';  
+
+            xhtml += '</div>';
+            xhtml += '<div class="gallery-description" style="text-align:center;float: left;width:100%" >';
+            xhtml += '<p class="gallery-name" style="font-size:1.6rem;font-weight:600;">'+results.listGallery[i].galleryName+'</p>';
+            xhtml += '<p class="gallery-added" style="font-style: italic"><span style="font-weight:600">Thời gian tạo : </span>' +date_createdAt+'</p>';
+            xhtml += '<div class="gallery-button" style="text-align:center;float: left;width:100%">';
+            xhtml += '<a style="cursor:pointer" onclick="removeGallery(\''+results.listGallery[i]._id+'\')" ><span class="label label-danger" style="display:inline-block;padding: 5px 10px;border-radius: 5px;"><i class="fa fa-trash" style="font-size:1.6rem;"></i></span></a>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+          }
+          $(".gallery-content ").html(xhtml)
+        }else{
+         $(".gallery-content").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listGallery(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listGallery('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listGallery('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listGallery('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listGallery('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-gallery').html(pagiHtml);
+      } else {
+        $('#pagination-list-gallery').html('');
+      }
+
+    }
+  })
+    }
+
+  </script>
+
+  <script>
+   function postImages(){
+  // var images = $("#new-newColorCode")[0].files;
+  
+  // console.log(images)
+  var formData = new FormData();
+  // formData.append('newImages[]',images);
+  $.each($("#newImages")[0].files, function(i, file) {
+    formData.append('files', file);
+  });
+
+  
+
+
+  $.ajax({
+    url: '/admin/gallery/addGallery',
+    type: 'post',
+    data: formData,
+    contentType:false,
+    processData:false
+      // dataType: 'json',
+    }).done(function(results){
+      if (results.status == true) {
+        $.confirm({
+          title: 'Thông Báo!',
+          content: '<span class="text-success"><strong class="fa fa-check"></strong>Tạo ảnh thành công</span>',
+          buttons: {
+            Ok: function () {
+              // $.alert('Ok');
+              window.location.replace("/admin/gallery/list");
+            }
+          }
+        });
+      }else{
+        $.alert({
+          title: 'Thông Báo !',
+          content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+        })
+      }
+
+    })
+  }
+
+  $(function() {
+    // Multiple images preview in browser
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+
+      if (input.files) {
+        var filesAmount = input.files.length;
+
+        for (i = 0; i < filesAmount; i++) {
+          var reader = new FileReader();
+
+          reader.onload = function(event) {
+            $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+          }
+
+          reader.readAsDataURL(input.files[i]);
+        }
+      }
+
+    };
+    $('#newImages').on('change', function() {
+      imagesPreview(this, 'div.galleryPreview');
+    });
+  });
+</script>
+
+<script>
+  function removeGallery(id){
+    $.confirm({
+      title : 'Xác nhận !',
+      content : 'Bạn có chắc chắn muốn xóa màu này',
+      buttons: {
+        'Đồng Ý': function () {
+          $.ajax({
+            url: '/admin/gallery/delete',
+            type: 'post',
+            data: {
+              id : id
+            },
+            dataType: 'json',
+          }).done(function(results){
+            if (results.status) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
+              })
+              location.reload();
+            }else{
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
+              })
+            }
+          })
+        },
+        'Hủy Bỏ': function () {
+        },
+      }
+    })
+  }
+</script>
+
