@@ -43,7 +43,7 @@ let upload = multer({
 		// }
 		cb(null, true);
 	}
-}).single('fileImage');
+}).single('file');
 
  // Models
  const Category = require('../../models/Category');
@@ -57,8 +57,8 @@ let upload = multer({
  */
 
  exports.list = async(req, res) => {
- 	let product = await Product.find({}).select({}).lean();
- 	return res.render('backend/category/list',{product:product});
+ 	let countCategoryMenu = await Category.find({isCategoryMenu : 1}).count();
+ 	return res.render('backend/category/list',{countCategoryMenu:countCategoryMenu});
  }
 
  exports.listCategory = async (req,res) =>{
@@ -120,20 +120,16 @@ let upload = multer({
 
 
 exports.postCategoryAdd = async (req,res) => {
-	upload (req,res,async function(err) {
-		if(err) {
-			console.log(err);
-			return res.send({status:false, err : err});
-		}
-		
-
 		try{
 			if (req.body) {
 				
 				if (req.body.categoryName == "") {
 					let errors = [{msg:"Tên danh mục không được để trống"}]
 					return res.send({status:false, errors : errors});
-				} else{
+				}else if (req.body.categoryNameSummary == ""){
+					let errors = [{msg:"Tên rút gọn không được để trống"}]
+					return res.send({status:false , errors : errors});
+				}else{
 					let existingCategory = await Category.findOne({ categoryName : req.body.categoryName});
 
 					if (existingCategory && existingCategory != "") {
@@ -141,10 +137,16 @@ exports.postCategoryAdd = async (req,res) => {
 						return res.send({status:false, errors : errors});
 					}
 
-					
+					let existingCategory2 = await Category.findOne({_id : {$ne: req.body.id}, categoryNameSummary: req.body.categoryNameSummary});
+
+					if (existingCategory2 && existingCategory2 != "") {
+						let errors = [{msg:"Tên rút gọn đã tồn tại"}]
+						return res.send({status:false, errors : errors});
+					}
 
 					const category = new Category({
 						categoryName : req.body.categoryName ,
+						categoryNameSummary : req.body.categoryNameSummary,
 						isCategoryMenu : req.body.isCategoryMenu
 					});
 
@@ -166,7 +168,6 @@ exports.postCategoryAdd = async (req,res) => {
 			return res.send({status:false, errors : errors});
 		}
 
-	})
 }
 
 
@@ -200,6 +201,9 @@ exports.postCategoryEdit = async (req,res) => {
 				if (req.body.categoryName == "") {
 					let errors = [{msg:"Tên danh mục không được để trống"}]
 					return res.send({status:false, errors : errors});
+				}else if (req.body.categoryNameSummary == ""){
+					let errors = [{msg:"Tên rút gọn không được để trống"}]
+					return res.send({status:false , errors : errors});
 				}else {
 					let existingCategory = await Category.findOne({_id : {$ne: req.body.id}, categoryName: req.body.categoryName});
 					
@@ -209,11 +213,17 @@ exports.postCategoryEdit = async (req,res) => {
 						return res.send({status:false, errors : errors});
 					}
 
+					let existingCategory2 = await Category.findOne({_id : {$ne: req.body.id}, categoryNameSummary: req.body.categoryNameSummary});
 
+					if (existingCategory2 && existingCategory2 != "") {
+						let errors = [{msg:"Tên rút gọn đã tồn tại"}]
+						return res.send({status:false, errors : errors});
+					}
 
 					const categoryDataUpdate = {
 						categoryName : req.body.categoryName,
 						isCategoryMenu : req.body.isCategoryMenu,
+						categoryNameSummary : req.body.categoryNameSummary ,
 						status : req.body.status
 					};
 					
@@ -250,4 +260,31 @@ exports.deleteCategory = async (req,res) =>{
 			res.send({status:false})
 		}
 	}
+}
+
+exports.uploadCategoryBanner = (req,res) =>{
+  // console.log(req)
+  upload(req,res,function(err) {
+    // console.log(req)
+    if(err) {
+      console.log(err);
+      return res.send({status:false, msg:'Chỉ cho phép tải ảnh lên !'});
+    }
+    // console.log("upload done")
+
+    if(req.body.id && req.body.id != ''){
+      if (req.file) {
+        Category.update({_id : req.body.id}, {categoryBanner: req.file.filename}, (err,results)=>{
+          if(err){
+            return res.send({status:false, msg:'Tải ảnh thất bại'});
+          }
+          return res.send({status:true, msg:'Tải ảnh thành công !'});
+        })
+      }else{
+        return res.send({status:false, msg:'Không tìm thấy ảnh !'});
+      }
+    }else{
+      return res.send({status:false, msg:'Không tìm thấy ảnh !'});
+    }
+  })
 }

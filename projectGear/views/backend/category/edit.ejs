@@ -86,7 +86,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Cập nhật tài khoản người dùng
+      Cập nhật danh mục sản phẩm
     </h1>
   </section>
 
@@ -97,6 +97,10 @@
       <div class="form-product-edit">
         <span>Tên danh mục</span>
         <input id="new-categoryName" type="text" name="categoryName" value="<%=category.categoryName%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Tên rút gọn</span>
+        <input id="new-categoryNameSummary" type="text" name="categoryNameSummary" value="<%=category.categoryNameSummary%>">
       </div>
       <div class="form-product-edit">
         <span>Loại danh mục</span>
@@ -160,6 +164,7 @@
 
   function postCategoryEdit(id){
     var categoryName = $('input[name=categoryName]').val();
+    var categoryNameSummary = $('input[name=categoryNameSummary]').val();
     var status = $('input[name=status]:checked').val();
     var isCategoryMenu = $('input[name=isCategoryMenu]:checked').val();
 
@@ -170,6 +175,7 @@
         id : id,
         categoryName : categoryName ,
         isCategoryMenu : isCategoryMenu ,
+        categoryNameSummary : categoryNameSummary ,
         status : status ,
       },
       dataType: 'json',

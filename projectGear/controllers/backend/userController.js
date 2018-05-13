@@ -222,7 +222,6 @@ exports.postUserAdd = async (req,res) =>{
   }
 
 
-
   try{
     const user = new User({
       userName: req.body.userName,

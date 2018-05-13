@@ -82,11 +82,10 @@
 				<div class="new-product-menu">
 					<div class="row">
 						<div class="new-product-left col-xs-4 col-md-5 ">
-							<p>sản phẩm nổi bật</p>
+							<p>sản phẩm mới nhất</p>
 						</div>
 						<div class="new-product-right col-xs-8 col-md-7">
 							<ul>
-								
 								<%if(categoryMenu && categoryMenu.length){%>
 								<%for(var i = 0 ; i < categoryMenu.length ; i++){%>
 								<%if(i==0){%>
@@ -100,14 +99,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="new-product-content new-product-content-<%=categoryMenu[0]._id%>">
+				<div class="new-product-content" >
 					<div class="row">
-						<%if(product && product.length){%>
-						<%for(var i = 0 ; i <product.length ; i++){%>
-						<
-						<div class="new-item col-xs-12 col-sm-4 ">
+						<%if(productFirst && productFirst.length){%>
+						<%for(var i =0 ; i < productFirst.length ;i++){%>
+						<div class="new-item col-xs-12 col-sm-4  wow fadeInLeft " data-wow-duration="2s">
+
 							<div class="product-thubnail">
-								<img src="../upload/thumbProduct/<%=product[i].productThumb%>">
+								<img src="../upload/thumbProduct/<%=productFirst[i].productThumb%>">
 								<div class="product-thubnail-hover product-thubnail-hover-cart">
 									<a href="#" class="">Mua Hàng</a>
 								</div>
@@ -116,25 +115,14 @@
 								</div>
 							</div>
 							<div class="product-information">
-								<h3><%=product[i].productName%></h3>
-								<p><%=product[i].price%></p>
+								<h3><%=productFirst[i].productName%></h3>
+								<p><%=productFirst[i].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>	
 							</div>
 						</div>
 						<%}%>
 						<%}%>
 					</div>
 				</div>
-				<%if(categoryMenu && categoryMenu.length){%>
-				<%for(var i = 1 ; i < categoryMenu.length ; i++){%>
-				<div class="new-product-content new-product-content-<%=categoryMenu[i]._id%>" >
-					<div class="row">
-						<%=categoryMenu[i].categoryName%>
-					</div>
-				</div>
-				<%}%>
-				<%}%>
-				
-
 			</div>
 		</div>
 	</div>
@@ -367,11 +355,45 @@
 	}
 
 	function showProduct(id) {
-		$(`.new-product-content`).each((i,x )=> {
-			$(x).hide(500)
+	
+		$.ajax({
+			url: '/showProduct',
+			type: 'GET',
+			data: {
+				id : id
+			},
+			dataType: 'json',
+		}).done(function(results){
+			// alert(results.showProduct)
+			if (results.status) {
+				var xhtml = '';
+				if(results.showProduct && results.showProduct.length){
+					for (var i = 0; i < results.showProduct.length; i++) {
+						
+						xhtml += '<div class="new-item col-xs-12 col-sm-4  wow fadeInLeft" data-wow-duration="2s">';
+						xhtml += '<div class="product-thubnail">';
+						xhtml += '<img src="../upload/thumbProduct/'+results.showProduct[i].productThumb+'">';
+						xhtml += '<div class="product-thubnail-hover product-thubnail-hover-cart">';
+						xhtml += '<a href="#" class="">Mua Hàng</a>';
+						xhtml += '</div>';
+						xhtml += '<div class="product-thubnail-hover product-thubnail-hover-more">';
+						xhtml += '<a href="product.html" class="">Xem Thêm</a>';
+						xhtml += '</div>';
+						xhtml += '</div>';
+						xhtml += '<div class="product-information">';
+						xhtml += '<h3>'+results.showProduct[i].productName+'</h3>';
+						xhtml += '<p>'+results.showProduct[i].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';	
+						xhtml += '</div>';
+						xhtml += '</div>';
+					}
+				}
+				$('.new-product-content .row').html(xhtml)
+			}
 		})
-		$(`.new-product-content-${id}`).show(1000)
+
 	}
 
 
+
 </script>
+

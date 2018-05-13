@@ -1,69 +1,65 @@
 <%- include('include/header-top') %>
-<link rel="stylesheet" href="css/homepage.css">
+<link rel="stylesheet" href="/css/homepage.css">
 <link rel="stylesheet" href="../css/category.css">
 
 <%- include('include/header') %>
 
 <section>
-	<div class="background-headset-area">
-		<img src="../img/product/background-headset.jpg">
-	</div>
+
 	<div class="fixed-product-category-area hidden-sm hidden-xs">
 		<div class="container-fluid">
 			<ul>
-				<li>
-					<a href="#steelseries">
-						<img src="../img/product/sslogo.png">
-					</a>
+				<% for (var i = 0; i < brand.length; i++) { %>
+				<%if(allBrand.indexOf(brand[i]._id.toString()) != -1){%>
+				<li id="brand-<%=brand[i]._id%>">
+					<a href="#<%=brand[i].brandName.replace(/\s/g, '')%>" style="text-transform: capitalize;"><%=brand[i].brandName%></a>
 				</li>
-				<li>
-					<a href="#razer">
-						<img src="../img/product/rzlogo.png">
-					</a>
-				</li>
-				<li>
-					<a href="#ozone">
-						<img src="../img/product/ozlogo.png">
-					</a>
-				</li>
-				<li>
-					<a href="#msi">
-						<img src="../img/product/msilogo.png">
-					</a>
-				</li>
-
+				<%}%>
+				<%}%>
 			</ul>
 		</div>
 	</div>
-	<% if (product[0].productSpecies == 1 ) { %>
-	<div class="steelseries-product-area" id="steelseries">
+	
+	<%for (var i = 0 ; i < brand.length ; i++) {%>
+	<%if(allBrand.indexOf(brand[i]._id.toString()) != -1){%>
+	<div class="product-category-area product-category-<%=brand[i]._id%>" id="<%=brand[i].brandName.replace(/\s/g, '')%>">
 		<div class="container-fluid">
 			<div class="category-title">
-				<h2>Tai Nghe SteelSeries</h2>
+				<h2><%=categoryCurrent[0].categoryName%> <%=brand[i].brandName%></h2>
 			</div>
 			<div class="product-category-content new-product-category-content">
-				<% if(headsetSteelSeries && headsetSteelSeries.length ) {%>
-				<% for (var i = 0 ; i < headsetSteelSeries.length ; i++) { %>
+				<%for(var j = 0 ; j < product.length ; j++){%>
+				<%if(brand[i]._id.toString()== product[j].productBrand.toString()){%>
 				<div class="product-category-item new-product-category-item">
 					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= headsetSteelSeries[i].productThumb%>">
+						<img src="../upload/thumbProduct/<%=product[j].productThumb%>">
 					</div>
 					<div class="product-category-information new-product-category-information">
 						<div class="container-fluid">
 							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=headsetSteelSeries[i].productName%></p>
+								<p><%=product[j].productName%></p>
 							</div>
+							<%var convertVND = product[j].productColor[0].colorPrice%>
 							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= headsetSteelSeries[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
+								<p><%=convertVND.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>
 							</div>
 						</div>
 					</div>
 					<div class="product-category-description new-product-category-description">
 						<p>
-							<%=headsetSteelSeries[i].description%>
+							
 						</p>
+					</div>
+					<div class="product-category-option new-product-category-option">
+						<ul>
+							<%if(product[j].productColor && product[j].productColor.length){%>
+							<%for(var k = 0 ; k< product[j].productColor.length ; k++){%>
+							<li class="option-color">
+								<span style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;"></span>
+							</li>
+							<%}%>
+							<%}%>
+						</ul>
 					</div>
 					<div class="product-button-choose">
 						<div class="container-fluid">
@@ -76,351 +72,15 @@
 						</div>
 					</div>
 				</div>
-				<% } %>
-				<% } %>
-			</div>
-			<div class="new-product-category-content-bonus">
-				<div class="container-fluid">
-					<div class="npccb-information-hover npccb-information-hover-left">
-						<div class="npccb-information npccb-information-left">
-							<h2>Experience Arctis</h2>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-							<a href="#">Xem thêm</a>
-						</div>
-					</div>
-					<div class="npccb-information-hover">
-						<div class="npccb-information npccb-information-right">
-							<h2>make a splash</h2>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-							<a href="#">Xem thêm</a>
-						</div>
-					</div>
-				</div>
+				<%}%>
+				<%}%>
 			</div>
 		</div>
 	</div>
-	<div class="razer-product-area" id="razer">
-		<div class="container-fluid">
-			<div class="category-title">
-				<h2>Tai Nghe Razer</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% if(headsetRazer && headsetRazer.length ) {%>
-				<% for (var i = 0 ; i < headsetRazer.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= headsetRazer[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=headsetRazer[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= headsetRazer[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=headsetRazer[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="ozone-product-area" id="ozone">
-		<div class="container-fluid">
-			<div class="category-title">
-				<h2>Tai Nghe Ozone</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% if(headsetOzone && headsetOzone.length ) {%>
-				<% for (var i = 0 ; i < headsetOzone.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= headsetOzone[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=headsetOzone[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= headsetOzone[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=headsetOzone[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="msi-product-area" id="msi-">
-		<div class="container-fluid">
-			<div class="category-title">
-				<h2>Tai Nghe MSI</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% if(headsetOzone && headsetOzone.length ) {%>
-				<% for (var i = 0 ; i < headsetMSI.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= headsetMSI[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=headsetMSI[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= headsetMSI[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=headsetMSI[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<%} else%>
-	<% if (product[0].productSpecies == 2 ) { %>
-	<div class="steelseries-product-area" id="steelseries">
-		<div class="container-fluid">
-			<div class="category-title">
-				<% if(keyboardSteelSeries && keyboardSteelSeries.length ) {%>
-				<h2>Bàn phím SteelSeries</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% for (var i = 0 ; i < keyboardSteelSeries.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= keyboardSteelSeries[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=keyboardSteelSeries[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= keyboardSteelSeries[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=keyboardSteelSeries[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="razer-product-area" id="razer">
-		<div class="container-fluid">
-			<div class="category-title">		
-				<h2>Bàn phím Razer</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% if(keyboardRazer && keyboardRazer.length ) {%>
-				<% for (var i = 0 ; i < keyboardRazer.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= keyboardRazer[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=keyboardRazer[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= keyboardRazer[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=keyboardRazer[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="ozone-product-area" id="ozone">
-		<div class="container-fluid">
-			<div class="category-title">
-				
-				<h2>Bàn phím Ozone</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% if(keyboardOzone && keyboardOzone.length ) {%>
-				<% for (var i = 0 ; i < keyboardOzone.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= keyboardOzone[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=keyboardOzone[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= keyboardOzone[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=keyboardOzone[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="msi-product-area" id="msi">
-		<div class="container-fluid">
-			<div class="category-title">
-				<h2>Tai Nghe MSI</h2>
-			</div>
-			<div class="product-category-content new-product-category-content">
-				<% if(keyboardMSI && keyboardMSI.length ) {%>
-				<% for (var i = 0 ; i < keyboardMSI.length ; i++) { %>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%= keyboardMSI[i].productThumb%>">
-					</div>
-					<div class="product-category-information new-product-category-information">
-						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
-								<p><%=keyboardMSI[i].productName%></p>
-							</div>
-							<div class="product-category-price new-product-category-price col-xs-5">
-								<p><%= keyboardMSI[i].price.toLocaleString('ar-EG').replace(new RegExp(',', 'g'),'.')%>
-									<span>VNĐ</span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="product-category-description new-product-category-description">
-						<p>
-							<%=keyboardMSI[i].description%>
-						</p>
-					</div>
-					<div class="product-button-choose">
-						<div class="container-fluid">
-							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
-							</div>
-							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% } %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-
+	<%}%>
 	<%}%>
 
-<%- include('include/section-bottom') %>
+	<%- include('include/section-bottom') %>
 	
 </section>
 

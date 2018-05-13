@@ -11,7 +11,7 @@ var path = require('path');
 
 const categoryController = require('../../controllers/frontend/categoryController');
 
-router.get('/headset', categoryController.category);
+router.get('/:summary', categoryController.category);
 
 
 

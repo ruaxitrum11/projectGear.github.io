@@ -11,38 +11,53 @@
 // Models
 const User = require('../../models/User');
 const Product = require('../../models/Product');
+const Category = require('../../models/Category');
+const Brand = require('../../models/Brand');
 // Method
 /**
  * GET Category /
  * Laptop.
  */
  exports.category = async (req, res) => {
- 	let product = await Product.find({}).lean();
- 	let headsetSteelSeries = await Product.find({productSpecies:1 , brand:1}).sort({price:-1}).lean();
- 	let headsetRazer = await Product.find({productSpecies:1 , brand:2}).sort({price :-1}).lean();
- 	let headsetOzone = await Product.find({productSpecies:1 ,brand:3}).sort({price :-1}).lean();
- 	let headsetMSI = await Product.find({productSpecies:1 ,brand:4}).sort({price :-1}).lean();
+ 	let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+ 	let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+ 	let category = await Category.find({status:1}).sort({createdAt:1}).lean();
+ 	let brand = await Brand.find({status:1}).sort({createdAt:1}).lean();
+ 	// let productFirst = await Product.find({}).populate('productCategory').sort({createdAt:-1}).limit(3).lean();
 
- 	let productKeyboard = await Product.find({productSpecies:2}).lean();
- 	let keyboardSteelSeries = await Product.find({productSpecies:2 , brand:1}).sort({price:-1}).lean();
- 	let keyboardRazer = await Product.find({productSpecies:2 , brand:2}).sort({price :-1}).lean();
- 	let keyboardOzone = await Product.find({productSpecies:2 ,brand:3}).sort({price :-1}).lean();
- 	let keyboardMSI = await Product.find({productSpecies:2 ,brand:4}).sort({price :-1}).lean();
+	// console.log(req.params.summary) 	
+	let categoryCurrent = await Category.find({categoryNameSummary : req.params.summary})
+	// console.log(categoryCurrent)
+	// console.log(categoryCurrent[0]._id)
+	let categoryCurrentId =  categoryCurrent[0]._id
+	
 
+	let product = await Product.find({productCategory : categoryCurrentId , status:1})
+	.populate('productColor.colorId').sort({createdAt:1}).lean();
 
- 	return res.render('frontend/category.ejs' , 
- 	{	
- 		product : product ,
+	let categoryBanner = await Category.find({_id : {$ne : categoryCurrentId }}).sort({createdAt:1}).limit(4).lean();
 
- 		headsetSteelSeries : headsetSteelSeries , 
- 		headsetRazer : headsetRazer,
- 		headsetOzone : headsetOzone,
- 		headsetMSI : headsetMSI,
+	// console.log(categoryCurrentId)
+	// console.log(categoryBanner)
+	// console.log("=========")
+	// console.log(product[0].productColor[0].colorId)
 
- 		keyboardSteelSeries : keyboardSteelSeries , 
- 		keyboardRazer : keyboardRazer,
- 		keyboardOzone : keyboardOzone,
- 		keyboardMSI : keyboardMSI
- 	});
- }
+	let allBrand = [];
+
+	for (var i = product.length - 1; i >= 0; i--) {
+		allBrand.push(product[i].productBrand.toString())
+	}
+	// console.log(allBrand)
+	return res.render('frontend/category' , {
+		categoryMenu : categoryMenu , 
+		categoryDropDown : categoryDropDown,
+		category : category ,
+		categoryCurrent : categoryCurrent,
+		brand : brand ,
+		product : product,
+		categoryBanner : categoryBanner ,
+		allBrand : allBrand 
+	});
+
+}
 

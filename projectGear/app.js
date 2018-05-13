@@ -71,7 +71,7 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/user', frontend_users);
-// app.use('/' , frontend_categories);
+app.use('/category' , frontend_categories);
 
 /*BACKEND Appuse*/
 

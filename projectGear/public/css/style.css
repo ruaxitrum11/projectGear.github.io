@@ -16,8 +16,12 @@ body{
 .navbar-menu-items , .navbar-menu-right{
 	padding-top: 15px;
 }
+.navbar-menu-items .nav {
+	width: 100%;
+	text-align: center;
+}
 .navbar-default .navbar-nav>li {
-	margin-left: 50px;
+	margin-left: 5%;
 }
 .navbar-default .navbar-nav>li>a{
 	color: white;
@@ -66,7 +70,7 @@ body{
 	display: none;
 	position: absolute;
 	background-color: #2b292a;
-	min-width: 350px;
+	min-width: 300px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
 }
@@ -576,21 +580,7 @@ span.review-content {
 	overflow: hidden;
 	display: block;
 }
-.other-product-category-keyboard {
-	background-image: url(../img/product/keyboard-button.jpg);
-}
-.other-product-category-mice {
-	background-image: url(../img/product/mice-button.jpg);
-}
-.other-product-category-laptop {
-	background-image: url(../img/product/laptop-button.jpg);
-}
-.other-product-category-headset {
-	background-image: url(../img/product/headset-button.jpg);
-}
-.other-product-category-other {
-	background-image: url(../img/product/other-button.jpg);
-}
+
 .other-product-category-scale {
 	background-position: center;
 	background-size: cover;

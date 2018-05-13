@@ -138,9 +138,10 @@ input.status-active {
         <thead>
           <tr>
             <th>Tên danh mục</th>
+            <th>Tên rút gọn</th>
+            <th>Ảnh nền</th>
             <th>Loại danh mục</th>
             <th>Trạng thái</th>
-            <th>Thời gian tạo</th>
             <th>Xử Lý</th>
           </tr>
         </thead>
@@ -172,9 +173,17 @@ input.status-active {
                 <input id="new-newCategoryName" type="text" name="newCategoryName" value="">
               </div>
               <div class="form-category-edit">
+                <span>Tên rút gọn</span>
+                <input id="new-newCategoryNameSummary" type="text" name="newCategoryNameSummary" value="">
+              </div>
+              <div class="form-category-edit">
+                <span>Ảnh nền</span>
+                <input id="new-newCategoryBanner" type="file" name="newCategoryBanner" value="">
+              </div>
+              <div class="form-category-edit">
                 <span>Loại danh mục</span>
                 <div class="active">
-                  <input class="status-active" type="radio" name="species" value="1">
+                  <input class="status-active" type="radio" name="species" value="1" <%if(countCategoryMenu >= 4){%>disabled <%}%>>
                   <span class="label label-info">Danh mục chính</span>
                 </div>
                 <div class="active active-block">
@@ -242,13 +251,16 @@ input.status-active {
         if (results.listCategory && results.listCategory.length) {
           for (var i = 0 ;  i <= results.listCategory.length - 1; i++) {
 
-            if(results.listCategory[i].createdAt){
-              var date = new Date(results.listCategory[i].createdAt);
-              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
-            }
 
             xhtml += '<tr>';
-            xhtml += '<td>'+results.listCategory[i].categoryName+'</td>';
+            xhtml += '<td style="text-transform: capitalize">'+results.listCategory[i].categoryName+'</td>';
+            xhtml += '<td>'+results.listCategory[i].categoryNameSummary+'</td>';
+
+            if (results.listCategory[i].categoryBanner && results.listCategory[i].categoryBanner !="") {
+              xhtml += '<td><img src="/upload/thumbProduct/'+results.listCategory[i].categoryBanner+'" style="height:50px; width:100px;margin-right : 10px"/><button class="upload-categoryBanner btn btn-xs btn-default" data-toggle="modal" data-target="#modal-'+results.listCategory[i]._id+'-upload" ><i class="fa fa-upload"></i></button></td>';
+            }else{
+              xhtml += '<td><img src="/upload/thumbProduct/other-button.jpg" style="height:50px; width:100px;margin-right : 10px"/><button class="upload-categoryBanner btn btn-xs btn-default" data-toggle="modal" data-target="#modal-'+results.listCategory[i]._id+'-upload"><i class="fa fa-upload" "></i></button></td>';
+            }
 
             if (results.listCategory[i].isCategoryMenu == 1) {
               xhtml += '<td><span class="label label-primary">Danh mục chính</span></td>';
@@ -264,11 +276,39 @@ input.status-active {
 
 
 
-            xhtml += '<td>'+date_createdAt+'</td>';
-
-
-
             xhtml += '<td><a href="/admin/category/edit/'+results.listCategory[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeCategory(\''+results.listCategory[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
+
+            //Modal upload : 
+            xhtml += '<div class="modal fade" id="modal-'+results.listCategory[i]._id+'-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xhtml += '<div class="modal-dialog" role="document">';
+            xhtml += '<div class="modal-content">';
+            xhtml += '<form role="form" id="form-'+results.listCategory[i]._id+'" method="post" enctype="multipart/form-data">';
+            xhtml += '<div class="modal-header">';
+            xhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xhtml += '<h4 class="modal-title" style="text-transform:capitalize">Tải ảnh nền cho : <strong>'+results.listCategory[i].categoryName+'</strong></h4>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-body">';
+            xhtml += '<div class="box-body">';
+            xhtml += '<div class="form-group">';
+            xhtml += '<div class="alert" role="alert"></div>';
+            xhtml += '<img src="" class="img-preview-'+results.listCategory[i]._id+'" style="max-width:50%;">';
+            xhtml += '</div>';
+            xhtml += '<div class="form-group">';
+            xhtml += '<input type="file" name="file" onchange="readURL(this,\''+results.listCategory[i]._id+'\');">';
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-footer">';
+            xhtml += '<input type="hidden" name="id" value="'+results.listCategory[i]._id+'">';
+            xhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>';
+            xhtml += '<button type="button" class="btn btn-primary" onclick="uploadCategoryBanner(\''+results.listCategory[i]._id+'\')">Tải lên</button>';
+            xhtml += '</div>';
+            xhtml += '</form>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
 
 
             xhtml += '</td>'
@@ -322,7 +362,7 @@ input.status-active {
 
     }
   })
-  }
+}
 
 </script>
 
@@ -330,6 +370,7 @@ input.status-active {
  function postCategoryAdd(){
 
   var categoryName = $( "input[name=newCategoryName]").val();
+  var categoryNameSummary = $("input[name=newCategoryNameSummary]").val()
   var isCategoryMenu = $("input[name=species]:checked").val();
 
 
@@ -339,7 +380,8 @@ input.status-active {
     type: 'post',
     data: {
       categoryName : categoryName ,
-      isCategoryMenu : isCategoryMenu
+      isCategoryMenu : isCategoryMenu,
+      categoryNameSummary : categoryNameSummary
     },
     dataType: 'json',
   }).done(function(results){
@@ -400,4 +442,46 @@ input.status-active {
       }
     })
   }
+</script>
+
+<script>
+// Upload categoryBanner
+
+// Img preview
+function readURL(input,id) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('.img-preview-'+id).attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Upload categoryBanner
+function uploadCategoryBanner(id){
+  var form = $('#form-'+id);
+  var formData = new FormData(form[0]);
+
+  // console.log(formData);
+
+  $.ajax({
+    url: '/admin/category/uploadCategoryBanner',
+    method: 'POST',
+    data: formData,
+    dataType:'json',
+    processData: false,
+    contentType: false
+  }).done(function(results){
+    if(results.status){
+      form.find('.alert').addClass('alert-success').text(results.msg);
+
+      setTimeout(function(){
+       window.location.reload();
+     }, 600);
+    }else{
+      form.find('.alert').addClass('alert-danger').text(results.msg);
+    }
+  })
+}
 </script>

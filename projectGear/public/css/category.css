@@ -9,8 +9,8 @@ section {
 .fixed-product-category-area {
 	text-align: center;
 	width: 100%;
-	padding: 5px 0;
-	background-color: #fff;
+	padding: 15px 0 10px 0;
+	background-color: #1b1c1f;
 	opacity: 0.9;
 	box-shadow: 0 0 10px rgba(0,0,0,.1);
 	z-index: 1000;
@@ -21,12 +21,18 @@ section {
 }
 .fixed-product-category-area ul>li {
 	display: inline-block;
-	list-style-type: none;
 	width: 13%;
 }
-.fixed-product-category-area ul>li>a>img {
-	width: 25%;
+.fixed-product-category-area ul>li>a {
+	text-decoration: none;
+	color: #fff;
+	cursor: pointer;
+	text-transform: capitalize;
 }
+.fixed-product-category-area ul>li>a:hover{
+	color: #a5a7aa;
+}
+
 .category-title {
 	text-align: center;
 	padding: 80px 0 50px 0 ;
@@ -77,7 +83,7 @@ section {
 	display: inline-block;
 }
 .product-category-information {
-	padding: 30px 0 20px 0;
+	padding: 20px 0 20px 0;
 }
 .product-category-title p{
 	font-size: 2rem;
@@ -98,6 +104,24 @@ section {
 .product-category-description p {
 	font-style: italic;
 }
+.product-category-option ul {
+	padding-left: 15px;
+	padding-bottom: 10px;
+}
+.product-category-option ul>li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 2px;
+}
+.option-color span {
+	height: 20px;
+	width: 20px;
+	font-size: 2.4rem
+	border:1px solid #000;
+	display: inline-block;
+	border-radius: 3px;
+}
+
 .product-button-choose {
 	width: 100%;
 	padding-bottom: 30px;
@@ -105,12 +129,12 @@ section {
 }
 .button-product a{
 	width: 95%;
-    display: inline-block;
-    text-align: center;
-    border: 1px solid;
-    padding: 10px 0;
-    text-decoration: none;
-    text-transform: capitalize;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid;
+	padding: 10px 0;
+	text-decoration: none;
+	text-transform: capitalize;
 	
 }
 .button-cart a {

@@ -143,15 +143,10 @@
 	cursor: pointer;
 }
 .product-thubnail{
-	height: 300px;
 	position: relative;
+	height: 280px;
 }
-.new-headset .product-thubnail {
-	height: 365px!important;
-}
-.new-keyboard .product-thubnail {
-	height: 200px!important;
-}
+
 .new-keyboard .product-thubnail-hover-cart {
 	top: 20%!important;
 }
@@ -159,7 +154,9 @@
 	top: 50%!important;
 }
 .product-thubnail img{
-	width: 100%;
+	width: 90%;
+	max-height: 100%;
+	position: relative;
 	transition: all .3s ease-in-out;
 }
 

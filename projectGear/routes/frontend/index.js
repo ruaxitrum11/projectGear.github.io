@@ -19,6 +19,7 @@ const homeController = require('../../controllers/frontend/homeController');
 //  })
 
 router.get('/', homeController.index);
+router.get('/showProduct', homeController.showProduct);
 
 // router.post('/' , homeController.category);
 

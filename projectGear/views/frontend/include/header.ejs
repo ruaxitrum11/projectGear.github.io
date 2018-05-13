@@ -7,7 +7,7 @@
 
 	<header class="header-xs visible-xs visible-sm">
 		<div class="header-xs-title">
-			<a href="index.html"><img src="../img/homepage/logo.png"></a>
+			<a href="/"><img src="../img/homepage/logo.png"></a>
 		</div>
 		<div class="header-xs-content">
 			<div class="header-xs-content-item col-xs-3">
@@ -101,13 +101,13 @@
 		<nav class="navbar navbar-default navbar-default-header">
 			<div class="container-fluid">
 				<div class="navbar-header col-md-2">
-					<a href="index.html"><img src="../img/homepage/logo.png"></a>
+					<a href="/"><img src="../img/homepage/logo.png"></a>
 				</div>
 				<div class="navbar-menu navbar-menu-items col-md-8">
 					<ul class="nav navbar-nav" >
 						<% if(categoryMenu && categoryMenu.length) {%>
 						<% for(var i=0 ; i<categoryMenu.length; i++) {%>
-						<li class="navbar-item"><a href="#"><%=categoryMenu[i].categoryName%></a></li>
+						<li class="navbar-item"><a href="/category/<%=categoryMenu[i].categoryNameSummary%>"><%=categoryMenu[i].categoryName%></a></li>
 						<%}%>
 						<%}%>
 						
@@ -119,7 +119,7 @@
 							<div class="dropdown-content">
 								<% if(categoryDropDown && categoryDropDown.length) {%>
 								<% for(var i=0 ; i < categoryDropDown.length; i++) {%>
-								<a href="#"><%=categoryDropDown[i].categoryName%></a>
+								<a href="/category/<%=categoryDropDown[i].categoryNameSummary%>"><%=categoryDropDown[i].categoryName%></a>
 								<%}%>
 								<%}%>
 							</div>
