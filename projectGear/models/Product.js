@@ -19,9 +19,25 @@ const productSchema = new mongoose.Schema({
     colorQuantity : {type : Number },
     colorNumberPurchased : { type : Number , default : 0}
   }],
+  productFeturesSolgan : String ,
+  productFeturesBanner : String ,
+  productFeturesLink : String , 
+  productInfoImage : String ,
+  productInfo : [{
+    productInfoName : String,
+    productInfoDescription : String
+  }],
+  productSpecifications : [{
+    productSpecificationsId : { type: Schema.Types.ObjectId, ref: 'Specifications' } ,
+    productSpecificationsContent : [{
+      productSpecificationsMenu : String ,
+      productSpecificationsDescription : String
+    }]
+  }],
   status : {type : Number , default : 1 } //1 : active , 2 : block
 } , { timestamps: true });
 
 const Product = mconnect.model('Product', productSchema);
 
 module.exports = Product;
+

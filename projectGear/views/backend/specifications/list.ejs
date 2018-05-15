@@ -1,0 +1,452 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
+  .add-newColor {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchColor {
+    margin : 20px 0;
+  }
+  .add-searchColor input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchColor select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchColor span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.form-ColorInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-ColorInfo-tilte{
+  float: left;
+  width: 30%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-ColorInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-ColorInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+.box-body {
+  text-align: left;
+}
+.form-color-edit {
+  margin-bottom : 20px;
+}
+.form-color-edit span{
+  width: 20%;
+  display: inline-block;
+
+}
+.form-color-edit input{
+  width: 50%;
+  display: inline-block;
+}
+.active span {
+  font-size: 90%!important;
+}
+.active {
+  display: inline-block; 
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.active-block {
+  margin-left: 20.1%;
+}
+input.status-active {
+  width: 5%!important;
+}
+  /*span.label {
+    font-size: 90%!important;
+    }*/
+    .button-active a {
+      display: inline-block;
+      font-size: 2rem;
+      padding: 10px 30px;
+      background-color: #dd4b39;
+      color: #fff;
+    }
+  </style>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Danh mục thông số kĩ thuật
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="container">      
+
+        <div class="add-newColor">
+          <a style="cursor: pointer;" data-toggle="modal" data-target="#modal-color-add">
+            <span class="label label-primary">+</span>
+          </a>
+        </div>      
+
+        <div class="add-searchColor">
+          <span class="search-icon glyphicon glyphicon-search"></span>
+          <input class="input-text color-search-text" type="text" name="" placeholder="Nhập tên thông số kĩ thuật">
+          <select class="color-status">
+            <option value="">Trạng Thái</option>
+            <option value="1">Active</option>
+            <option value="0">Block</option>
+          </select>
+        </div>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Tên thông số kĩ thuật</th>
+              <th>Trạng thái</th>
+              <th>Xử Lý</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+        <div class="col-xs-12" style="text-align: center;" id="pagination-list-color">
+
+        </div>
+
+      </div>
+
+      <div class="modal fade" id="modal-color-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content modal-productInfo">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title"><strong>Thêm thông số kĩ thuật</strong></h4>
+            </div>
+
+            <div class="modal-body">
+              <div class="box-body">
+                <div class="form-color-edit">
+                  <span>Tên thông số </span>
+                  <input id="new-newColorName" type="text" name="newColorName" value="">
+                </div>
+                <div class="form-color-edit button-active">
+                  <a href="javascript:void(0)" onclick="postSpecificationsAdd()">
+                    Thêm thông số 
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-edit">
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <%- include('../include/admin-footer') %>
+
+  <%- include('../include/admin-control-sidebar') %>
+
+  <%- include('../include/admin-js.ejs') %>
+
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      listSpecifications(1);
+    });
+
+    $('select').on('change', function() {
+     listSpecifications(1);
+    // alert( this.value );
+  })
+
+    $('.color-search-text').keyup(function() {
+     listSpecifications(1);
+   });
+
+    function listSpecifications(page) {
+      var color_status = $('.color-status :selected').val();
+      var color_search_text = $('.color-search-text').val();
+
+      $.ajax({
+        url: '/admin/specifications/listSpecifications',
+        type: 'GET',
+        data: {
+          page : page,
+          color_status : color_status,
+          color_search_text:color_search_text
+        },
+        dataType: 'json',
+      }).done(function(results){
+        if (results.status) {
+
+        // console.log(results.status);
+
+        var xhtml = ''; var xmodal ='';
+
+        if (results.listSpecifications && results.listSpecifications.length) {
+          for (var i = 0 ;  i <= results.listSpecifications.length - 1; i++) {
+
+            if(results.listSpecifications[i].createdAt){
+              var date = new Date(results.listSpecifications[i].createdAt);
+              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+            }
+
+            xhtml += '<tr>';
+            xhtml += '<td>'+results.listSpecifications[i].specificationsName+'</td>';
+
+            if (results.listSpecifications[i].status == 1) {
+              xhtml += '<td><span class="label label-success">Active</span></td>';
+            }else {
+              xhtml += '<td><span class="label label-danger">Block</span></td>';
+            }
+
+
+            xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listSpecifications[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeSpecifications(\''+results.listSpecifications[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
+
+          
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+            
+            xmodal += '<div class="modal fade" id="modal-'+results.listSpecifications[i]._id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xmodal += '<div class="modal-dialog" role="document">';
+            xmodal += '<div class="modal-content modal-productInfo">';
+            xmodal += '<div class="modal-header">';
+            xmodal += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xmodal += '<h4 class="modal-title">Tên thông số kĩ thuật : <strong>'+results.listSpecifications[i].specificationsName+'</strong></h4>';
+            xmodal += '</div>';
+
+            xmodal += '<div class="modal-body">';
+            xmodal += '<div class="box-body">';
+
+            xmodal += '<div class="form-color-edit">'
+            xmodal += '<span>Tên thông số</span>'
+            xmodal += ' <input id="new-colorName" type="text" name="colorName" value="'+results.listSpecifications[i].specificationsName+'">'
+            xmodal += '</div>';
+
+
+            // var check_CheckedActive = '', check_CheckedBlock = '';
+
+            // if (results.listSpecifications[i].status == 1) {
+            //   check_CheckedActive = "checked";
+            // }else{
+            //   check_CheckedBlock = "checked";
+            // }
+
+            xmodal += '<div class="form-color-edit">';
+            xmodal += '<span>Trạng thái</span>';
+            xmodal += '<div class="active">';
+            xmodal += '<input class="status-active" type="radio" name="status" value="1">';
+            xmodal += '<span class="label label-info">Active</span>';
+            xmodal += '</div>';
+            xmodal += '<div class="active active-block">';
+            xmodal += '<input class="status-active" type="radio" name="status" value="0">';
+            xmodal += '<span class="label label-info">Block</span>';
+            xmodal += '</div>';
+            xmodal += '</div>';
+
+            xmodal += '<div class="form-color-edit button-active">'
+            xmodal += '<a href="javascript:void(0)" onclick="postColorEdit(\''+results.listSpecifications[i]._id+'\')">Sửa màu</a>'
+
+            xmodal += '</div>';
+
+
+            xmodal += '</div>';
+            xmodal += '</div>';
+
+            xmodal += '</div>';
+            xmodal += '</div>';
+            xmodal += '</div>';
+
+
+          }
+          $("table tbody").html(xhtml)
+          $(".modal-edit").html(xmodal)
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listSpecifications(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listSpecifications('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listSpecifications('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listSpecifications('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listSpecifications('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-color').html(pagiHtml);
+      } else {
+        $('#pagination-list-color').html('');
+      }
+
+    }
+  })
+}
+
+</script>
+
+<script>
+ function postSpecificationsAdd(){
+  var specificationsName = $( "input[name=newColorName]").val();
+
+
+  $.ajax({
+    url: '/admin/specifications/addSpecifications',
+    type: 'post',
+    data: {
+      specificationsName : specificationsName ,
+    },
+    dataType: 'json',
+  }).done(function(results){
+
+    if (results.status == true) {
+      $.confirm({
+        title: 'Thông báo!',
+        content:'<span class="text-success"><strong class="fa fa-check"></strong>Thêm thông số thành công !</span>',
+        buttons: {
+          'Ok': function () {
+            window.location.replace('/admin/specifications/list');
+          }
+        }
+      });
+    }else{
+      console.log(results)
+      $.alert({
+        title: 'Thông Báo !',
+        content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+      })
+    }
+  })
+}
+function postColorEdit(id){
+  var specificationsName = $('#modal-'+id+' input[name=colorName]').val();
+  var status = $('#modal-'+id+' input[name=status]:checked').val();
+
+  $.ajax({
+    url: '/admin/specifications/edit',
+    type: 'post',
+    data: {
+      id : id,
+      specificationsName : specificationsName ,
+      status : status ,
+    },
+    dataType: 'json',
+  }).done(function(results){
+    console.log(results);
+    if (results.status == true) {
+      $.confirm({
+        title: 'Thông báo!',
+        content:'<span class="text-success"><strong class="fa fa-check"></strong> Cập nhật thành công !</span>',
+        buttons: {
+          'Ok': function () {
+            window.location.replace('/admin/specifications/list');
+          }
+        }
+      });
+    }else{
+      console.log(results)
+      $.alert({
+        title: 'Thông Báo !',
+        content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+      })
+    }
+  })
+}
+</script>
+
+<script>
+  function removeSpecifications(id){
+    $.confirm({
+      title : 'Xác nhận !',
+      content : 'Bạn có chắc chắn muốn xóa thông số này',
+      buttons: {
+        'Đồng Ý': function () {
+          $.ajax({
+            url: '/admin/specifications/delete',
+            type: 'post',
+            data: {
+              id : id
+            },
+            dataType: 'json',
+          }).done(function(results){
+            if (results.status) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
+              })
+              location.reload();
+            }else{
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
+              })
+            }
+          })
+        },
+        'Hủy Bỏ': function () {
+        },
+      }
+    })
+  }
+</script>

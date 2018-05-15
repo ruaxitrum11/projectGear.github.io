@@ -46,6 +46,7 @@ app.use(flash());
 var index = require('./routes/frontend/index');
 var frontend_users = require('./routes/frontend/user');
 var frontend_categories = require('./routes/frontend/category');
+var frontend_products = require('./routes/frontend/product');
 // var frontend_case = require('./routes/frontend/case');
 // var frontend_match = require('./routes/frontend/match');
 // var frontend_coupon = require('./routes/frontend/coupon');
@@ -61,6 +62,7 @@ var backend_categories = require('./routes/backend/category');
 var backend_brands = require('./routes/backend/brand');
 var backend_colors = require('./routes/backend/color');
 var backend_galleries = require('./routes/backend/gallery');
+var backend_specifications = require('./routes/backend/specifications')
 
 app.use((req, res, next) => {
 	res.locals.user = req.user;
@@ -72,6 +74,7 @@ app.use((req, res, next) => {
 app.use('/', index);
 app.use('/user', frontend_users);
 app.use('/category' , frontend_categories);
+app.use('/product',frontend_products)
 
 /*BACKEND Appuse*/
 
@@ -82,6 +85,7 @@ app.use('/admin/category',backend_categories);
 app.use('/admin/brand',backend_brands);
 app.use('/admin/color',backend_colors);
 app.use('/admin/gallery',backend_galleries);
+app.use('/admin/specifications',backend_specifications);
 
 app.listen(4000);
 console.log('listening port 4000');

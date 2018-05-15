@@ -11,6 +11,8 @@ var path = require('path');
 
 const categoryController = require('../../controllers/frontend/categoryController');
 
+// Route is : /category
+
 router.get('/:summary', categoryController.category);
 
 

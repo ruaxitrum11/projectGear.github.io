@@ -1,19 +1,21 @@
 .product-details-area {
-	background-image: url(../img/product_headset/ab_1.jpg);
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	width: 100%;
-	height: 100vh;
+	height: auto;
 	z-index: -10;
 	background-color: #eaeaea;
 }
-.product-details-thumb {
-	padding-top: 50px;
-	height: auto;
+.product-details-left {
+	padding: 60px 0;
+}
+.product-details-right {
+	padding: 60px 60px 120px 0!important;
 }
 .product-details-thumb ul>li {
-	height: 70px;
-	width: 70px;
+	height: 75px;
+	width: 75px;
 	list-style-type: none;
 	cursor: pointer;
 	margin-top: 15px;
@@ -22,43 +24,11 @@
 .product-thumb {
 	background-position: center;
 	background-repeat: no-repeat;
+	background-size: cover;
 	overflow : hidden;
-	width: 100%;
 	border : 1px solid #eceaeb;
 }
-.product-thumb1 {
-	background-image: url(../img/product_headset/ab_thumb_1.jpg);
-}
-.product-thumb2 {
-	background-image: url(../img/product_headset/ab_thumb_2.jpg);
-}
-.product-thumb3 {
-	background-image: url(../img/product_headset/ab_thumb_3.jpg);
-}
-.product-thumb4 {
-	background-image: url(../img/product_headset/ab_thumb_4.jpg);
-}
-.product-thumb5 {
-	background-image: url(../img/product_headset/ab_thumb_5.png);	
-}
-.product-thumb6 {
-	background-image: url(../img/product_headset/ab_thumb6.jpg);	
-}
-.product-thumb7 {
-	background-image: url(../img/product_headset/ab_thumb_7.png);	
-}
-.product-thumb8 {
-	background-image: url(../img/product_headset/ab_thumb_8.png);	
-}
-.product-thumb9 {
-	background-image: url(../img/product_headset/ab_thumb_9.jpg);	
-}
-.product-thumb10 {
-	background-image: url(../img/product_headset/ab_thumb_10.png);	
-}
-.product-thumb11 {
-	background-image: url(../img/product_headset/ab_thumb_11.png);	
-}
+
 .product-thumb-hover {
 	border : 1px solid #000;
 }
@@ -67,10 +37,9 @@
 }
 .product-details-content {
 	background-color: #fff;
-	padding: 30px 0 50px 30px;
+	padding: 10px 0 50px 30px;
 	border-radius: 5px;
 	width: 80%;
-	margin-top: 40px;
 	height: auto;
 	float: right;
 }
@@ -78,44 +47,39 @@
 	font-size: 5rem;
 	text-transform: capitalize;
 }
-.product-details-description>ul>li>p {
+.product-details-description p {
 	color: #333;
+	font-style: italic;
+	font-size: 1.6rem;
+	padding: 30px 0;
 }
 .product-details-color {
-	padding: 20px 0 50px 0;
+	padding-bottom:  40px;
 }
 .product-details-color p{
 	font-size: 2rem;
+	padding-bottom: 10px;
 }
 span.product-color {
 	display: inline-block;
-	height: 20px;
-	width: 20px;
+	height: 25px;
+	width: 25px;
 	border : 1px solid #bdadad;
+	border-radius: 50%;
 	margin-right: 5px;
 	cursor: pointer;
 }
-.black{
-	background-color: #000;
-}
-.red {
-	background-color: #c00;
-}
-.blue {
-	background-color: #0e4aa0;
-}
+
 .color-active {
-	width: 25px!important;
-	height: 25px!important;
+	width: 30px!important;
+	height: 30px!important;
 }
 .product-details-price p{
 	font-size: 2.4rem;
 	display: inline-block;
 	margin-right: 30px;
 }
-.product-details-price p>span {
-	font-size: 1.2rem;
-}
+
 .product-details-price a {
 	font-size: 2rem;
 	color: #fff;
@@ -171,6 +135,7 @@ span.product-color {
 .product-price-fixed p{
 	display: inline-block;
 	font-size: 1.6rem;
+	margin-right: 15px;
 }
 .product-price-fixed p>span {
 	font-size: 1rem;
@@ -197,7 +162,7 @@ span.product-color {
 	width: 100%;
 }
 .product-main-info-bottom {
-	background-image: url(../img/product_headset/product_info_2.jpg);
+	
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -233,16 +198,18 @@ span.product-color {
 	border-bottom: 1px solid #eaeaea;
 }
 .product-main-features-left img {
-	width: 100%;
+	width: 98%;
 }
 .product-main-features-right ul{
 	padding: 0;
 	list-style-type: none;
 	float: left;
+	width: 100%;
 }
 .product-main-features-right ul>li {
 	float: left;
 	margin-bottom: 20px;
+	width: 100%;
 }
 .product-main-features-right ul>li>i {
 	font-size: 4rem;
@@ -364,10 +331,15 @@ h2.product-involve-item-name {
 	text-transform: capitalize;
 	padding-bottom: 20px;
 }
+p.product-involve-item-description {
+	font-size: 1.6rem;
+	font-style: italic;
+}
 p.product-involve-item-price {
 	font-size: 2rem;
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-top: 20px;
 	padding-bottom: 40px;
+	color: #FF6602;
 }

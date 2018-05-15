@@ -1,0 +1,184 @@
+<%- include('include/header-top') %>
+<link rel="stylesheet" href="/css/homepage.css">
+<link rel="stylesheet" href="/css/product.css">
+
+<%- include('include/header') %>
+
+<section>
+	
+	<div class="product-details-area" style="background-image: url(/upload/thumbProduct/<%=product.productColor[0].colorImages[0]%>)">
+		<div class="container-fluid">
+			<div class="product-details-left col-sm-6">
+				<div class="product-details-thumb">
+					
+				</div>
+			</div>
+
+			<div class="product-details-right col-sm-6" style="padding: 100px 60px 100px 0;">
+				<div class="product-details-content">
+					<div class="product-details-title">
+						<h2><%=product.productName%></h2>
+					</div>
+					<div class="product-details-description">
+						<p><%=product.productDescription%></p>
+					</div>
+					<div class="product-details-color">
+						<p>Màu sắc :</p>
+						<%if(product.productColor && product.productColor.length){%>
+						<%for(var i = 0 ; i< product.productColor.length ; i++){%>
+						<%if(i==0){%>
+						<span class="product-color color-active" id="product-color-first" style="background-color:<%=product.productColor[i].colorId.colorCode%>" onclick=showProduct('<%=product.productColor[i].colorId._id%>','<%=product._id%>') ></span>
+						<%}else{%>
+						<span class="product-color" style="background-color:<%=product.productColor[i].colorId.colorCode%>;border:1px solid #000;" onclick=showProduct('<%=product.productColor[i].colorId._id%>','<%=product._id%>')></span>
+						<%}%>
+						<%}%>
+						<%}%>
+					</div>
+					<div class="product-details-price">
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="product-main-content-area" id="product-main-info">
+		<div class="container-fluid">
+			<div class="product-main-menu">
+				<ul>
+					<li><a href="#product-main-info">giới thiệu</a></li>
+					<li><a href="#product-main-features">tính năng</a></li>
+					<li><a href="#product-main-specifications">thông số kĩ thuật</a></li>
+				</ul>
+			</div>
+			<div class="product-main-menu product-main-menu-fixed">
+				<ul>
+					<li><a href="#product-main-info">giới thiệu</a></li>
+					<li><a href="#product-main-features">tính năng</a></li>
+					<li><a href="#product-main-specifications">thông số kĩ thuật</a></li>
+				</ul>
+				<div class="product-price-fixed">
+					
+				</div>
+			</div>
+			<div class="product-main-info" >
+				<div class="product-main-info-bottom" style="background-image: url('<%=product.productFeturesBanner%>');">
+					<p><%=product.productFeturesSolgan%></p>
+					<a class="popup-youtube" data-mfp-src="<%=product.productFeturesLink%>">
+						<i class="fa fa-play"></i>
+					</a>
+				</div>
+			</div>
+			<div class="product-main-features" id="product-main-features">
+				<div class="container-fluid">
+					<div class="product-main-features-left col-sm-6">
+						<img src="<%=product.productInfoImage%>">
+					</div>
+					<div class="product-main-features-right col-sm-6">
+						<ul>
+							<%if(product.productInfo && product.productInfo.length){%>
+							<%for(var i = 0 ; i< product.productInfo.length ; i++ ){%>
+							<li>
+								<i class="fa fa-bullhorn"></i>
+								<div class="product-main-features-right-content">
+									<h4><%=product.productInfo[i].productInfoName%></h4>
+									<p><%=product.productInfo[i].productInfoDescription%></p>
+								</div>
+							</li>
+							<%}%>
+							<%}%>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="product-main-specifications" id="product-main-specifications">
+				<div class="container-fluid">
+					<div class="product-main-specifications-title">
+						<h2>Thông số kĩ thuật</h2>
+					</div>
+					<div class="product-main-specifications-content">
+						<%if(product.productSpecifications && product.productSpecifications.length){%>
+						<%for(var i = 0 ; i < product.productSpecifications.length ; i++ ){%>
+						<%if(i==0){%>
+						<div class="specifications-item">
+							<div class="specifications-item-toggle-title specifications-item-toggle-title-active toggle-<%=product.productSpecifications[i].productSpecificationsId._id%>" onclick=showSpecificationsContent('<%=product.productSpecifications[i].productSpecificationsId._id%>')>
+								<h2><%=product.productSpecifications[i].productSpecificationsId.specificationsName%></h2>
+								<span>+</span>
+							</div>
+							<div class="specifications-item-toggle-content toggle-content-<%=product.productSpecifications[i].productSpecificationsId._id%>">
+								<ul>
+									<%if(product.productSpecifications[i].productSpecificationsContent && product.productSpecifications[i].productSpecificationsContent.length){%>
+									<%for(var j = 0 ; j <product.productSpecifications[i].productSpecificationsContent.length ; j++ ){%>
+									<li>
+										<h6><%=product.productSpecifications[i].productSpecificationsContent[j].productSpecificationsMenu%></h6>
+										<p><%=product.productSpecifications[i].productSpecificationsContent[j].productSpecificationsDescription%></p>
+									</li>
+									<%}%>
+									<%}%>
+								</ul>
+							</div>
+						</div>
+						<%}else{%>
+						<div class="specifications-item">
+							<div class="specifications-item-toggle-title toggle-<%=product.productSpecifications[i].productSpecificationsId._id%>" onclick=showSpecificationsContent('<%=product.productSpecifications[i].productSpecificationsId._id%>')>
+								<h2><%=product.productSpecifications[i].productSpecificationsId.specificationsName%></h2>
+								<span>+</span>
+							</div>
+							<div class="specifications-item-toggle-content toggle-content-<%=product.productSpecifications[i].productSpecificationsId._id%>" style="display: none;">
+								<ul>
+									<%if(product.productSpecifications[i].productSpecificationsContent && product.productSpecifications[i].productSpecificationsContent.length){%>
+									<%for(var j = 0 ; j <product.productSpecifications[i].productSpecificationsContent.length ; j++ ){%>
+									<li>
+										<h6><%=product.productSpecifications[i].productSpecificationsContent[j].productSpecificationsMenu%></h6>
+										<p><%=product.productSpecifications[i].productSpecificationsContent[j].productSpecificationsDescription%></p>
+									</li>
+									<%}%>
+									<%}%>
+								</ul>
+							</div>
+						</div>
+						<%}%>
+						<%}%>
+						<%}%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="product-involve-area">
+		<div class="container-fluid">
+			<div class="product-involve-title">
+				<h2>Sản phẩm liên quan</h2>
+			</div>
+			<div class="product-involve-content">
+				<%if(productCategoryCurrent && productCategoryCurrent.length){%>
+				<%for(var i = 0 ; i < productCategoryCurrent.length ; i++){%>
+				<div class="product-involve-item">
+					<div class="product-involve-item-thumb" style="height: 370px;">
+						<a href="#">
+							<img src="/upload/thumbProduct/<%=productCategoryCurrent[i].productThumb%>">
+						</a>
+					</div>
+					<div class="product-involve-item-content">
+						<h2 class="product-involve-item-name">
+							<%=productCategoryCurrent[i].productName%>
+						</h2>
+						<p class="product-involve-item-description">
+							<%=productCategoryCurrent[i].productDescription%>
+						</p>
+						<p class="product-involve-item-price">
+							<%=productCategoryCurrent[i].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>
+						</p>
+					</div>
+				</div>
+				<%}%>
+				<%}%>
+			</div>
+		</div>
+	</div>
+</section>
+
+<%- include('include/all-modal') %>
+
+<%- include('include/footer') %>
+<script src="../js/product.js"></script>
+

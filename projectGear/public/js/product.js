@@ -1,81 +1,78 @@
 
-//hover add class
-$(".product-thumb").hover(
-	function () {
-		$(this).addClass('product-thumb-hover');
-	}, 
-	function () {
-		$(this).removeClass('product-thumb-hover');
-	}
-	);
-
-
-//click change BgI
-$('.product-thumb1').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_1.jpg)'
-	});
-});
-$('.product-thumb2').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_2.jpg)'
-	});
-});
-$('.product-thumb3').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_3.jpg)'
-	});
-});
-$('.product-thumb4').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_4.jpg)'
-	});
-});
-$('.product-thumb5').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_5.png)'
-	});
-});
-$('.product-thumb6').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_6.jpg)'
-	});
-});
-$('.product-thumb7').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_7.png)'
-	});
-});
-$('.product-thumb8').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_8.png)'
-	});
-});
-$('.product-thumb9').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_9.jpg)'
-	});
-});
-$('.product-thumb10').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_10.png)'
-	});
-});
-$('.product-thumb11').click(function(){
-	$('.product-details-area').css({
-		'background-image':'url(../img/product_headset/ab_11.png)'
-	});
-});
 
 
 
+jQuery(function(){
+	jQuery('#product-color-first').click();
+});
+
+function showProduct(idColor , idProduct){
+	// console.log(idColor)
+	// console.log("=========")
+	// console.log(idProduct)
+	$.ajax({
+		url: '/product/showProduct',
+		type: 'post',
+		data: {
+			idColor : idColor ,
+			idProduct : idProduct
+		},
+		dataType: 'json',
+	}).done(function(results){
+		console.log(results)
+		if (results.status) {
+
+			$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+results.dataProductColor.colorImages[0]+')'})
+
+			//show price product
+			var xhtmlPrice = '';
+			xhtmlPrice += '<p>'+results.dataProductColor.colorPrice.
+			toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+			xhtmlPrice += '<a href="#">mua sản phẩm</a>';
+			$('.product-details-price').html(xhtmlPrice);
+
+			//show image product
+			var xhtmlImages = '';
+			xhtmlImages += '<ul class="product-thumb-color-'+results.dataProductColor.colorId+'">';
+			if(results.dataProductColor.colorImages && results.dataProductColor.colorImages.length) {
+				for (var i = 0; i < results.dataProductColor.colorImages.length; i++) {
+					// console.log(results.dataProductColor.colorImages[i])
+					if (i == 0) {
+						xhtmlImages += '<li id="product-thumb-first" class="product-thumb  product-thumb-active" style="background-image:url(/upload/thumbProduct/'+results.dataProductColor.colorImages[i]+')" onclick=showBanner(\''+results.dataProductColor.colorImages[i]+'\')></li>';
+					}else {
+						xhtmlImages += '<li class="product-thumb" style="background-image:url(/upload/thumbProduct/'+results.dataProductColor.colorImages[i]+')" onclick=showBanner(\''+results.dataProductColor.colorImages[i]+'\')></li>';
+					}
+				}
+				
+			}
+			xhtmlImages += '</ul>';
+			$('.product-details-thumb').html(xhtmlImages);
+
+			//show price product fixed 
+			var xhtmlPriceFixed = '';
+			xhtmlPriceFixed += '<p>'+results.dataProductColor.colorPrice.
+			toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+			xhtmlPriceFixed += '<a href="#">mua sản phẩm</a>';
+			$('.product-price-fixed').html(xhtmlPriceFixed)
+		}
+	})
+}
+
+
+// $(document).ready(function() {
+// 	$(document).on('click', '.product-thumb', function() {
+// 		$('#product-thumb-first').click();
+// 	});
+// })
 //click add class
-
-$('.product-thumb').click(function(e) {
-	e.preventDefault();
-	$('.product-thumb').removeClass('product-thumb-active');
-	$(this).addClass('product-thumb-active');
-});
+$(document).ready(function() {
+	$(document).on('click', '.product-thumb', function(e) {
+		
+		e.preventDefault();
+		$('.product-thumb').removeClass('product-thumb-active');
+		$(this).addClass('product-thumb-active');
+	});
+})
 
 $('.product-color').click(function(e) {
 	e.preventDefault();
@@ -83,34 +80,25 @@ $('.product-color').click(function(e) {
 	$(this).addClass('color-active');
 });
 
-//change image when click color
-$('.product-thumb-color-red').hide();
-$('.product-thumb-color-blue').hide();
+// change image when click color
 
-$('.black').click(function(){
-	$('.product-thumb-color-black').show();
-	$('.product-thumb-color-red').hide();
-	$('.product-thumb-color-blue').hide();
-	$('.product-thumb1').click();
-})
-$('.red').click(function(){
-	$('.product-thumb-color-red').show();
-	$('.product-thumb-color-black').hide();
-	$('.product-thumb-color-blue').hide();
-	$('.product-thumb6').click();
-})
-$('.blue').click(function(){
-	$('.product-thumb-color-blue').show();
-	$('.product-thumb-color-red').hide();
-	$('.product-thumb-color-black').hide();
-	$('.product-thumb9').click();
-})
+
+// click change BgI
+// $('.product-thumb1').click(function(){
+// 	$('.product-details-area').css({
+// 		'background-image':'url(../img/product_headset/ab_1.jpg)'
+// 	});
+// });
+function showBanner(name){
+	console.log(name)
+	$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+name+')'})
+}
 
 //scroll fixed
 $('.product-main-menu-fixed').hide();
 $(document).scroll(function() {
 	var y = $(this).scrollTop();
-	if (y > 700) {
+	if (y > 650) {
 		$('.product-main-menu-fixed').show();
 	} else {
 		$('.product-main-menu-fixed').hide();
@@ -134,21 +122,8 @@ $(document).ready(function() {
 });
 
 //toggle
-$('.specifications-item-toggle-content').hide();
-$('.toggle-content1').show();
-$('.toggle-compatibility').click(function(){
-	$(this).toggleClass('specifications-item-toggle-title-active');
-	$('.toggle-content1').toggle(100);
-});
-$('.toggle-speaker').click(function(){
-	$(this).toggleClass('specifications-item-toggle-title-active');
-	$('.toggle-content2').toggle(100);
-});
-$('.toggle-connection').click(function(){
-	$(this).toggleClass('specifications-item-toggle-title-active');
-	$('.toggle-content3').toggle(100);
-});
-$('.toggle-boxcontent').click(function(){
-	$(this).toggleClass('specifications-item-toggle-title-active');
-	$('.toggle-content4').toggle(100);
-});
+
+function showSpecificationsContent (id){
+	$('.toggle-'+id).toggleClass('specifications-item-toggle-title-active')
+	$('.toggle-content-'+id).toggle(100);
+}

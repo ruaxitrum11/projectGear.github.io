@@ -1,6 +1,6 @@
 <%- include('include/header-top') %>
 <link rel="stylesheet" href="/css/homepage.css">
-<link rel="stylesheet" href="../css/category.css">
+<link rel="stylesheet" href="/css/category.css">
 
 <%- include('include/header') %>
 
@@ -32,7 +32,7 @@
 				<%if(brand[i]._id.toString()== product[j].productBrand.toString()){%>
 				<div class="product-category-item new-product-category-item">
 					<div class="product-category-thubnail new-product-category-thubnail">
-						<img src="../upload/thumbProduct/<%=product[j].productThumb%>">
+						<img src="/upload/thumbProduct/<%=product[j].productThumb%>">
 					</div>
 					<div class="product-category-information new-product-category-information">
 						<div class="container-fluid">
@@ -47,7 +47,7 @@
 					</div>
 					<div class="product-category-description new-product-category-description">
 						<p>
-							
+							<%=product[j].productDescription%>
 						</p>
 					</div>
 					<div class="product-category-option new-product-category-option">
@@ -67,7 +67,7 @@
 								<a href="#" class="">Mua Hàng</a>
 							</div>
 							<div class="button-product button-more col-sm-6">
-								<a href="#" class="">Xem Thêm</a>
+								<a href="/product/<%=product[j]._id%>" class="">Xem Thêm</a>
 							</div>
 						</div>
 					</div>
@@ -87,4 +87,4 @@
 <%- include('include/all-modal') %>
 
 <%- include('include/footer') %>
-<script src="../js/category.js"></script>
+<script src="/js/category.js"></script>

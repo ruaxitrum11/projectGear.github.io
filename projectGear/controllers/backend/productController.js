@@ -51,6 +51,7 @@ let upload = multer({
  const Brand = require('../../models/Brand');
  const Color = require('../../models/Color');
  const Gallery = require('../../models/Gallery');
+ const Specifications = require('../../models/Specifications');
 
 
 // Method
@@ -135,13 +136,16 @@ exports.getProductAdd = async (req,res) =>{
 	let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
 	let color = await Color.find({}).select({_id : 1 , status : 1 ,  colorName : 1 }).lean();
 	let gallery = await  Gallery.find({}).select({_id : 1 , galleryName : 1 }).lean();
-	
+	let specifications = await  Specifications.find({}).select({_id : 1 , specificationsName : 1 }).lean();
+
 
 	return res.render('backend/product/add', {
 		category : category ,
 		brand :  brand , 
 		color : color ,
-		gallery : gallery 
+		gallery : gallery ,
+		specifications : specifications,
+
 	});
 }
 
@@ -347,6 +351,7 @@ check('productColor', 'Vui lòng chọn thông tin màu sắc sản phẩm').isL
 
 exports.postProductAdd = async (req,res) => {
 	if (req.body) {
+		console.log(req.body)
 		// console.log(req.body)
 		const errors = validationResult(req);
 
@@ -381,8 +386,16 @@ exports.postProductAdd = async (req,res) => {
 				productCategory : req.body.productCategory,
 				productBrand : req.body.productBrand,
 				productColor : req.body.productColor,
-				productDescription : req.body.productDescription
+				productDescription : req.body.productDescription ,
+				productFeturesSolgan : req.body.productFeturesSolgan ,
+				productFeturesBanner : req.body.productFeturesBanner , 
+				productFeturesLink : req.body.productFeturesLink ,
+				productInfoImage : req.body.productInfoImage , 
+				productInfo : req.body.productInfo , 
+				productSpecifications : req.body.productSpecifications 
 			}); 
+
+			console.log(product)
 			let saveProduct = await product.save();
 			if (!saveProduct) {
 				let errors = [{msg:"Thêm sản phẩm thất bại"}]
@@ -394,7 +407,7 @@ exports.postProductAdd = async (req,res) => {
 			res.send({status:false, errors : errors});
 			console.log(errors)
 		}
-		// console.log('vao day')
+		console.log('vao day')
 	}
 }
 

@@ -33,7 +33,7 @@ const Brand = require('../../models/Brand');
 	
 
 	let product = await Product.find({productCategory : categoryCurrentId , status:1})
-	.populate('productColor.colorId').sort({createdAt:1}).lean();
+	.populate('productColor.colorId').sort({createdAt:-1}).lean();
 
 	let categoryBanner = await Category.find({_id : {$ne : categoryCurrentId }}).sort({createdAt:1}).limit(4).lean();
 

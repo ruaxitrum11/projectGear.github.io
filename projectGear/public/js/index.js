@@ -131,13 +131,13 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 	var sttImage = [
-	"../img/homepage/user1.jpg",
-	"../img/homepage/user2.jpg",
-	"../img/homepage/user3.jpg",
-	"../img/homepage/user4.jpg",
-	"../img/homepage/user5.jpg",
-	"../img/homepage/user6.jpg",
-	"../img/homepage/user7.jpg"
+	"/img/homepage/user1.jpg",
+	"/img/homepage/user2.jpg",
+	"/img/homepage/user3.jpg",
+	"/img/homepage/user4.jpg",
+	"/img/homepage/user5.jpg",
+	"/img/homepage/user6.jpg",
+	"/img/homepage/user7.jpg"
 	];
 
 	// $("#gallery-user1 img").attr("src",sttImage[0]);
