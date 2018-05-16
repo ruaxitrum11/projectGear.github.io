@@ -32,12 +32,12 @@ const Specifications = require('../../models/Specifications')
  	// console.log(product[0].productCategory)
 
  	let categoryCurrent = product[0].productCategory;
- 	console.log(categoryCurrent)
+ 	// console.log(categoryCurrent)
 
  	let productCategoryCurrent = await Product.find({productCategory : categoryCurrent , status : 1 })
  	.sort({createdAt:-1}).limit(3).lean()
  	
- 	console.log(productCategoryCurrent)
+ 	// console.log(productCategoryCurrent)
 
  	return res.render('frontend/product' , {
  		categoryMenu : categoryMenu ,

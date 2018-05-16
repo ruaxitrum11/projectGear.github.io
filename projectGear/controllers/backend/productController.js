@@ -419,6 +419,9 @@ exports.getProductEdit = async (req,res) =>{
 			let category = await Category.find({}).select({_id : 1, status :1, categoryName: 1}).lean();
 			let brand = await Brand.find({}).select({_id : 1 , status : 1 ,  brandName : 1 }).lean();
 			let color = await Color.find({}).select({_id : 1 , status : 1 ,  colorName : 1 }).lean();
+			let gallery = await  Gallery.find({}).select({_id : 1 , galleryName : 1 }).lean();
+			let specifications = await  Specifications.find({}).select({_id : 1 , specificationsName : 1 }).lean();
+
 			// console.log(product[0].productColor)
 
 			let colorTotal = []
@@ -433,10 +436,28 @@ exports.getProductEdit = async (req,res) =>{
 
 			// let colorLeft = [];
 
-			let colorLeft = _.difference(colorTotal,productColorTotal);
-			// let colorLeft = colorTotal.filter(x => !productColorTotal.includes(x));
+			let colorLeft =  _.difference(colorTotal,productColorTotal);
 
-			// console.log(product[0].productColor[0].colorImages[0])
+			console.log('here')
+
+			let specificationsTotal = []
+			for (var i = 0; i < specifications.length; i++) {
+				specificationsTotal.push(specifications[i]._id.toString())
+			}	
+
+			// console.log(specificationsTotal)		
+	
+			let productSpecificationsTotal = []
+			for (var j = 0; j < product[0].productSpecifications.length; j++) {
+				productSpecificationsTotal.push(product[0].productSpecifications[j].productSpecificationsId.toString())
+			}
+
+			// console.log(productSpecificationsTotal)
+
+
+			let specificationsLeft = await _.difference(specificationsTotal,productSpecificationsTotal);
+			
+			console.log(specificationsLeft)
 
 			res.render('backend/product/edit',{
 				product:product[0],
@@ -444,6 +465,8 @@ exports.getProductEdit = async (req,res) =>{
 				brand : brand ,
 				color : color,
 				colorLeft : colorLeft,
+				specifications : specifications ,
+				specificationsLeft : specificationsLeft ,
 				moment:moment
 			})
 
@@ -496,7 +519,13 @@ exports.postProductEdit = async (req,res) => {
 				productCategory : req.body.productCategory,
 				productBrand : req.body.productBrand,
 				productColor : req.body.productColor,
-				productDescription : req.body.productDescription
+				productDescription : req.body.productDescription,
+				productFeturesSolgan : req.body.productFeturesSolgan ,
+				productFeturesBanner : req.body.productFeturesBanner , 
+				productFeturesLink : req.body.productFeturesLink ,
+				productInfoImage : req.body.productInfoImage , 
+				productInfo : req.body.productInfo , 
+				productSpecifications : req.body.productSpecifications 
 			}; 
 
 			console.log(dataUpdate)

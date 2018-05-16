@@ -102,7 +102,6 @@ span.form-productInfo-content  {
             <th>Tên sản phẩm</th>
             <th>Loại sản phẩm</th>
             <th>Nhãn hiệu</th>
-            <th>Thời gian tạo</th>
             <th>Xử Lý</th>
           </tr>
         </thead>
@@ -187,8 +186,6 @@ span.form-productInfo-content  {
             if (results.listProduct[i].productBrand) {
               xhtml += '<td><span class="label label-info">'+results.listProduct[i].productBrand.brandName+'</span></td>';
             }
-
-            xhtml += '<td>'+date_createdAt+'</td>';
 
             // xhtml += '<td>'+results.listProduct[i].description+'</td>';
 

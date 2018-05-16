@@ -263,11 +263,7 @@ input[type=number]::-webkit-outer-spin-button {
 
           </div>
         </div>
-      <!-- <div class="form-product-add">
-        <span>Banner</span>
-        <input type="file" id = "fileBanner" name="fileBanner" value="" style="width: 85%;">
-        <img src="" class="productBanner-upload" >
-      </div> -->
+     
       <div class="form-product-add">
         <span>Màu sắc</span>
         <div class="form-product-add-input">
@@ -389,12 +385,11 @@ input[type=number]::-webkit-outer-spin-button {
         <input class="status-active specifications-active-<%=specifications[i]._id%>" type="checkbox" name="productSpecifications" value="<%=specifications[i]._id%>" onclick=showSpecifications('<%=specifications[i]._id%>') >
         <span class="label label-default" style="width: auto!important; font-size: 2rem!important;"><%=specifications[i].specificationsName%></span>
         <div class="specifications-content specifications-content-<%=specifications[i]._id%>" style="display: none;">
-          <div class="specifications-details-form specifications-details-form-<%=specifications[i]._id%>">
+          <div class="specifications-details-form specifications-details-form-<%=specifications[i]._id%>" style="float: left;width: 100%;">
             <div class="specifications-details specifications-details-<%=specifications[i]._id%>">
-
               <div class="specifications-content-form">
                 <span style="float: left;width: 15%">Kiểu</span>
-                <input class="specificationsMenu-<%=specifications[i]._id%>" type="text" name="specificationsMenu" style="float: left;width: 70%;"">
+                <input class="specificationsMenu-<%=specifications[i]._id%>" type="text" name="specificationsMenu" style="float: left;width: 70%;">
               </div>
               <div class="specifications-content-form">
                 <span style="float: left;width: 15%">Mô tả</span>

@@ -6,6 +6,38 @@
   <%- include('../include/admin-sidebar') %>
 
   <style>
+  .menu-product >ul >li >a {
+    color: #555;
+  }
+  .specifications-content  {
+    float: left;
+    width: 100%;
+  }
+  .specifications-details {
+    float: left;
+    width: 100%;
+  }
+  .specifications-content-form  {
+    float: left;
+    width: 47%;
+    margin : 20px 0;
+  }
+  .details-product {
+    padding-bottom:   50px  ;
+  }
+  .details-product-title {
+    padding: 50px 0 25px 0;
+  }
+  .details-product-form {
+    width: 100%;
+    float: left;
+  }
+  .details-productInfo-item ,  {
+    width: 100%;
+    float: left;
+    padding : 20px 0;
+    border-bottom: 1px solid #c1c1c1;
+  }
   .form-product-color-block {
     display: block!important;
   }
@@ -53,7 +85,7 @@
   .modal-button a {
     margin-left: 10px;
   }
- .select2-container .select2-selection--single {
+  .select2-container .select2-selection--single {
     height: 35px;
   }
   
@@ -168,13 +200,26 @@ input[type=number]::-webkit-outer-spin-button {
     <h1>
       Cập nhật sản phẩm
     </h1>
+    <span class="label label-primary" style="float: right;font-size: 2rem!important;cursor: pointer;" onclick="postProductEdit('<%=product._id%>')"><i class="fa fa-save"></i></span>
+
+
   </section>
 
   <!-- Main content -->
   <section class="content ">
+   <div class="menu-product">
+    <ul class="nav nav-tabs">
+      <li id="over-view" class="active"><a href="#">Tổng quan</a></li>
+      <li id="details-view"><a href="#">Giới thiệu</a></li>
+      <li id="productInfo-view"><a href="#">Tính năng</a></li>
+      <li id="specifications-view"><a href="#">Thông số kĩ thuật</a></li>
 
-    <div class="container content-edit">     
-     <!--  <form class="form-productAdd" role = "form" action="/admin/product/addProduct" method="post" enctype="multipart/form-data"> -->
+    </ul>
+  </div>
+
+  <div class="container content-edit">     
+   <!--  <form class="form-productAdd" role = "form" action="/admin/product/addProduct" method="post" enctype="multipart/form-data"> -->
+    <div class="overview-edit" style="width: 100%;float: left;">
       <div class="form-product-add">
         <span>Tên sản phẩm</span>
         <input id="new-productName" type="text" name="productName" value="<%=product.productName%>">
@@ -221,7 +266,7 @@ input[type=number]::-webkit-outer-spin-button {
             <input class="status-active" type="radio" name="productBrand" value="<%=brand[i]._id%>" <%if(JSON.stringify(product.productBrand) == JSON.stringify(brand[i]._id)){%>checked<%}%> >
             <span class="label label-info"><%=brand[i].brandName%></span>
           </div>
-          
+
           <%}%>
           <%}%>
 
@@ -240,7 +285,7 @@ input[type=number]::-webkit-outer-spin-button {
           <%if(color && color.length){%>
           <%for(var i = 0 ; i < color.length ; i++){%>
           <div class="active">
-           <%=product.productColor.colorImages%>
+
            <%if(product.productColor && product.productColor.length){%>
            <%for(var j = 0 ; j < product.productColor.length ; j++){%>
            <%if(color[i]._id.toString() == product.productColor[j].colorId.toString()){%>
@@ -328,11 +373,159 @@ input[type=number]::-webkit-outer-spin-button {
   <span>Mô tả</span>
   <textarea id="new-description" name="description" ><%=product.productDescription%></textarea>
 </div>
-
-<div class="form-user-add button-active">
-  <a href="javascript:void(0)" onclick="postProductEdit('<%=product._id%>')">Cập Nhật Sản Phẩm</a>
 </div>
 
+
+
+
+<div class="feturesview-edit" style="width: 100%;float: left; display: none;">
+  <div class="details-product col-xs-12">
+    <div class="details-product-title">
+      <h2 style="text-align: center;">Giới thiệu</h2>
+    </div>
+    <div class="details-product-form">
+     <div class="form-product-add">
+      <span>Slogan giới thiệu</span>
+
+      <input id="fetures_slogan" type="text" name="fetures_slogan" value="<%=product.productFeturesSolgan%>">
+    </div>
+    <div class="form-product-add">
+      <span>Ảnh nền</span>
+      <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductFeturesBackground" onclick="listFileManager(1)"> 
+        <i class="fa fa-edit"></i>
+      </button>
+      <div class="fetures-background" style="margin-top: 20px">
+        <img id="image-fetures-background" style="width: 50%;" src="<%=product.productFeturesBanner%>">
+      </div>
+    </div>
+    <div class="form-product-add">
+      <span>Link nhúng video</span>
+      <input id="fetures_link" type="text" name="fetures_link" value="<%=product.productFeturesLink%>">
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="productInfo-edit" style="width: 100%;float: left;display: none;">
+  <div class="details-product col-xs-12">
+    <div class="details-product-title">
+      <h2 style="text-align: center;">Tính năng</h2>
+    </div>
+    <div class="details-product-form details-productInfo-form">
+     <div class="form-product-add">
+      <span>Hình ảnh</span>
+      <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductInfoImage" onclick="listFileManager(1)"> 
+        <i class="fa fa-edit"></i>
+      </button>
+      <div class="fetures-background" style="margin-top: 20px">
+        <img id="image-productInfo-image" style="width: 50%;" src="<%=product.productInfoImage%>">
+      </div>
+    </div>
+    <%if(product.productInfo && product.productInfo.length){%>
+    <%for(var i = 0 ; i < product.productInfo.length ; i++){%>
+    <div class="details-productInfo-item">
+      <div class="form-product-add">
+        <span>Tên tính năng</span>
+        <input class="productInfo-slogan" type="text" name="productInfo-slogan" value="<%=product.productInfo[i].productInfoName%>">
+      </div>
+      <div class="form-product-add">
+        <span>Mô tả tính năng</span>
+        <textarea class="productInfo-description" style="height: 80px;"><%=product.productInfo[i].productInfoDescription%></textarea>
+      </div>
+      <span class="remove-productInfo-input glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;margin-left:10%;margin-top:30px;color:#dd4b39;"></span>
+
+    </div>
+    <%}%>
+    <%}%>
+    
+  </div>
+  <div class="details-product-form details-productInfoButton-form">
+    <div class="form-product-add">
+      <button onclick="productInfoAdd()" style="padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="specifications-edit" style="width: 100%;float: left;display: none;">
+  <div class="details-product col-xs-12">
+    <div class="details-product-title">
+      <h2 style="text-align: center;">Thông số kĩ thuật</h2>
+    </div>
+    <div class="details-product-form details-specifications-form">
+      <%if(specifications && specifications.length){%>
+      <%for(var i=0 ; i<specifications.length ;i++){%>
+      <%if(product.productSpecifications && product.productSpecifications.length){%>
+      <%for(var j = 0 ; j < product.productSpecifications.length ; j++){%>
+      <%if(product.productSpecifications[j].productSpecificationsId.toString() == specifications[i]._id.toString()){%>
+      <div class="form-product-add" style="border-bottom: 1px solid #c1c1c1; padding: 20px 10%;">
+
+       <input class="status-active specifications-active-<%=specifications[i]._id%>" type="checkbox" name="productSpecifications" value="<%=specifications[i]._id%>" onclick=showSpecifications('<%=specifications[i]._id%>') checked >
+       <span class="label label-default" style="width: auto!important; font-size: 2rem!important;"><%=specifications[i].specificationsName%></span>
+       <div class="specifications-content specifications-content-<%=specifications[i]._id%>" style="display: none;">
+        <div class="specifications-details-form specifications-details-form-<%=specifications[i]._id%>" style ="float: left;width: 100%;">
+          <%for(var k = 0 ; k < product.productSpecifications[j].productSpecificationsContent.length ; k++){%>
+          <div class="specifications-details specifications-details-<%=specifications[i]._id%>">
+            <div class="specifications-content-form">
+              <span style="float: left;width: 15%">Kiểu</span>
+              <input class="specificationsMenu-<%=specifications[i]._id%>" type="text" name="specificationsMenu" style="float: left;width: 70%;" value="<%=product.productSpecifications[j].productSpecificationsContent[k].productSpecificationsMenu%>" >
+            </div>
+            <div class="specifications-content-form">
+              <span style="float: left;width: 15%">Mô tả</span>
+              <textarea class="specificationsDescription-<%=specifications[i]._id%>" style="float: left;width: 70%;"><%=product.productSpecifications[j].productSpecificationsContent[k].productSpecificationsDescription%></textarea>
+            </div>
+            <span class="remove-specifications-content glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;float: left;width: 5%;color:#dd4b39;margin: 20px 0"></span>
+
+          </div>
+          <%}%>
+
+        </div>
+
+        <button onclick=specificationsContentAdd('<%=specifications[i]._id%>') style="display:block;padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
+      </div>
+
+    </div>
+    <%}%>
+    <%}%>
+    <%}%> 
+
+    <%if(specificationsLeft && specificationsLeft.length) {%>
+    <%for(var l = 0 ; l < specificationsLeft.length ; l++){%>
+    <%if(specificationsLeft[l] == specifications[i]._id.toString()){%>
+    <div class="form-product-add" style="border-bottom: 1px solid #c1c1c1; padding: 20px 10%;">
+
+      <input class="status-active specifications-active-<%=specifications[i]._id%>" type="checkbox" name="productSpecifications" value="<%=specifications[i]._id%>" onclick=showSpecifications('<%=specifications[i]._id%>')>
+      <span class="label label-default" style="width: auto!important; font-size: 2rem!important;"><%=specifications[i].specificationsName%></span>
+      <div class="specifications-content specifications-content-<%=specifications[i]._id%>" style="display: none;">
+        <div class="specifications-details-form specifications-details-form-<%=specifications[i]._id%>" style ="float: left;width: 100%;">
+          <div class="specifications-details specifications-details-<%=specifications[i]._id%>">
+            <div class="specifications-content-form">
+              <span style="float: left;width: 15%">Kiểu</span>
+              <input class="specificationsMenu-<%=specifications[i]._id%>" type="text" name="specificationsMenu" style="float: left;width: 70%;" value="" >
+            </div>
+            <div class="specifications-content-form">
+              <span style="float: left;width: 15%">Mô tả</span>
+              <textarea class="specificationsDescription-<%=specifications[i]._id%>" style="float: left;width: 70%;"></textarea>
+            </div>
+            <span class="remove-specifications-content glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;float: left;width: 5%;color:#dd4b39;margin: 20px 0"></span>
+          </div>
+
+        </div>
+
+        <button onclick=specificationsContentAdd('<%=specifications[i]._id%>') style="display:block;padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
+      </div>
+
+    </div>
+    <%}%>
+    <%}%>
+    <%}%>
+
+    <%}%>
+    <%}%>
+  </div>
+
+</div>
+</div>
 
 </div>
 
@@ -384,6 +577,70 @@ input[type=number]::-webkit-outer-spin-button {
     </div>
   </div>
 
+  <!-- Modal fetures background -->
+  <div id="modalProductFeturesBackground" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 950px">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" style="float:left ; width: 50%;">Quản lý hình ảnh</h4>
+          <div class="modal-button" style="float:left ; width: 50%;">
+            <input type="text" name="search-gallery-text" id="search-gallery" placeholder="Nhập tên hình ảnh" style="padding-left: 10px;">
+
+            <a id = "uploadImages1" style="cursor: pointer;" ><span class="label label-primary"><i class="fa fa-upload"></i></span></a>
+            <input type="file" name="files" id="file1" value="" style="display: none;" multiple /> 
+
+            <a style="cursor: pointer;" onclick="saveBackground()"><span class="label label-primary"><i class="fa fa-save"></i></span></a>
+            <a id = "reloadmodal" style="cursor: pointer;" onclick="reloadModal()"><span class="label label-primary"><i class="fa fa-retweet"></i></span></a>
+            <a style="cursor: pointer;" onclick="removeImages()"><span class="label label-danger"><i class="fa fa-trash"></i></span></a>
+          </div>
+        </div>
+        <div class="modal-body" >
+
+          <div class="file-manager">
+
+          </div>
+          <div class="" style="text-align: center;" id="pagination-list-gallery-fetures">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal productInfo Image -->
+  <div id="modalProductInfoImage" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 950px">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" style="float:left ; width: 50%;">Quản lý hình ảnh</h4>
+          <div class="modal-button" style="float:left ; width: 50%;">
+            <input type="text" name="search-gallery-text" id="search-gallery" placeholder="Nhập tên hình ảnh" style="padding-left: 10px;">
+
+            <a id = "uploadImages2" style="cursor: pointer;" ><span class="label label-primary"><i class="fa fa-upload"></i></span></a>
+            <input type="file" name="files" id="file2" value="" style="display: none;" multiple /> 
+
+            <a style="cursor: pointer;" onclick="saveProductInfoImage()"><span class="label label-primary"><i class="fa fa-save"></i></span></a>
+            <a id = "reloadmodal" style="cursor: pointer;" onclick="reloadModal()"><span class="label label-primary"><i class="fa fa-retweet"></i></span></a>
+            <a style="cursor: pointer;" onclick="removeImages()"><span class="label label-danger"><i class="fa fa-trash"></i></span></a>
+          </div>
+        </div>
+        <div class="modal-body" >
+
+          <div class="file-manager">
+
+          </div>
+          <div class="" style="text-align: center;" id="pagination-list-gallery-productInfo">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 </section>
@@ -401,7 +658,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 <script type="text/javascript">
 
-  var aaaa = "aaaaaaaaaaaaaaaaa"
+
 
   var productCategory =  <%-JSON.stringify(product.productCategory)%>
   $('.select-category').val(productCategory)
@@ -410,6 +667,14 @@ input[type=number]::-webkit-outer-spin-button {
 
   $("#uploadImages").bind("click",function () {
     $("#file").click();
+
+  });
+
+  $("#uploadImages1").bind("click",function () {
+    $("#file1").click();
+  });
+  $("#uploadImages2").bind("click",function () {
+    $("#file2").click();
   });
 
   $('#file').on("change", function(event){
@@ -466,50 +731,120 @@ input[type=number]::-webkit-outer-spin-button {
     }
   })
 
+  $('#file1').on("change", function(event){
+    if(event.target && event.target.files && event.target.files[0]){
+      let file = event.target.files[0]
+      // console.log(file)
+      const temporaryFileReader = new FileReader()
+      return new Promise((resolve, reject) => {
+        if (file.type) {
+          temporaryFileReader.onerror = (e) => {
+            // console.log(e)
+            temporaryFileReader.abort()
+            reject('Lỗi')
+          }
+          
+          temporaryFileReader.onload = (e) => {
+
+            var formData = new FormData();
+
+            $.each($("#file1")[0].files, function(i, file) {
+              formData.append('files', file);
+            });
+
+           // console.log(formData)
+
+           $.ajax({
+            url: '/admin/product/uploadImages',
+            type: 'post',
+            data: formData,
+            contentType:false,
+            processData:false
+
+          }).done(function(results){
+            if (results.status == true) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Tạo ảnh thành công</span>',
+              });
+            }else{
+              $.alert({
+                title: 'Thông Báo !',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+              })
+            }
+
+          })
+          resolve()
+        }
+        temporaryFileReader.readAsDataURL(file);
+      } else {
+        resolve()
+      }
+    })
+    }
+  })
+
+  $('#file2').on("change", function(event){
+    if(event.target && event.target.files && event.target.files[0]){
+      let file = event.target.files[0]
+      // console.log(file)
+      const temporaryFileReader = new FileReader()
+      return new Promise((resolve, reject) => {
+        if (file.type) {
+          temporaryFileReader.onerror = (e) => {
+            // console.log(e)
+            temporaryFileReader.abort()
+            reject('Lỗi')
+          }
+
+          temporaryFileReader.onload = (e) => {
+
+            var formData = new FormData();
+
+            $.each($("#file2")[0].files, function(i, file) {
+              formData.append('files', file);
+            });
+
+           // console.log(formData)
+
+           $.ajax({
+            url: '/admin/product/uploadImages',
+            type: 'post',
+            data: formData,
+            contentType:false,
+            processData:false
+
+          }).done(function(results){
+            if (results.status == true) {
+              $.alert({
+                title: 'Thông Báo!',
+                content: '<span class="text-success"><strong class="fa fa-check"></strong>Tạo ảnh thành công</span>',
+              });
+            }else{
+              $.alert({
+                title: 'Thông Báo !',
+                content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+              })
+            }
+
+          })
+          resolve()
+        }
+        temporaryFileReader.readAsDataURL(file);
+      } else {
+        resolve()
+      }
+    })
+    }
+  })
 
 
 
 
-  // function uploadImages(){
-  //  var formData = new FormData();
-  // // formData.append('newImages[]',images);
-  // $.each($("#file")[0].files, function(i, file) {
-  //   formData.append('files', file);
-  // });
-
-  // console.log(formData)
-
-  // $.ajax({
-  //   url: '/admin/product/uploadImages',
-  //   type: 'post',
-  //   data: formData,
-  //   contentType:false,
-  //   processData:false
-  //     // dataType: 'json',
-  //   }).done(function(results){
-  //     if (results.status == true) {
-  //       $.confirm({
-  //         title: 'Thông Báo!',
-  //         content: '<span class="text-success"><strong class="fa fa-check"></strong>Tạo ảnh thành công</span>',
-  //         buttons: {
-  //           Ok: function () {
-  //             // $.alert('Ok');
-
-  //           }
-  //         }
-  //       });
-  //     }else{
-  //       $.alert({
-  //         title: 'Thông Báo !',
-  //         content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
-  //       })
-  //     }
-
-  //   })
-
-  // }
   function reloadModal(){
     listFileManager(1);
+    $('#search-gallery').val('');
   }
 
   $('#search-gallery').keyup(function() {
@@ -628,6 +963,7 @@ input[type=number]::-webkit-outer-spin-button {
 
   function reloadModalImages (){
     listFileManagerImages(1);
+    $('#search-gallery-images').val('');
   }
 
 
@@ -757,6 +1093,55 @@ function saveImages(){
   }
 
 }
+function saveBackground(){
+  var imageThumb = $("input[name='galleryThumb']:checked").val();
+
+  if (imageThumb == undefined) {
+    $.alert({
+      title: 'Thông Báo !',
+      content: '<span class="text-danger"><strong class="fa fa-close"></strong>Vui lòng chọn ảnh</span>'
+    })
+  }
+  else {
+    $('#image-fetures-background').attr('src','/upload/thumbProduct/'+imageThumb+'')
+    $.confirm({
+      title: 'Thông Báo!',
+      content: '<span class="text-success"><strong class="fa fa-check"></strong>Thêm ảnh thành công</span>',
+      buttons: {
+        Ok: function () {
+              // $.alert('Ok');
+              $('#modalProductFeturesBackground').modal('hide')
+            }
+          }
+        });
+  }
+
+}
+
+function saveProductInfoImage(){
+  var imageThumb = $("input[name='galleryThumb']:checked").val();
+
+  if (imageThumb == undefined) {
+    $.alert({
+      title: 'Thông Báo !',
+      content: '<span class="text-danger"><strong class="fa fa-close"></strong>Vui lòng chọn ảnh</span>'
+    })
+  }
+  else {
+    $('#image-productInfo-image').attr('src','/upload/thumbProduct/'+imageThumb+'')
+    $.confirm({
+      title: 'Thông Báo!',
+      content: '<span class="text-success"><strong class="fa fa-check"></strong>Thêm ảnh thành công</span>',
+      buttons: {
+        Ok: function () {
+              // $.alert('Ok');
+              $('#modalProductInfoImage').modal('hide')
+            }
+          }
+        });
+  } 
+}
+
 
 
 
@@ -908,6 +1293,79 @@ function removeImages(){
 
     var productDescription = $("textarea[name=description]").val();
 
+    var productFeturesSolgan = $("#fetures_slogan").val();
+
+    var productFeturesBanner = $("#image-fetures-background").attr('src');
+
+    var productFeturesLink = $("#fetures_link").val();
+
+    var productInfoImage = $("#image-productInfo-image").attr('src');
+
+    var productInfo = []
+
+
+    var productInfoName = $(".productInfo-slogan").map(function() {
+      return $(this).val();
+    }).toArray();
+
+    // console.log(productInfoName)
+
+    var productInfoDescription = $(".productInfo-description").map(function() {
+      return $(this).val();
+    }).toArray();
+
+    // console.log(productInfoDescription)
+
+    len = Math.max(productInfoName.length, productInfoDescription.length)
+    // console.log(len)
+
+    for (var i = 0 ; i< len ; i++) {
+      productInfo[i] = {
+        productInfoName : productInfoName[i] || "" ,
+        productInfoDescription : productInfoDescription[i] || ""
+      }
+    }
+    // console.log(productInfo)
+
+    var productSpecifications = []
+
+    $('input[name=productSpecifications]:checked').each(function() {
+      var objEachProductSpecifications = {}
+      var productSpecificationsId = []
+      productSpecificationsId.push($(this).val())
+      objEachProductSpecifications.productSpecificationsId = $(this).val();
+      // console.log(objEachProductSpecifications.productSpecificationsId)
+      for (var i = 0; i < productSpecificationsId.length; i++) {
+
+        productSpecificationsContent = []
+        var productSpecificationsMenu = $('.specificationsMenu-'+productSpecificationsId[i]).map(function() {
+          return $(this).val();
+        }).toArray(); 
+
+        // console.log(productSpecificationsMenu)
+
+        var productSpecificationsDescription = $('.specificationsDescription-'+productSpecificationsId[i]).map(function() {
+          return $(this).val();
+        }).toArray(); 
+
+        len2 = Math.max(productSpecificationsMenu.length , productSpecificationsDescription.length)
+
+        // console.log(len2)
+
+        for (var j = 0 ; j< len2 ; j++) {
+          productSpecificationsContent[j] = {
+            productSpecificationsMenu : productSpecificationsMenu[j] || "" ,
+            productSpecificationsDescription : productSpecificationsDescription[j] || ""
+          }
+        }
+        objEachProductSpecifications.productSpecificationsContent = productSpecificationsContent
+        // console.log(objEachProductSpecifications)
+
+      }
+      productSpecifications.push(objEachProductSpecifications)
+    })
+
+
 
     
     $.ajax({
@@ -920,7 +1378,13 @@ function removeImages(){
         productCategory : productCategory,
         productBrand : productBrand,
         productColor : productColor,
-        productDescription : productDescription
+        productDescription : productDescription ,
+        productFeturesSolgan : productFeturesSolgan ,
+        productFeturesBanner : productFeturesBanner ,
+        productFeturesLink : productFeturesLink , 
+        productInfoImage : productInfoImage, 
+        productInfo : productInfo , 
+        productSpecifications : productSpecifications
       },
       dataType: 'json',
     }).done(function(results){
@@ -1015,4 +1479,94 @@ $(document).ready(function() {
     }       
   }); 
 });
+
+
+ $('#over-view').click(function(){
+  $('.content-edit>div').fadeOut(500)
+  $('.overview-edit').fadeIn(500)
+  $('.menu-product ul li').removeClass('active');
+  $(this).addClass('active')
+})
+ $('#details-view').click(function(){
+  $('.content-edit>div').fadeOut(500)
+  $('.feturesview-edit').fadeIn(500)
+  $('.menu-product ul li').removeClass('active');
+  $(this).addClass('active')
+})
+ $('#productInfo-view').click(function(){
+
+  $('.content-edit>div').fadeOut(500)
+  $('.productInfo-edit').fadeIn(500)
+  $('.menu-product ul li').removeClass('active');
+  $(this).addClass('active')
+})
+
+ $('#specifications-view').click(function(){
+  $('.content-edit>div').fadeOut(500)
+  $('.specifications-edit').fadeIn(500)
+  $('.menu-product ul li').removeClass('active');
+  $(this).addClass('active')
+})
+
+
+ function productInfoAdd() {
+  var xhtml = ''
+  xhtml += '<div class="details-productInfo-item">';
+  xhtml += '<div class="form-product-add">';
+  xhtml += '<span>Tên tính năng</span>';
+  xhtml += '<input class="productInfo-slogan" type="text" name="productInfo-slogan" value="">';
+  xhtml += '</div>';
+
+  xhtml += '<div class="form-product-add">';
+  xhtml += '<span>Mô tả tính năng</span>';
+  xhtml += '<textarea class="productInfo-description" style="height: 80px;"></textarea>';
+  xhtml += '</div>';
+  xhtml += '<span class="remove-productInfo-input glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;margin-left:10%;margin-top:30px;color:#dd4b39;"></span>';
+  xhtml += '</div>';
+
+  $(document).ready(function() {
+    $(document).on('click', '.remove-productInfo-input', function() {
+      $(this).parent().remove();
+    });
+  })
+
+  $('.details-productInfo-form').append(xhtml)
+}
+
+function showSpecifications(id) {
+    // console.log($(`.status-active-${id}`).is(":checked"))
+    // console.log(id)
+    // console.log($(`.status-active-${id}`))
+    if($(`.specifications-active-${id}`).is(":checked") == true){
+      $(`.specifications-content-${id}`).show(500)
+    }else{
+     $(`.specifications-content-${id}`).hide(500); 
+   }
+ }
+
+ function specificationsContentAdd(id){
+  var xhtml = '';
+  console.log(id)
+  xhtml += '<div class="specifications-details specifications-details-'+id+'">';
+  xhtml += '<div class="specifications-content-form">';
+  xhtml += '<span style="float: left;width: 15%">Kiểu</span>';
+  xhtml += '<input class="specificationsMenu-'+id+'" type="text" name="specificationsMenu" style="float: left;width: 70%;"">';
+  xhtml += '</div>';
+  xhtml += '<div class="specifications-content-form">';
+  xhtml += '<span style="float: left;width: 15%">Mô tả</span>';
+  xhtml += '<textarea class="specificationsDescription-'+id+'" style="float: left;width: 70%;"></textarea>';
+  xhtml += '</div>';
+  xhtml += '<span class="remove-specifications-content glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;float: left;width: 5%;color:#dd4b39;margin: 20px 0"></span>';
+  xhtml += '</div>';
+  
+  $(document).ready(function() {
+    $(document).on('click', '.remove-specifications-content', function() {
+      $(this).parent().remove();
+    });
+  })
+
+  $('.specifications-details-form-'+id).append(xhtml)
+}
+
+
 </script>

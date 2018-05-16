@@ -179,6 +179,7 @@ span.product-color {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	font-style: italic;
+	margin: 0 15%;
 	padding-bottom: 80px;
 }
 .product-main-info-bottom a{
