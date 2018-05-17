@@ -1,0 +1,276 @@
+<%- include('include/header-top') %>
+<link rel="stylesheet" href="/css/homepage.css">
+<link rel="stylesheet" href="/css/user.css">
+
+<%- include('include/header')%>
+
+<section>
+	<div class="user-recommend-area">
+		<div class="user-recommend">
+			<div class="user-recommend-thumb" style="background-image: url('/upload/avatar/<%=userCurrent.avatar%>');">
+			</div>
+			<div class="user-recommend-content">
+				<p><%=userCurrent.userName%></p>
+				<%if(userCurrent.level == 1 ){%>
+				<span>Member</span>
+				<%}else if(userCurrent.level == 2){%>
+				<span>Silver Member</span>
+				<%}else if(userCurrent.level == 3){%>
+				<span>Gold Member</span>
+				<%}else if(userCurrent.level == 4){%>
+				<span>Platinum Member</span>
+				<%}%>
+
+			</div>
+		</div>
+	</div>
+	<div class="user-info-area">
+		<div class="container-fluid">
+			<div class="user-info-left col-sm-3">
+				<ul>
+					<li class="user-info-left-profile user-info-left-active">
+						<i class="fa fa-user"></i>
+						<span>Thông tin cá nhân</span>
+					</li>
+					<li class="user-info-left-order">
+						<i class="fa fa-shopping-cart"></i>
+						<span>Lịch sử giao dịch</span>
+					</li>
+					<li class="user-info-left-trophy">
+						<i class="fa fa-trophy"></i>
+						<span>Danh Hiệu</span>
+					</li>
+					<li class="user-info-left-pass">
+						<i class="fa fa-key"></i>
+						<span>Mật khẩu</span>
+					</li>
+				</ul>
+			</div>
+			<div class="user-info-right col-sm-9">
+				<div class="user-info-profile">
+					<h2 class="user-info-right-title">
+						Thông tin cá nhân
+					</h2>
+					<div class="user-right-content">
+						<form>
+							<div class="user-right-item">
+								<p>Họ tên</p>
+								<input type="text" name="nameUser" value="<%=userCurrent.nameUser%>">
+							</div>
+							<div class="user-right-item">
+								<p>Ảnh đại diện</p>
+								<input id="fileAvatar" type="file" name="file">
+								<img id="avatarPreview" src="" style="width: 25%; margin : 15px 0" >
+							</div>	
+							<div class="user-right-item">
+								<p>Email</p>
+								<input type="text" disabled name="email" value="<%=userCurrent.email%>">
+							</div>
+							<div class="user-right-item">
+								<p>Số điện thoại</p>
+								<input type="text" disabled name="phoneNumber" value="<%=userCurrent.phoneNumber%>">
+							</div>	
+							<div class="user-right-item">
+								<p>Địa chỉ</p>
+								<input type="text" name="address" value="<%=userCurrent.address%>">
+							</div>	
+							<div class="user-right-item">
+								<p>Ngày Sinh</p>
+								<input type="date" name="birthDay" value="<%= moment(userCurrent.birthDay).format('YYYY-MM-DD')%>">
+							</div>
+							<div class="user-right-item">
+								<p>Giới Tính</p>
+								<input type="radio" name="gender" value="0" style="width: 5%" <%if (userCurrent.gender == 0){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nam</span>
+								<input type="radio" name="gender" value="1" style="width: 5%;margin-left: 25px" <%if (userCurrent.gender == 1){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nữ</span>
+							</div>
+							<div class="user-right-item user-right-item-button">
+								<input type="button" name="" value="Cập nhật" onclick="updateUserInfo('<%=userCurrent._id%>')">
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="user-info-order">
+					<h2 class="user-info-right-title">
+						Lịch sử giao dịch
+					</h2>
+					<div class="user-right-content">
+						<div class="user-right-order-item user-right-order-title">
+							<ul>
+								<li>Mã Giao Dịch</li>
+								<li>Tổng sản phẩm</li>
+								<li>Tổng tiền(VNĐ)</li>
+								<li>Thời gian</li>
+								<li>Trạng Thái</li>
+							</ul>
+						</div>
+						<div class="user-right-order-item">
+							<ul>
+								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
+								<li>3</li>
+								<li>4.500.000</li>
+								<li>05/04/2018</li>
+								<li>Đang xử lý</li>
+							</ul>
+						</div>
+						<div class="user-right-order-item">
+							<ul>
+								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
+								<li>3</li>
+								<li>4.500.000</li>
+								<li>05/04/2018</li>
+								<li>Đang xử lý</li>
+							</ul>
+						</div>
+						<div class="user-right-order-item">
+							<ul>
+								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
+								<li>3</li>
+								<li>4.500.000</li>
+								<li>05/04/2018</li>
+								<li>Hoàn Thành</li>
+							</ul>
+						</div>
+						<div class="user-right-order-item">
+							<ul>
+								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
+								<li>3</li>
+								<li>4.500.000</li>
+								<li>05/04/2018</li>
+								<li>Đang xử lý</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="user-info-trophy">
+					<h2 class="user-info-right-title">
+						Danh Hiệu
+					</h2>
+					<div class="user-right-content">
+						<div class="user-trophy-content trophy-type">
+							<p>Loại danh hiệu</p>
+							<span>Gold Member</span>
+						</div>
+						<div class="user-trophy-content trophy-thumb">
+							<p>Ảnh danh hiệu</p>
+							<span>
+								<img src="../img/homepage/gold.png">
+							</span>
+						</div>
+						<div class="user-trophy-content trophy-discount">
+							<p>Giảm Giá</p>
+							<span>5%</span>
+						</div>
+						<div class="user-trophy-content trophy-totalmoney">
+							<p>Tổng tiền giao dịch (VNĐ)</p>
+							<span>25.000.000</span>
+						</div>
+						<div class="user-trophy-content trophy-info">
+							<a href="">Thông tin danh hiệu</a>
+						</div>
+					</div>
+				</div>
+				<div class="user-info-pass">
+					<h2 class="user-info-right-title">
+						Mật khẩu
+					</h2>
+					<div class="user-right-content">
+						<form>
+							<div class="user-right-item user-currentpass">
+								<p>Mật khẩu hiện tại</p>
+								<input type="text" name="">
+							</div>
+							<div class="user-right-item user-newpass">
+								<p>Mật khẩu mới</p>
+								<input type="text" name="">
+							</div>
+							<div class="user-right-item user-confirmpass">
+								<p>xác nhận mật khẩu mới</p>
+								<input type="text" name="">
+							</div>
+							<div class="user-right-item user-right-item-button">
+								<input type="button" name="" value="Cập nhật">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Order -->
+
+	<div class="modal fade" id="orderDetails" role="dialog">
+		<div class="modal-dialog orderDetails">
+			<!-- Modal content-->
+			<div class="modal-order-content modal-content">
+				<div class="order-details id-recieved">
+					<p>Mã Đơn hàng</p>
+					<span>157953</span>
+				</div>
+				<div class="order-details user-recieved">
+					<p>Người nhận hàng</p>
+					<span>Đỗ Trung Hiếu</span>
+				</div>
+				<div class="order-details address-recieved">
+					<p>Địa chỉ nhận hàng</p>
+					<span>Số 3 , Ngách 68 , Ngõ 366 , Ngọc Lâm , Long Biên , Hà Nội</span>
+				</div>
+				<div class="order-details phone-recieved">
+					<p>Số điện thoại</p>
+					<span>01689187670</span>
+				</div>
+				<div class="order-details email-recieved">
+					<p>Email</p>
+					<span>pendi5894@gmail.com</span>
+				</div>
+				<div class="order-details day-recieved">
+					<p>Ngày tạo đơn hàng</p>
+					<span>05/04/2018</span>
+				</div>
+				<div class="order-details day-recieved">
+					<p>tổng thanh toán (VNĐ)</p>
+					<span>4.500.000</span>
+				</div>
+				<div class="order-details details-recieved">
+					<p>Chi tiết sản phẩm</p>
+					<span class="order-details-toggle">Nhấn vào đây để xem chi tiết</span>
+				</div>
+				<div class="order-details product-recieved">
+					<div class="order-details product-recieved-drop">
+						<ul class="product-recieved-menu">
+							<li>Sản Phẩm</li>
+							<li>Hình ảnh</li>
+							<li>Giá(VNĐ)</li>
+							<li>Số lượng</li>
+							<li>Thành tiền(VNĐ)</li>
+						</ul>
+						<ul class="product-recieved-content">
+							<li>Artics 3 Bluetooth</li>
+							<li><img src="../img/product/newproduct1.png"></li>
+							<li>1.500.000</li>
+							<li>2</li>
+							<li>3.000.000</li>
+						</ul>
+						<ul class="product-recieved-content">
+							<li>Artics 5</li>
+							<li><img src="../img/homepage/headset1.png"></li>
+							<li>1.500.000</li>
+							<li>1</li>
+							<li>1.500.000</li>
+						</ul>
+					</div>
+				</div>
+				<div class="order-details day-recieved">
+					<p>Trạng thái</p>
+					<span>Đang xử lý</span>
+				</div>
+			</div>
+		</div>
+
+
+	</section>
+
+	<%- include('include/all-modal') %>
+
+	<%- include('include/footer') %>
+	<script src="/js/user.js"></script>

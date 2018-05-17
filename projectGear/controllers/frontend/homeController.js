@@ -14,6 +14,7 @@ const Product = require('../../models/Product');
 const Category = require('../../models/Category');
 const Brand = require('../../models/Brand');
 const Color = require('../../models/Color');
+const Slide = require('../../models/Slide');
 // Method
 /**
  * GET /
@@ -26,12 +27,23 @@ const Color = require('../../models/Color');
  	let category = await Category.find({status:1}).sort({createdAt:1}).lean();
 
  	let productFirst = await Product.find({}).populate('productCategory').sort({createdAt:-1}).limit(3).lean();
- 
+
+ 	let slideIsMain = await Slide.find({isSlideMain:1 , status:1}).sort({createdAt:1}).lean();
+ 	let slideNormal = await Slide.find({isSlideMain:0 , status:1}).sort({createdAt:1}).lean();
+
+ 	let categoryBanner = categoryMenu
+
+
+
+
  	return res.render('frontend/index' , {
  		categoryMenu : categoryMenu , 
  		categoryDropDown : categoryDropDown,
  		category : category ,
- 		productFirst : productFirst
+ 		categoryBanner : categoryBanner,
+ 		productFirst : productFirst ,
+ 		slideIsMain : slideIsMain ,
+ 		slideNormal : slideNormal
  	});
  }
 

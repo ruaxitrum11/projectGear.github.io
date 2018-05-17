@@ -5,14 +5,13 @@
 }
 .blog-main-content {
 	background-color: #eaeaea;
-	padding: 50px 10% 100px 10%;
+	padding: 50px 10% 100px 10%; ;
 }
 .form-blog-article {
 	margin-top: 50px;
 	box-shadow: 0 6px 15px rgba(36,37,38,.08);
 }
 .form-blog-article .form-blog-article-thumb {
-	background-image: url(../img/blog/blog1.jpg);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -23,7 +22,7 @@
 	background-color: #fff;
 	height: 70vh;
 	padding-left: 50px;
-	padding-top: 50px;
+	padding-top: 20px;
 }
 .form-article {
 	float: left;
@@ -57,15 +56,11 @@
 	font-weight: thin;
 	letter-spacing: 0.5px;
 }
-.article-author img {
-	width: 20%;
-	border-radius: 50%;
-}
+
 .article-author span {
-	margin-left: 10px;
 	font-size: 2rem;
-	font-weight: 600;
-	text-transform: uppercase;
+	text-transform: capitalize;
+	font-style: italic;
 }
 .form-panigation {
 	margin-top: 50px;

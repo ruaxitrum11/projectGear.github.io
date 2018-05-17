@@ -1,0 +1,109 @@
+<%- include('include/header-top') %>
+<link rel="stylesheet" href="/css/homepage.css">
+<link rel="stylesheet" href="/css/blog.css">
+
+<%- include('include/header') %>
+
+<!-- section homepage -->
+<section>
+
+	<div class="blog-area">
+		<div class="container-fluid">
+			<div class="blog-main-title">
+				<h2>Blog</h2>
+			</div>
+			<div class="blog-main-content">
+				<%if(blog && blog.length){%>
+				<%for(var i = 0 ; i < blog.length ; i++){%>
+				<%if(i%2==0){%>
+				<div class="form-blog-article">
+					<div class="container-fluid">
+						<div class="form-blog-article-thumb col-sm-7" style="background-image: url('/upload/blog/<%=blog[i].blogImage%>');">
+						</div>
+						<div class="form-blog-article-content col-sm-5">
+							<div class="form-article article-time">
+								<hr>
+								<p><%= moment(blog[i].createdAt).format('DD-MM-YYYY')%></p>
+							</div>
+							<div class="form-article article-title">
+								<a href=""><%=blog[i].blogTitle%></a>
+							</div>
+							<div class="form-article article-description">
+								<p><%=blog[i].blogDescription%></p>
+							</div>
+							<div class="form-article article-author" >
+								<span>__<%=blog[i].blogAuthor%>__</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<%}else{%>
+				<div class="form-blog-article">
+					<div class="container-fluid">
+						<div class="form-blog-article-content col-sm-5">
+							<div class="form-article article-time">
+								<hr>
+								<p><%= moment(blog[i].createdAt).format('YYYY-MM-DD')%></p>
+							</div>
+							<div class="form-article article-title">
+								<a href=""><%=blog[i].blogTitle%></a>
+							</div>
+							<div class="form-article article-description">
+								<p><%=blog[i].blogDescription%></p>
+							</div>
+							<div class="form-article article-author" >
+								<span>__<%=blog[i].blogAuthor%>__</span>
+							</div>
+						</div>
+						<div class="form-blog-article-thumb col-sm-7" style="background-image: url('/upload/blog/<%=blog[i].blogImage%>');">
+						</div>
+					</div>
+				</div>
+				<%}%>
+				<%}%>
+				<%}%>
+				<% if (totalPage > 1) { %>
+				<div class="pagination-blog" style="text-align: center;padding-top: 50px">
+					<ul class="pagination text-center">
+						<% if (page == 1) { %>
+						<li class="disabled"></li>
+						<% } else { %>
+						<li><a href="/blog/1"><i class="fa fa-fast-backward"></i></a></li>
+						<% } %>
+						<% var i = (Number(page) > 5 ? Number(page) - 4 : 1) %>
+						<% if (i !== 1) { %>
+						<li class="disabled"><a>...</a></li>
+						<% } %>
+						<% for (; i <= (Number(page) + 4) && i <= totalPage; i++) { %>
+						<% if (i == page) { %>
+						<li class="active"><a><%= i %></a></li>
+						<% } else { %>
+						<li><a href="/blog/<%= i %>"><%= i %></a></li>
+						<% } %>
+						<% if (i == Number(page) + 4 && i < totalPage) { %>
+						<li class="disabled"><a>...</a></li>
+						<% } %>
+						<% } %>
+						<% if (page == totalPage) { %>
+						<li class="disabled"></li>
+						<% } else { %>
+						<li><a href="/blog/<%= totalPage %>"><i class="fa fa-fast-forward"></i>
+
+						</a></li>
+						<% } %>
+					</ul>
+				</div>
+				<% } %>
+			</div>
+		</div>
+	</div>
+
+
+</section>
+
+<%- include('include/all-modal') %>
+
+<%- include('include/footer') %>
+
+<script src="/js/blog.js"></script>
+

@@ -130,7 +130,7 @@
 					<ul class="nav navbar-nav navbar-nav-right" >
 						<%if(!user){%>
 						<li class="navbar-item">
-							<a href="#" class="btn btn-lg" data-toggle="modal" data-target="#login-modal">
+							<a href=# class="btn btn-lg" data-toggle="modal" data-target="#login-modal">
 								<i class="fa fa-user" aria-hidden="true"></i>
 							</a>
 						</li>
@@ -142,7 +142,7 @@
 							</a>
 							<div class="dropdown-content dropdown-content-user" style="right: 0;min-width: 200px;
 							text-align: center;">
-							<a href="#">Tổng Quan</a>
+							<a href="/user/<%=user._id%>">Tổng Quan</a>
 							<a href="#">lịch sử giao dịch</a>
 							<a href="/user/logout">Thoát</a>
 						</div>
@@ -155,8 +155,10 @@
 					</li>
 					<li class="navbar-item ">
 						<a href="#" data-toggle="modal" data-target="#cart-modal" data-direction='right'>
-							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							<i class="fa fa-shopping-cart" aria-hidden="true" style="position: relative;"></i>
+							<p class="number-product-cart" style="position: absolute">0</p>
 						</a>
+						
 					</li>
 				</ul>
 			</div>

@@ -10,14 +10,17 @@ const mongoose = require('mongoose');
 // console.log ("------------------------");
 // var dir = path.join(__dirname, '..', 'config');
 // const passportConfig = require('../../config/passport');
-const productController = require('../../controllers/frontend/productController');
+const blogController = require('../../controllers/backend/blogController');
 
-// Route is : /product
-router.get('/:id', productController.product);
-router.post('/showProduct' , productController.showProduct)
-router.post('/addToCart',productController.addToCart)
-router.post('/changeColor',productController.changeColor)
+// Route is : /admin/blog/
+router.get('/list', blogController.list);
 
+router.get('/listBlog', blogController.listBlog);
+router.post('/delete', blogController.deleteBlog);
+router.get('/edit/:id', blogController.getBlogEdit);
+router.post('/editBlog', blogController.postBlogEdit);
+router.get('/add',blogController.getBlogAdd);
+router.post('/addBlog',blogController.postBlogAdd);
 
 
 

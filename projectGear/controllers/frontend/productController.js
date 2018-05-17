@@ -71,3 +71,33 @@ const Specifications = require('../../models/Specifications')
 
 	
 }
+exports.changeColor = async(req,res) =>{
+	// console.log(req.body)
+	let productCurrent = await Product.find({_id : req.body.idProduct})
+	.select({productColor:1, _id:1})
+	// console.log(productCurrent[0].productColor)
+	// console.log(productCurrent)
+	for ( var i = 0 ; i < productCurrent[0].productColor.length ; i++){
+		if (productCurrent[0].productColor[i].colorId == req.body.idColor) {
+			var dataProductColorCategory = productCurrent[0].productColor[i]
+		}
+	}
+	// console.log(dataProductColorCategory)
+	return res.send({status:true,dataProductColorCategory : dataProductColorCategory , productCurrent : productCurrent[0]})
+}
+
+
+	// return res.send({status:true , productColorCode : productColorCode[0]})
+
+exports.addToCart = async(req,res) => {
+	console.log("vao day chua")
+	console.log(req.cookies)
+	// console.log(req.body.idProductCart)
+
+	let productAddToCart = await Product.find({_id : req.body.idProductCart})
+	.select({productName:1 , productThumb : 1 , productColor : 1})
+	
+	// console.log(productAddToCart)
+
+	return res.send({status:true , productAddToCart:productAddToCart[0] } )
+}

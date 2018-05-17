@@ -19,7 +19,7 @@ function showProduct(idColor , idProduct){
 		},
 		dataType: 'json',
 	}).done(function(results){
-		console.log(results)
+		// console.log(results)
 		if (results.status) {
 
 			$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+results.dataProductColor.colorImages[0]+')'})
@@ -52,7 +52,7 @@ function showProduct(idColor , idProduct){
 			var xhtmlPriceFixed = '';
 			xhtmlPriceFixed += '<p>'+results.dataProductColor.colorPrice.
 			toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
-			xhtmlPriceFixed += '<a href="#">mua sản phẩm</a>';
+			xhtmlPriceFixed += '<a href="#">mua hàng</a>';
 			$('.product-price-fixed').html(xhtmlPriceFixed)
 		}
 	})

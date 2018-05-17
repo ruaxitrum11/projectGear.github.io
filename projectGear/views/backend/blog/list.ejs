@@ -1,0 +1,309 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
+  .add-newColor {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchColor {
+    margin : 20px 0;
+  }
+  .add-searchColor input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchColor select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchColor span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.form-ColorInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-ColorInfo-tilte{
+  float: left;
+  width: 30%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-ColorInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-ColorInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+.box-body {
+  text-align: left;
+}
+.form-color-edit {
+  margin-bottom : 20px;
+}
+.form-color-edit span{
+  width: 20%;
+  display: inline-block;
+
+}
+.form-color-edit input{
+  width: 50%;
+  display: inline-block;
+}
+.active span {
+  font-size: 90%!important;
+}
+.active {
+  display: inline-block; 
+  width: 79%;
+  margin-bottom: 20px;
+}
+
+.active-block {
+  margin-left: 20.1%;
+}
+input.status-active {
+  width: 5%!important;
+}
+  /*span.label {
+    font-size: 90%!important;
+    }*/
+    .button-active a {
+      display: inline-block;
+      font-size: 2rem;
+      padding: 10px 30px;
+      background-color: #dd4b39;
+      color: #fff;
+    }
+  </style>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Trang tin tức ( blog )
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="container">      
+
+        <div class="add-newColor">
+          <a href="/admin/blog/add" ">
+            <span class="label label-primary">+</span>
+          </a>
+        </div>      
+
+        <div class="add-searchColor">
+          <span class="search-icon glyphicon glyphicon-search"></span>
+          <input class="input-text blog-author-search" type="text" name="" placeholder="Nhập tên tác giả">
+          <select class="blog-status">
+            <option value="">Trạng Thái</option>
+            <option value="1">Active</option>
+            <option value="0">Block</option>
+          </select>
+        </div>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Tiêu đề</th>
+              <th>Hình ảnh</th>
+              <th>Tác giả</th>
+              <th>Trạng thái</th>
+              <th>Xử Lý</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+        <div class="col-xs-12" style="text-align: center;" id="pagination-list-color">
+
+        </div>
+
+      </div>
+
+
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <%- include('../include/admin-footer') %>
+
+  <%- include('../include/admin-control-sidebar') %>
+
+  <%- include('../include/admin-js.ejs') %>
+
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      listBlog(1);
+    });
+
+    $('select').on('change', function() {
+     listBlog(1);
+     
+   })
+
+    $('.blog-author-search').keyup(function() {
+     listBlog(1);
+   });
+
+    function listBlog(page) {
+      var blog_status = $('.blog-status :selected').val();
+      var blog_author = $('.blog-author-search').val();
+
+      $.ajax({
+        url: '/admin/blog/listBlog',
+        type: 'GET',
+        data: {
+          page : page,
+          blog_status : blog_status,
+          blog_author : blog_author
+        },
+        dataType: 'json',
+      }).done(function(results){
+        if (results.status) {
+
+        // console.log(results.status);
+
+        var xhtml = ''; 
+
+        if (results.listBlog && results.listBlog.length) {
+          for (var i = 0 ;  i <= results.listBlog.length - 1; i++) {
+
+
+            xhtml += '<tr>';
+
+            xhtml += '<td style="width:250px;">'+results.listBlog[i].blogTitle+'</td>';
+
+            xhtml += '<td><img src="/upload/blog/'+results.listBlog[i].blogImage+'" style="width:150px ; height:70px"></td>';
+            
+            xhtml += '<td>'+results.listBlog[i].blogAuthor+'</td>';
+
+
+            if (results.listBlog[i].status == 1) {
+              xhtml += '<td><span class="label label-success">Active</span></td>';
+            }else {
+              xhtml += '<td><span class="label label-danger">Block</span></td>';
+            }
+
+
+            xhtml += '<td><a href="/admin/blog/edit/'+results.listBlog[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span>Sửa</span></a> <a href="javascript:void(0)" onclick="removeBlog(\''+results.listBlog[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
+
+
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+          }
+          $("table tbody").html(xhtml)
+
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listBlog(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listBlog('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listBlog('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listBlog('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listBlog('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-color').html(pagiHtml);
+      } else {
+        $('#pagination-list-color').html('');
+      }
+
+    }
+  })
+    }
+
+  </script>
+
+
+  <script>
+    function removeBlog(id){
+      $.confirm({
+        title : 'Xác nhận !',
+        content : 'Bạn có chắc chắn muốn xóa trang trình bày này',
+        buttons: {
+          'Đồng Ý': function () {
+            $.ajax({
+              url: '/admin/blog/delete',
+              type: 'post',
+              data: {
+                id : id
+              },
+              dataType: 'json',
+            }).done(function(results){
+              if (results.status) {
+                $.alert({
+                  title: 'Thông Báo!',
+                  content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
+                })
+                location.reload();
+              }else{
+                $.alert({
+                  title: 'Thông Báo!',
+                  content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
+                })
+              }
+            })
+          },
+          'Hủy Bỏ': function () {
+          },
+        }
+      })
+    }
+  </script>

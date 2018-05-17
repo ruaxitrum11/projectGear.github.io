@@ -265,7 +265,9 @@ exports.listFileManager = async(req,res) =>{
 }
 
 exports.listFileManagerImages = async(req,res) =>{
-	// console.log(req.cookies)
+	console.log("req.cookies")
+	console.log(req.cookies)
+	console.log("req.cookies")
 
 	let page = 1;
 	let limit = 16;
@@ -351,7 +353,7 @@ check('productColor', 'Vui lòng chọn thông tin màu sắc sản phẩm').isL
 
 exports.postProductAdd = async (req,res) => {
 	if (req.body) {
-		console.log(req.body)
+		// console.log(req.body)
 		// console.log(req.body)
 		const errors = validationResult(req);
 
@@ -366,12 +368,12 @@ exports.postProductAdd = async (req,res) => {
 					let errors = [{msg:"Vui lòng chọn ảnh sản phẩm tương ứng màu đã chọn"}]
 					return res.send({status:false,errors:errors})
 				}
-				console.log("====here=========")
+				// console.log("====here=========")
 				if (req.body.productColor[i].colorPrice == "") {
 					let errors = [{msg:"Vui lòng điền giá sản phẩm tương ứng màu đã chọn"}]
 					return res.send({status:false,errors:errors})
 				}
-				console.log("vao day")
+				// console.log("vao day")
 				if (req.body.productColor[i].colorQuantity == "") {
 					let errors = [{msg:"Vui lòng điền số lượng sản phẩm tương ứng màu đã chọn"}]
 					return res.send({status:false,errors:errors})
@@ -395,7 +397,7 @@ exports.postProductAdd = async (req,res) => {
 				productSpecifications : req.body.productSpecifications 
 			}); 
 
-			console.log(product)
+			// console.log(product)
 			let saveProduct = await product.save();
 			if (!saveProduct) {
 				let errors = [{msg:"Thêm sản phẩm thất bại"}]
@@ -407,7 +409,7 @@ exports.postProductAdd = async (req,res) => {
 			res.send({status:false, errors : errors});
 			console.log(errors)
 		}
-		console.log('vao day')
+		// console.log('vao day')
 	}
 }
 
@@ -438,7 +440,7 @@ exports.getProductEdit = async (req,res) =>{
 
 			let colorLeft =  _.difference(colorTotal,productColorTotal);
 
-			console.log('here')
+			// console.log('here')
 
 			let specificationsTotal = []
 			for (var i = 0; i < specifications.length; i++) {
@@ -457,7 +459,7 @@ exports.getProductEdit = async (req,res) =>{
 
 			let specificationsLeft = await _.difference(specificationsTotal,productSpecificationsTotal);
 			
-			console.log(specificationsLeft)
+			// console.log(specificationsLeft)
 
 			res.render('backend/product/edit',{
 				product:product[0],
@@ -528,7 +530,7 @@ exports.postProductEdit = async (req,res) => {
 				productSpecifications : req.body.productSpecifications 
 			}; 
 
-			console.log(dataUpdate)
+			// console.log(dataUpdate)
 
 			let updateProduct = await Product.update({ _id: req.body.id}, { $set: dataUpdate});
 

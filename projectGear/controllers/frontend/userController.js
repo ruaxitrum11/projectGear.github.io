@@ -12,11 +12,42 @@
  const multer = require("multer");
  const Entities = require('html-entities').XmlEntities;
  const entities = new Entities();
+ const moment = require('moment');
+ const path = require('path');
 
  const { check, validationResult } = require('express-validator/check');
 
+//Setup multer upload
+let storage = multer.diskStorage({
+    // Configuring multer to upload folder
+    destination: function(req, file, cb) {
+      cb(null, './public/upload/avatar')
+    },
+    // Rename file to save in the database.
+    filename: function(req, file, cb) {
+      var ext = file.originalname.split('.')
+      cb(null, ext[0]+ '_' + Date.now() + '.' + ext[ext.length - 1]);
+    }
+  });
+
+let upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname)
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      return callback(new Error('Chỉ cho phép tải ảnh lên'))
+    }
+
+    callback(null, true)
+  }
+}).single('file');
+
+
 // Models
 const User = require('../../models/User');
+const Product = require('../../models/Product');
+const Category = require('../../models/Category');
+const Brand = require('../../models/Brand');
 // Method
 /**
  * GET /
@@ -116,4 +147,67 @@ exports.postLogin = async (req,res, next)=>{
   exports.logOut = (req,res) =>{
     req.logout();
     res.redirect('/');
+  }
+
+  exports.getUserInfo = async (req,res) => {
+    // console.log('vao day')
+    // console.log(req.params)
+
+    let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+    // console.log(categoryMenu)
+    let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+    let category = await Category.find({status:1}).sort({createdAt:1}).lean(); 
+
+    let userCurrent = await User.find({_id : req.params.userId})
+
+    // console.log(userCurrent)
+    return res.render('frontend/userInfo' , {
+      categoryMenu : categoryMenu ,
+      categoryDropDown : categoryDropDown , 
+      category : category ,
+      userCurrent : userCurrent[0],
+      moment : moment
+    })
+  }
+
+  exports.updateUserInfo = async (req,res) => {
+    upload (req,res,async function(err) {
+      if(err) {
+        console.log(err);
+        return res.send({status:false, err : err});
+      }
+
+      try{
+        if (req.body) {
+          // console.log(req.body)
+
+          const userDataUpdate = {
+            nameUser : req.body.nameUser,
+            email : req.body.email,
+            phoneNumber : req.body.phoneNumber,
+            address : req.body.address,
+            birthDay : req.body.birthDay,
+            gender : req.body.gender ,
+          };
+            // console.log(userDataUpdate)
+            if (req.file) {
+              userDataUpdate.avatar = req.file.filename;
+            }
+
+          console.log(userDataUpdate)
+
+          let updateUserInfo = await User.update({ _id: req.body.userIdUpdate}, { $set: userDataUpdate});
+
+          console.log('vao day')
+          console.log(updateUserInfo)
+          if (updateUserInfo) {
+            return res.send({status:true});
+          }
+        }
+      }
+      catch(errors){
+        return res.send({status:false, errors : errors});
+      }
+
+    })
   }

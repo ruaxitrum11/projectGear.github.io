@@ -1,0 +1,207 @@
+  <%- include('../include/admin-header-top') %>
+
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style>
+  
+  .form-user-add {
+    margin-top: 30px;
+    float: left;
+    width: 100%;
+    padding: 0 10%;
+  }
+  .form-user-add>span {
+    font-size: 1.6rem;
+    width: 15%;
+    display: inline-block;
+  }
+  .form-user-add>input  {
+    border-radius: 5px;
+    border : none;
+    padding: 5px 0;
+    width: 40%;
+    padding-left: 20px;
+    display: inline-block;
+  }
+  textarea.blog-textarea {
+    display: inline-block;
+    border-radius: 5px;
+    border : none;
+    padding: 5px 0;
+    width: 40%;
+    padding-left: 20px;
+  }
+  .form-user-add>input:focus ,.form-user-add>textarea:focus {
+    outline: none;
+  }
+  .active {
+    display: inline-block; 
+    width: 80%;
+    margin-bottom: 20px;
+  }
+
+  .active-block {
+    margin-left: 15.3%;
+  }
+  input.status-active {
+    width: 5%!important;
+  }
+  span.label {
+    width: 5%!important;
+    font-size: 90%!important;
+  }
+  .button-active a {
+    display: inline-block;
+    font-size: 2rem;
+    padding: 10px 30px;
+    background-color: #dd4b39;
+    color: #fff;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Sửa tin tức
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content ">
+
+    <div class="container content-edit">     
+
+      <div class="form-user-add">
+        <span>Tiêu đề</span>
+        <input id="blogTitle" type="text" name="blogTitle" value="<%=blog.blogTitle%>">
+      </div>
+      <div class="form-user-add">
+        <span>Hình ảnh</span>
+        <input id = "fileBlog" type="file" name="fileBlog" value="">
+        <img src="/upload/blog/<%=blog.blogImage%>" id="blogPreview" style="padding-left: 15%;width: 50%;">
+      </div>
+      <div class="form-user-add">
+        <span>Mô tả</span>
+        <textarea class="blog-textarea blogDescription"><%=blog.blogDescription%></textarea>
+      </div>
+      <div class="form-user-add">
+        <span>Tác giả</span>
+        <input id="blogAuthor" type="text" name="blogAuthor" value="<%=blog.blogAuthor%>">
+      </div>
+      <div class="form-user-add">
+        <span>Nội dung</span>
+        <textarea class="blog-textarea blogContent" ><%=blog.blogContent%></textarea>
+      </div>
+      <div class="form-user-add">
+        <span>Trạng thái</span>
+        <div class="active">
+          <input class="status-active" type="radio" name="status" value="1" <%if(blog.status==1){%>checked<%}%>>
+          <span class="label label-info">Active</span>
+        </div>
+        <div class="active active-block">
+          <input class="status-active" type="radio" name="status" value="0" <%if(blog.status==0){%>checked<%}%>>
+          <span class="label label-info">Block</span>
+        </div>
+      </div>
+      <div class="form-user-add button-active">
+        <a href="javascript:void(0)" onclick="postUserEdit('<%=blog._id%>')">Sửa tin tức</a>
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+<script>
+
+ function readURL(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#blogPreview').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#fileBlog").change(function() {
+  readURL(this);
+});
+
+
+function postUserEdit(id) {
+
+ var blogTitle = $( "input[name=blogTitle]").val();
+ var blogDescription = $(".blogDescription").val();
+ var blogAuthor = $("input[name=blogAuthor]").val();
+ var blogContent = $(".blogContent").val();
+ var blogImage =  $('input[type=file]')[0].files[0];
+ var status = $('input[name=status]:checked').val();
+ var id = id;
+
+ var formData = new FormData();
+
+ formData.append('fileBlog',blogImage)
+ formData.append('blogTitle' , blogTitle)
+ formData.append('blogDescription' , blogDescription)
+ formData.append('blogAuthor' , blogAuthor)
+ formData.append('blogContent' , blogContent)
+ formData.append('status' , status)
+ formData.append('id' , id)
+
+
+ $.ajax({
+  url: '/admin/blog/editBlog',
+  type: 'post',
+  data: formData,
+  contentType:false,
+  processData:false
+}).done(function(results){
+
+  if (results.status == true) {
+    $.confirm({
+      title: 'Thông báo!',
+      content:'<span class="text-success"><strong class="fa fa-check"></strong>Sửa tin tức thành công !</span>',
+      buttons: {
+        'Ok': function () {
+          window.location.replace('/admin/blog/list');
+        }
+      }
+    });
+  }else{
+    console.log(results)
+    $.alert({
+      title: 'Thông Báo !',
+      content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+    })
+  }
+})
+
+}
+
+
+
+</script>

@@ -15,6 +15,7 @@ body{
 }
 .navbar-menu-items , .navbar-menu-right{
 	padding-top: 15px;
+    padding: 15px 15px 0 0;
 }
 .navbar-menu-items .nav {
 	width: 100%;
@@ -46,6 +47,16 @@ body{
 }
 .navbar-default .navbar-nav-right>li>a{
 	font-size: 2rem;
+	position: relative;
+}
+.navbar-default .navbar-nav-right>li>a>p{
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 2px 8px;
+	font-size: 1.4rem;
+	background-color: #FF6602;
+	border-radius: 50%;
 }
 .navbar-header img {
 	float: left;
@@ -324,6 +335,14 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 .cart-thumb img {
 	width: 100%;
 }
+.cart-color {
+	padding: 0;
+}
+.cart-color p {
+	height: 18px ; 
+	width: 18px ;
+	border-radius: 50%;
+}
 .cart-product p {
 	font-weight: 600;
 	font-size: 1.6rem;
@@ -353,7 +372,6 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 .cart-price p>span {
 	font-size: 1rem;
 	margin-left: 2px;
-	font-style: italic;
 	font-weight: normal;
 }
 .cart-totalPayment {
@@ -461,8 +479,8 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 	text-decoration: none;
 	text-transform: capitalize;
 	font-size: 1.6rem;
-    letter-spacing: 1px;
-    font-weight: bold;
+	letter-spacing: 1px;
+	font-weight: bold;
 }
 .homepage-footer-bottom-content>ul>li>a:hover{
 	color: #a5a7aa;
@@ -574,6 +592,7 @@ span.review-content {
 .review-social {
 	background-color: #fff;
 }
+
 .other-product-category {
 	display: flex;
 	flex-wrap: wrap;

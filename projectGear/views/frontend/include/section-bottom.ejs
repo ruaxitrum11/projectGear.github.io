@@ -148,7 +148,7 @@
 <div class="other-product-category">
 	<% for (var i = 0; i < categoryBanner.length; i++) {%>
 	<div class="other-product-category-item">
-		<div class="other-product-category-scale category-banner-<%=categoryBanner[i]._id%>" 
+		<div onclick="location.href='/category/<%=categoryBanner[i].categoryNameSummary%>';" class="other-product-category-scale category-banner-<%=categoryBanner[i]._id%>" 
 			style = "background-image: url(/upload/thumbProduct/<%=categoryBanner[i].categoryBanner%>)">
 			<p><%=categoryBanner[i].categoryName%></p>
 		</div>

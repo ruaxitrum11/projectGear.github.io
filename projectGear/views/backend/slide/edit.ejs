@@ -1,0 +1,223 @@
+  <%- include('../include/admin-header-top') %>
+
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style>
+
+  .form-product-edit {
+    margin-top: 30px;
+    width: 100%;
+    float: left;
+    padding: 0 10%;
+  }
+  .form-product-edit>span {
+    font-size: 1.6rem;
+    width: 15%;
+    float: left;
+  }
+  .form-product-add-input>a {
+    font-size: 5rem;
+  }
+  .form-product-add-input>img {
+    width: 100%;
+  }
+  .form-product-edit>input  , .form-product-edit>textarea{
+    border-radius: 5px;
+    border : none;
+    padding: 5px 0;
+    width: 40%;
+    padding-left: 20px;
+    float: left;
+  }
+  .form-product-edit>textarea {
+    height: 150px;
+  }
+  .form-product-edit>input:focus , .form-product-edit>textarea:focus{
+    outline: none;
+  }
+  .form-product-add-input {
+    width: 80%;
+    display: inline-block;
+  }
+  .active {
+    margin-bottom: 20px;
+  }
+
+  .active-block {
+    margin-left: 15.4%;
+  }
+  input.status-active {
+    width: 5%!important;
+  }
+  span.label {
+    width: 5%!important;
+    font-size: 90%!important;
+  }
+  .button-active {
+    float: left;
+    margin-left: 10%;
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+  .button-active a {
+    display: inline-block;
+    font-size: 2rem;
+    padding: 10px 30px;
+    background-color: #dd4b39;
+    color: #fff;
+  }
+
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+  }
+
+
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Cập nhật trang trình bày
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content ">
+
+    <div class="container content-edit">     
+      <div class="form-product-edit">
+        <span>Tiêu đề</span>
+        <input id="slideTitle" type="text" name="slideTitle" value="<%=slide.slideTitle%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Hình ảnh</span>
+        <input id="fileSlide" type="file" name="fileSlide">
+        <img src="/upload/slide/<%=slide.slideImage%>" id ="slidePreview" style="width: 50%;display: block; margin-left:15%;">
+      </div>
+      <div class="form-product-edit">
+       <span>Mô tả</span>
+       <input id="slideContent" type="text" name="slideContent" value="<%=slide.slideContent%>">
+     </div>
+     <div class="form-product-edit">
+      <span>Đường dẫn</span>
+      <input id="slideLink" type="text" name="slideLink" value="<%=slide.slideLink%>">
+    </div>
+    <div class="form-product-edit">
+      <span>Loại</span>
+      <div class="active">
+        <input class="status-active" type="radio" name="isMain" value="1" <%if(slide.isSlideMain==1){%>checked<%}%> >
+        <span class="label label-info">Trang chính</span>
+      </div>
+      <div class="active active-block">
+        <input class="status-active" type="radio" name="isMain" value="0" <%if(slide.isSlideMain==0){%>checked<%}%>>
+        <span class="label label-info">Trang phụ</span>
+      </div>
+    </div>
+  
+
+
+    <div class="form-user-add button-active">
+      <a href="javascript:void(0)" onclick="postSlideEdit('<%=slide._id%>')">Cập Nhật</a>
+    </div>
+
+  </div>
+
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+
+<script type="text/javascript">
+
+
+  function postSlideEdit(id){
+
+    var slideTitle = $( "input[name=slideTitle]").val();
+    var slideContent = $("input[name=slideContent]").val();
+    var slideLink = $("input[name=slideLink]").val();
+    var isMain = $("input[name=isMain]:checked").val();
+    var status = $("input[name=status]:checked").val();
+    var slideImage =  $('input[type=file]')[0].files[0];
+    var id = id
+
+    var formData = new FormData();
+
+    formData.append('fileSlide',slideImage)
+    formData.append('slideTitle' , slideTitle)
+    formData.append('slideContent' , slideContent)
+    formData.append('slideLink' , slideLink)
+    formData.append('isMain' , isMain)
+    formData.append('status' , status)
+    formData.append('id' , id)
+
+    $.ajax({
+      url: '/admin/slide/edit',
+      type: 'post',
+      data: formData,
+      contentType:false,
+      processData:false
+    }).done(function(results){
+      // console.log(results);
+      if (results.status == true) {
+        $.confirm({
+          title: 'Thông báo!',
+          content:'<span class="text-success"><strong class="fa fa-check"></strong> Cập nhật thành công !</span>',
+          buttons: {
+            'Ok': function () {
+              window.location.replace('/admin/slide/list');
+            }
+          }
+        });
+      }else{
+        console.log(results)
+        $.alert({
+          title: 'Thông Báo !',
+          content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+        })
+      }
+    })
+  }
+
+  function readURL(input) {
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('#slidePreview').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  $("#fileSlide").change(function() {
+    readURL(this);
+  });
+
+
+</script>
+
+
+
+<!-- <script>
+  $('.jconfirm-buttons').(function(){
+    window.location.href = "http://www.google.com";
+  })
+</script> -->

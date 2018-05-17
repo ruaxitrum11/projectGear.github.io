@@ -158,12 +158,12 @@ exports.postSpecificationsEdit = async (req,res) => {
 						let errors = [{msg:"Tên thông số đã tồn tại"}]
 						return res.send({status:false, errors : errors});
 					}
-					console.log(req.body.specificationsName)
+					// console.log(req.body.specificationsName)
 					const specificationsDataUpdate = {
 						specificationsName : req.body.specificationsName,
 						status : req.body.status
 					};
-					console.log(specificationsDataUpdate)
+					// console.log(specificationsDataUpdate)
 					
 
 					let updateSpecifications = await Specifications.update({ _id: req.body.id}, { $set: specificationsDataUpdate});

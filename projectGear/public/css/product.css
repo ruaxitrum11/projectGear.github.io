@@ -144,7 +144,7 @@ span.product-color {
 .product-price-fixed a {
 	font-size: 1.6rem;
 	display: inline-block;
-	padding: 15px 30px;
+	padding: 10px 20px;
 	background-color: #FF6602;
 	color: #fff;
 	text-decoration: none;
@@ -321,7 +321,7 @@ span.product-color {
 }
 .product-involve-item-thumb img{
 	width: 100%;
-	padding-top: 50px;
+	padding-top: 20px;
 }
 .product-involve-item-content {
 	padding-left: 30px;

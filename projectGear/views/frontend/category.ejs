@@ -40,7 +40,8 @@
 								<p><%=product[j].productName%></p>
 							</div>
 							<%var convertVND = product[j].productColor[0].colorPrice%>
-							<div class="product-category-price new-product-category-price col-xs-5">
+						
+							<div class="product-category-price new-product-category-price-<%=product[j]._id%> col-xs-5">
 								<p><%=convertVND.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>
 							</div>
 						</div>
@@ -54,9 +55,15 @@
 						<ul>
 							<%if(product[j].productColor && product[j].productColor.length){%>
 							<%for(var k = 0 ; k< product[j].productColor.length ; k++){%>
-							<li class="option-color">
-								<span style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;"></span>
+							<%if( k == 0){%>
+							<li class="option-color option-color-<%=product[j]._id%> option-color-active ">
+								<span data-colorId = "<%=product[j].productColor[k].colorId._id%>"  style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;" onclick=changeColor('<%=product[j]._id%>','<%=product[j].productColor[k].colorId._id%>')></span>
 							</li>
+							<%}else{%>
+							<li class="option-color option-color-<%=product[j]._id%>">
+								<span data-colorId = "<%=product[j].productColor[k].colorId._id%>" style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;" onclick=changeColor('<%=product[j]._id%>','<%=product[j].productColor[k].colorId._id%>')></span>
+							</li>
+							<%}%>
 							<%}%>
 							<%}%>
 						</ul>
@@ -64,7 +71,7 @@
 					<div class="product-button-choose">
 						<div class="container-fluid">
 							<div class="button-product button-cart col-sm-6">
-								<a href="#" class="">Mua Hàng</a>
+								<a href="#" onclick= addToCart('<%=product[j]._id%>') data-toggle="modal" data-target="#cart-modal" class="">Thêm vào giỏ</a>
 							</div>
 							<div class="button-product button-more col-sm-6">
 								<a href="/product/<%=product[j]._id%>" class="">Xem Thêm</a>
