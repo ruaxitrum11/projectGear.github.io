@@ -89,15 +89,49 @@ exports.changeColor = async(req,res) =>{
 
 	// return res.send({status:true , productColorCode : productColorCode[0]})
 
-exports.addToCart = async(req,res) => {
-	console.log("vao day chua")
-	console.log(req.cookies)
+	exports.addToCart = async(req,res) => {
+
+	
+	// console.log(req.body.postData)
+
+	var items = Object.keys(req.body.postData)
+
+	console.log(items)
+
+	let product = await Product.find({_id : {$in : items }}).select({productColor:1 , productThumb : 1 , productName :1})
+
+	// console.log(product)
+	return res.send({status:true , product : product } )
+
+
+	// let product = Product.find({_id : {$in:req.body.data}})
+	// console.log("===========")
 	// console.log(req.body.idProductCart)
 
-	let productAddToCart = await Product.find({_id : req.body.idProductCart})
-	.select({productName:1 , productThumb : 1 , productColor : 1})
-	
-	// console.log(productAddToCart)
+	// let productAddToCart = await Product.find({_id : req.body.idProductCart})
+	// .select({productName:1 , productThumb : 1 , productColor : 1}).populate('productColor.colorId')
 
-	return res.send({status:true , productAddToCart:productAddToCart[0] } )
+	// let product = await Product.find({}).select({productColor:1 , _id : 1 , productThumb:1}).populate('productColor.colorId')
+	// // console.log(product)
+	// var productCartCurrent = []
+	
+	// for ( var i = 0 ; i < req.body.data.length ; i++) {
+	// 	for(var j = 0 ; j < product.length; j++) {
+	// 		for(var k = 0 ; k < product[j].productColor.length;k++) {
+	// 			// console.log('here')
+	// 			// console.log(product[j].productColor[k].colorId)
+	// 			if(req.body.data[i].cartId == product[j]._id && req.body.data[i].cartColorId == product[j].productColor[k].colorId){
+	// 				var productCartEach = product[j]
+	// 				// console.log(productCartEach)
+	// 				productCartCurrent.push(productCartEach)
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// console.log(productCartCurrent)
+
+	
+
+	
 }

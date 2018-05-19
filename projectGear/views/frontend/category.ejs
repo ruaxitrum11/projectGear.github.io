@@ -30,23 +30,24 @@
 			<div class="product-category-content new-product-category-content">
 				<%for(var j = 0 ; j < product.length ; j++){%>
 				<%if(brand[i]._id.toString()== product[j].productBrand.toString()){%>
-				<div class="product-category-item new-product-category-item">
-					<div class="product-category-thubnail new-product-category-thubnail">
+			
+				<div class="product-category-item new-product-category-item product-id-<%=product[j]._id%>" data-id ="<%=product[j]._id%>">
+					<div class="product-category-thubnail new-product-category-thubnail product-thumb-<%=product[j]._id%>" data-thumb="<%=product[j].productThumb%>">
 						<img src="/upload/thumbProduct/<%=product[j].productThumb%>">
 					</div>
 					<div class="product-category-information new-product-category-information">
 						<div class="container-fluid">
-							<div class="product-category-title new-product-category-title col-xs-7">
+							<div class="product-category-title new-product-category-title col-xs-7 product-name-<%=product[j]._id%>" data-name ="<%=product[j].productName%>">
 								<p><%=product[j].productName%></p>
 							</div>
-							<%var convertVND = product[j].productColor[0].colorPrice%>
+							<%var convertVND = product[j].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>
 						
 							<div class="product-category-price new-product-category-price-<%=product[j]._id%> col-xs-5">
-								<p><%=convertVND.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>
+								<p><%=convertVND%></p>
 							</div>
 						</div>
 					</div>
-					<div class="product-category-description new-product-category-description">
+					<div class="product-category-description new-product-category-description ">
 						<p>
 							<%=product[j].productDescription%>
 						</p>
@@ -57,11 +58,11 @@
 							<%for(var k = 0 ; k< product[j].productColor.length ; k++){%>
 							<%if( k == 0){%>
 							<li class="option-color option-color-<%=product[j]._id%> option-color-active ">
-								<span data-colorId = "<%=product[j].productColor[k].colorId._id%>"  style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;" onclick=changeColor('<%=product[j]._id%>','<%=product[j].productColor[k].colorId._id%>')></span>
+								<span data-colorId = "<%=product[j].productColor[k].colorId._id%>" data-colorCode ="<%=product[j].productColor[k].colorId.colorCode%>" style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;" onclick=changeColor('<%=product[j]._id%>','<%=product[j].productColor[k].colorId._id%>')></span>
 							</li>
 							<%}else{%>
 							<li class="option-color option-color-<%=product[j]._id%>">
-								<span data-colorId = "<%=product[j].productColor[k].colorId._id%>" style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;" onclick=changeColor('<%=product[j]._id%>','<%=product[j].productColor[k].colorId._id%>')></span>
+								<span data-colorId = "<%=product[j].productColor[k].colorId._id%>" data-colorCode ="<%=product[j].productColor[k].colorId.colorCode%>" style=" background-color : <%=product[j].productColor[k].colorId.colorCode%>;" onclick=changeColor('<%=product[j]._id%>','<%=product[j].productColor[k].colorId._id%>')></span>
 							</li>
 							<%}%>
 							<%}%>
