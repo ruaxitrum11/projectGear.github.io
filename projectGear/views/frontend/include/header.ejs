@@ -144,7 +144,7 @@
 							text-align: center;">
 							<a href="/user/<%=user._id%>">Tổng Quan</a>
 							<a href="#">lịch sử giao dịch</a>
-							<a href="/user/logout">Thoát</a>
+							<a href="/user/logout">Đăng xuất</a>
 						</div>
 					</li>
 					<%}%>
@@ -154,7 +154,8 @@
 						</a>
 					</li>
 					<li class="navbar-item ">
-						<a href="#" data-toggle="modal" data-target="#cart-modal" data-direction='right'>
+						
+						<a href="#" onclick="openCart()" data-toggle="modal" data-target="#cart-modal" data-direction='right'>
 							<i class="fa fa-shopping-cart" aria-hidden="true" style="position: relative;"></i>
 							<p class="number-product-cart" style="position: absolute">0</p>
 						</a>

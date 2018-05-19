@@ -48,6 +48,7 @@ var frontend_users = require('./routes/frontend/user');
 var frontend_categories = require('./routes/frontend/category');
 var frontend_products = require('./routes/frontend/product');
 var frontend_blogs = require('./routes/frontend/blog');
+var frontend_checkouts = require('./routes/frontend/checkout');
 
 
 // var frontend_case = require('./routes/frontend/case');
@@ -81,6 +82,7 @@ app.use('/user', frontend_users);
 app.use('/category' , frontend_categories);
 app.use('/product',frontend_products);
 app.use('/blog',frontend_blogs);
+app.use('/checkout',frontend_checkouts);
 
 
 /*BACKEND Appuse*/

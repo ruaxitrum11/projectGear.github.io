@@ -340,3 +340,364 @@ function isEmail(email) {
 	return regex.test(email);
 }
 
+var cart = localStorage.getItem('cart')
+
+if(!cart){
+	localStorage.setItem('cart',JSON.stringify([]))
+}
+// console.log(cart)
+
+
+
+function addToCart(idProductCart,cart){
+
+
+	
+	var idColorCart = ($('.option-color-'+idProductCart+'.option-color-active span').attr('data-colorid'));
+	// console.log(idColorCart)
+	var cartId = $('.product-id-'+idProductCart).attr('data-id');
+	// var cartName = $('.product-name-'+idProductCart).attr('data-name');
+	// var cartThumb = $('.product-thumb-'+idProductCart).attr('data-thumb');
+	var cartColorId = idColorCart
+	// var cartColorCode = $('.option-color-'+idProductCart+'.option-color-active span').attr('data-colorCode');
+	var cartColorQuantity = 1 ;
+	// var cartColorPrice = $('.new-product-category-price-'+idProductCart+'>p').text().replace(/\D/g, '');
+
+	var product = {}
+
+	product.cartId = cartId;
+	// product.cartName = cartName;
+	// product.cartThumb = cartThumb
+	product.cartColorId = cartColorId;
+	// product.cartColorCode = cartColorCode;
+	product.cartColorQuantity = cartColorQuantity;
+	// product.cartColorPrice = cartColorPrice;
+
+	// products.push(product)
+	
+	// console.log(product)
+
+
+	if (localStorage && localStorage.getItem('cart')) {
+		var cart = JSON.parse(localStorage.getItem('cart'));    
+		// console.log(cart)        
+		// console.log(product)
+
+		// console.log(cart)
+		
+		if(cart && cart.length){
+			var productIsExists = false;
+			for (var i = 0; i < cart.length; i++) {
+				// console.log("========")
+				// console.log(product)
+				if(cart[i].cartId == product.cartId && cart[i].cartColorId == product.cartColorId){
+					cart[i].cartColorQuantity++
+					localStorage.setItem('cart', JSON.stringify(cart));
+					productIsExists = true;
+					break;
+				}
+				
+			}
+			if(!productIsExists){
+				cart.push(product)
+				localStorage.setItem('cart', JSON.stringify(cart));
+			}
+
+		}else {
+			cart.push(product)
+			// console.log(cart)
+			localStorage.setItem('cart', JSON.stringify(cart));
+
+		}
+	} 
+	var numberOfItemCart = JSON.parse(localStorage.getItem('cart'));
+	var xhtml = '';
+	xhtml += numberOfItemCart.length
+	$('.number-product-cart').html(xhtml)
+
+	var dataLocal = JSON.parse(localStorage.getItem('cart'));
+
+	// console.log(data)
+
+	var postData = _.groupBy(dataLocal, function (item) {
+		return item.cartId
+	})
+
+	// console.log(postData)
+
+
+
+	$.ajax({
+		url: '/product/addToCart',
+		type: 'post',
+		data: {
+			postData : postData
+		} ,
+		dataType: 'json'
+	}).done(function(results){
+		// console.log(results.product)
+		var xhtml = '';
+		for (var i = 0; i < results.productCart.length; i++) {
+			for(var j = 0 ; j < dataLocal.length;j++){
+				if(results.productCart[i]._id == dataLocal[j].cartId && results.productCart[i].productColor.colorId == dataLocal[j].cartColorId){
+					xhtml += '<div class="form-cart-content" id="cart-content-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'">';
+					xhtml += '<div class="container-fluid">';
+					xhtml += '<div class="cart-thumb col-xs-2">';
+					xhtml += '<img src="/upload/thumbProduct/'+results.productCart[i].productThumb+'">';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-product col-xs-4">';
+					xhtml += '<p>'+results.productCart[i].productName+'</p>';
+					xhtml += '</div>';
+
+					xhtml += '<div class="cart-color col-xs-1" >';
+					xhtml += '<p style="background-color:'+results.productCart[i].productColor.idColorLookup[0].colorCode+'"></p>';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-quantum col-xs-2">';
+					xhtml += '<input oninput="changeQuantum(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')" type="number" min="1" name="" value="'+dataLocal[j].cartColorQuantity+'" id="cart-quantum-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'">';
+					xhtml += '<a href="#" class="remove-productCart" onclick="removeCartItem(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')">Xóa</a>';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-price col-xs-3" data-colorPrice="'+results.productCart[i].productColor.colorPrice+'" id="cart-price-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'" style="padding:0">';
+					xhtml += '<p>'+(dataLocal[j].cartColorQuantity*results.productCart[i].productColor.colorPrice).toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+					xhtml += '</div>';
+					xhtml += '</div>';
+					xhtml += '</div>';	
+				}
+			}
+		}
+
+		$('#myCart').html(xhtml)
+
+		var totalCart = 0;
+
+		var priceArray = $(".cart-price p");
+		priceArray.each(function(){
+			totalCart += (parseInt($(this).text().replace(/\D/g, '')));
+		})
+		// console.log(totalCart)
+
+		if(numberOfItemCart.length > 0){
+			var xhtmlCheckOut = '';
+			xhtmlCheckOut += '<div class="cart-totalPayment">';
+			xhtmlCheckOut += '<div class="container-fluid">';
+			xhtmlCheckOut += '<div class="cart-totalPayment-title col-xs-6">';
+			xhtmlCheckOut += '<p>Thành Tiền</p>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '<div class="cart-totalPayment-price col-xs-6">';
+			xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '<div class="cart-button">';
+			xhtmlCheckOut += '<div class="container-fluid">';
+			xhtmlCheckOut += '<div class="cart-button-checkout">';
+			xhtmlCheckOut += '<a href="/checkout">Thanh toán</a>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '<div class="cart-button-continue">';
+			xhtmlCheckOut += '<a href="#" data-dismiss="modal">Tiếp tục mua hàng</a>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			$('.cart-footer').html(xhtmlCheckOut)
+		}else{
+			$('.cart-footer').html('')
+		}
+	})
+}
+
+
+$(document).ready(function(){
+	var numberOfItemCart = JSON.parse(localStorage.getItem('cart'));
+	var xhtml = '';
+	xhtml += numberOfItemCart.length
+	$('.number-product-cart').html(xhtml)
+})
+
+function openCart() {
+	if (localStorage && localStorage.getItem('cart')) {
+		var dataLocal = JSON.parse(localStorage.getItem('cart'));
+
+		var postData = _.groupBy(dataLocal, function (item) {
+			return item.cartId
+		})
+
+		$.ajax({
+			url: '/product/addToCart',
+			type: 'post',
+			data: {
+				postData : postData
+			} ,
+			dataType: 'json'
+		}).done(function(results){
+		// console.log(results.product)
+		var xhtml = '';
+		for (var i = 0; i < results.productCart.length; i++) {
+			for(var j = 0 ; j < dataLocal.length;j++){
+				if(results.productCart[i]._id == dataLocal[j].cartId && results.productCart[i].productColor.colorId == dataLocal[j].cartColorId){
+					xhtml += '<div class="form-cart-content" id="cart-content-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'">';
+					xhtml += '<div class="container-fluid">';
+					xhtml += '<div class="cart-thumb col-xs-2">';
+					xhtml += '<img src="/upload/thumbProduct/'+results.productCart[i].productThumb+'">';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-product col-xs-4">';
+					xhtml += '<p>'+results.productCart[i].productName+'</p>';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-color col-xs-1" >';
+					xhtml += '<p style="background-color:'+results.productCart[i].productColor.idColorLookup[0].colorCode+'"></p>';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-quantum col-xs-2">';
+					xhtml += '<input oninput="changeQuantum(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')" type="number" min="1" name="" value="'+dataLocal[j].cartColorQuantity+'" id="cart-quantum-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'">';
+					xhtml += '<a href="#" class="remove-productCart" onclick="removeCartItem(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')">Xóa</a>';
+					xhtml += '</div>';
+					xhtml += '<div class="cart-price col-xs-3" data-colorPrice ="'+results.productCart[i].productColor.colorPrice+'" id="cart-price-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'" style="padding:0">';
+					xhtml += '<p>'+(dataLocal[j].cartColorQuantity*results.productCart[i].productColor.colorPrice).toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+					xhtml += '</div>';
+					xhtml += '</div>';
+					xhtml += '</div>';	
+				}
+			}
+		}
+		$('#myCart').html(xhtml)
+		
+		var totalCart = 0;
+
+		var priceArray = $(".cart-price p");
+		priceArray.each(function(){
+			totalCart += (parseInt($(this).text().replace(/\D/g, '')));
+		})
+		// console.log(totalCart)
+	
+
+		var numberOfItemCart = JSON.parse(localStorage.getItem('cart'));
+
+		if(numberOfItemCart.length > 0){
+			var xhtmlCheckOut = '';
+			xhtmlCheckOut += '<div class="cart-totalPayment">';
+			xhtmlCheckOut += '<div class="container-fluid">';
+			xhtmlCheckOut += '<div class="cart-totalPayment-title col-xs-6">';
+			xhtmlCheckOut += '<p>Thành Tiền</p>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '<div class="cart-totalPayment-price col-xs-6">';
+			xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '<div class="cart-button">';
+			xhtmlCheckOut += '<div class="container-fluid">';
+			xhtmlCheckOut += '<div class="cart-button-checkout">';
+			xhtmlCheckOut += '<a href="/checkout">Thanh toán</a>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '<div class="cart-button-continue">';
+			xhtmlCheckOut += '<a href="#" data-dismiss="modal">Tiếp tục mua hàng</a>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			xhtmlCheckOut += '</div>';
+			$('.cart-footer').html(xhtmlCheckOut)
+		}else{
+			$('.cart-footer').html('')
+		}
+	})
+
+	}
+}
+
+
+
+function removeCartItem (idColorRemove , idProductRemove){
+	$('#cart-content-'+idColorRemove+'-'+idProductRemove).remove()
+	var totalCart = 0;
+
+	var priceArray = $(".cart-price p");
+	priceArray.each(function(){
+		totalCart += (parseInt($(this).text().replace(/\D/g,'')));
+	})
+	
+
+	var cartRemoved = JSON.parse(localStorage.getItem('cart'));
+
+	// console.log(cartRemoved)
+
+	for(var i = 0 ; i<cartRemoved.length ;i++){
+		if(cartRemoved[i].cartId == idProductRemove && cartRemoved[i].cartColorId == idColorRemove){
+			cartRemoved.splice(i,1)
+		}
+	}
+	localStorage.setItem("cart",JSON.stringify(cartRemoved))
+
+	var numberOfItemCart = JSON.parse(localStorage.getItem('cart'));
+	var xhtml = '';
+	xhtml += numberOfItemCart.length
+	$('.number-product-cart').html(xhtml)
+
+	if(numberOfItemCart.length > 0){
+		var xhtmlCheckOut = '';
+		xhtmlCheckOut += '<div class="cart-totalPayment">';
+		xhtmlCheckOut += '<div class="container-fluid">';
+		xhtmlCheckOut += '<div class="cart-totalPayment-title col-xs-6">';
+		xhtmlCheckOut += '<p>Thành Tiền</p>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '<div class="cart-totalPayment-price col-xs-6">';
+		xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '<div class="cart-button">';
+		xhtmlCheckOut += '<div class="container-fluid">';
+		xhtmlCheckOut += '<div class="cart-button-checkout">';
+		xhtmlCheckOut += '<a href="/checkout">Thanh toán</a>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '<div class="cart-button-continue">';
+		xhtmlCheckOut += '<a href="#" data-dismiss="modal">Tiếp tục mua hàng</a>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '</div>';
+		xhtmlCheckOut += '</div>';
+		$('.cart-footer').html(xhtmlCheckOut)
+	}else{
+		$('.cart-footer').html('')
+		$('#myCart').html('Giỏ Hàng Của Bạn Không Có Sản Phẩm Nào !')
+	}
+}
+
+
+
+function changeQuantum(idColorChange , idProductChange){
+	// console.log(idColorChange);
+	// console.log(idProductChange)
+	var productQuantumCart = $('#cart-quantum-'+idColorChange+'-'+idProductChange).val();
+	// console.log(productQuantumCart)
+	// console.log('#cart-price-'+id)
+	var productPriceCart = $('#cart-price-'+idColorChange+'-'+idProductChange).attr('data-colorPrice');
+
+	// console.log(productPriceCart)
+
+	console.log('#cart-price-'+idColorChange+'-'+idProductChange+' p')
+
+	totalPricePerItem = productPriceCart*productQuantumCart
+
+	console.log(totalPricePerItem)
+
+	$('#cart-price-'+idColorChange+'-'+idProductChange+' p').html(''+totalPricePerItem.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'');
+
+	var dataLocal = JSON.parse(localStorage.getItem('cart'));
+
+	// console.log(dataLocal)
+
+	// console.log(productQuantumCart)
+
+	for (var i = 0; i < dataLocal.length; i++) {
+		if (dataLocal[i].cartId == idProductChange && dataLocal[i].cartColorId == idColorChange) {
+			dataLocal[i].cartColorQuantity = productQuantumCart
+		}
+	}
+
+	localStorage.setItem("cart",JSON.stringify(dataLocal));
+
+	var totalCart = 0;
+
+	var priceArray = $(".cart-price p");
+	priceArray.each(function(){
+		totalCart+= (parseInt($(this).text().replace(/\D/g, '')));
+	})
+	// console.log(totalCart)
+
+	$('.cart-totalPayment-price>p').html(totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'}))
+}

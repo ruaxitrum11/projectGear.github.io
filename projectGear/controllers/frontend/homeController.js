@@ -26,7 +26,8 @@ const Slide = require('../../models/Slide');
  	let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
  	let category = await Category.find({status:1}).sort({createdAt:1}).lean();
 
- 	let productFirst = await Product.find({}).populate('productCategory').sort({createdAt:-1}).limit(3).lean();
+ 	let productFirst = await Product.find({productCategory : categoryMenu[0]._id}).populate('productCategory').sort({createdAt:-1}).limit(3).lean();
+ 	// console.log(productFirst)
 
  	let slideIsMain = await Slide.find({isSlideMain:1 , status:1}).sort({createdAt:1}).lean();
  	let slideNormal = await Slide.find({isSlideMain:0 , status:1}).sort({createdAt:1}).lean();
@@ -53,7 +54,7 @@ const Slide = require('../../models/Slide');
  		let showProduct = await Product.find({productCategory : req.query.id}).populate('productCategory')
  		.sort({createdAt:-1}).limit(3).lean()
 
- 		console.log(showProduct)
+ 		// console.log(showProduct)
  		return res.send({status: true, showProduct : showProduct});
  	}catch(err){
  		res.send({status:false})

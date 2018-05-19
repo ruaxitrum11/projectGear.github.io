@@ -7,6 +7,7 @@
  const fs = require('fs');
  const download = require('download');
  const async = require('async');
+ var mongoose = require('mongoose');
 
 // Models
 const User = require('../../models/User');
@@ -91,47 +92,48 @@ exports.changeColor = async(req,res) =>{
 
 	exports.addToCart = async(req,res) => {
 
-	
+
 	// console.log(req.body.postData)
 
-	var items = Object.keys(req.body.postData)
+	let arrID = [];
 
-	console.log(items)
+	var items = Object.keys(req.body.postData);
 
-	let product = await Product.find({_id : {$in : items }}).select({productColor:1 , productThumb : 1 , productName :1})
+	// console.log(items)
 
-	// console.log(product)
-	return res.send({status:true , product : product } )
+	if (items.length) {
+		for (var i = items.length - 1; i >= 0; i--) {
+			if (items[i] && items !="") {
+				arrID.push(mongoose.Types.ObjectId(items[i]));
+			}
+		}
+	}
 
+	// console.log(items)
 
-	// let product = Product.find({_id : {$in:req.body.data}})
-	// console.log("===========")
-	// console.log(req.body.idProductCart)
+	// console.log(req.body.postData)
 
-	// let productAddToCart = await Product.find({_id : req.body.idProductCart})
-	// .select({productName:1 , productThumb : 1 , productColor : 1}).populate('productColor.colorId')
+	// let product = await Product.find({_id : {$in : items }}).select({productColor:1 , productThumb : 1 , productName :1})
 
-	// let product = await Product.find({}).select({productColor:1 , _id : 1 , productThumb:1}).populate('productColor.colorId')
-	// // console.log(product)
-	// var productCartCurrent = []
+	let productCart = await Product.aggregate([
+		{$match: {_id : {$in : arrID}}},
+		{$unwind : "$productColor"},
+		{$project: {
+			productColor :1,
+			productThumb :1,
+			productName :1
+		}},
+		{$lookup : {
+			from : "colors",
+			localField : "productColor.colorId",
+			foreignField : "_id",
+			as : "productColor.idColorLookup"
+		}}
+		])
 	
-	// for ( var i = 0 ; i < req.body.data.length ; i++) {
-	// 	for(var j = 0 ; j < product.length; j++) {
-	// 		for(var k = 0 ; k < product[j].productColor.length;k++) {
-	// 			// console.log('here')
-	// 			// console.log(product[j].productColor[k].colorId)
-	// 			if(req.body.data[i].cartId == product[j]._id && req.body.data[i].cartColorId == product[j].productColor[k].colorId){
-	// 				var productCartEach = product[j]
-	// 				// console.log(productCartEach)
-	// 				productCartCurrent.push(productCartEach)
-	// 			}
-	// 		}
-	// 	}
-	// }
+	// console.log(product[0].productColor.idColorLookup[0])
+	return res.send({status:true , productCart : productCart } )
 
-	// console.log(productCartCurrent)
-
-	
 
 	
 }

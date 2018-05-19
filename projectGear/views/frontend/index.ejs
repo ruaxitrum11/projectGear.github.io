@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div class="box-shadow">
-				<img src="../img/homepage/shadow1.png">
+				<img src="/img/homepage/shadow1.png">
 			</div>
 			<div class="new-product">
 				<div class="new-product-menu">
@@ -90,15 +90,12 @@
 					<div class="row">
 						<%if(productFirst && productFirst.length){%>
 						<%for(var i =0 ; i < productFirst.length ;i++){%>
+						
 						<div class="new-item col-xs-12 col-sm-4  wow fadeInLeft " data-wow-duration="2s">
-
 							<div class="product-thubnail">
-								<img src="../upload/thumbProduct/<%=productFirst[i].productThumb%>">
-								<div class="product-thubnail-hover product-thubnail-hover-cart">
-									<a href="#" class="">Mua Hàng</a>
-								</div>
+								<img src="/upload/thumbProduct/<%=productFirst[i].productThumb%>">
 								<div class="product-thubnail-hover product-thubnail-hover-more">
-									<a href="product.html" class="">Xem Thêm</a>
+									<a href="/product/<%=productFirst[i]._id%>" class="">Xem Thêm</a>
 								</div>
 							</div>
 							<div class="product-information">
@@ -106,6 +103,7 @@
 								<p><%=productFirst[i].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>	
 							</div>
 						</div>
+						
 						<%}%>
 						<%}%>
 					</div>
@@ -158,12 +156,10 @@
 						
 						xhtml += '<div class="new-item col-xs-12 col-sm-4  wow fadeInLeft" data-wow-duration="2s">';
 						xhtml += '<div class="product-thubnail">';
-						xhtml += '<img src="../upload/thumbProduct/'+results.showProduct[i].productThumb+'">';
-						xhtml += '<div class="product-thubnail-hover product-thubnail-hover-cart">';
-						xhtml += '<a href="#" class="">Mua Hàng</a>';
-						xhtml += '</div>';
+						xhtml += '<img src="/upload/thumbProduct/'+results.showProduct[i].productThumb+'">';
+						
 						xhtml += '<div class="product-thubnail-hover product-thubnail-hover-more">';
-						xhtml += '<a href="product.html" class="">Xem Thêm</a>';
+						xhtml += '<a href="/product/'+results.showProduct[i]._id+'" class="">Xem Thêm</a>';
 						xhtml += '</div>';
 						xhtml += '</div>';
 						xhtml += '<div class="product-information">';

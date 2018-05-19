@@ -44,6 +44,7 @@ body{
 }
 .navbar-default .navbar-nav-right {
 	float: right;
+	width: 100%;
 }
 .navbar-default .navbar-nav-right>li>a{
 	font-size: 2rem;
@@ -125,7 +126,6 @@ body{
 	font-family: 'Roboto', sans-serif;
 	font-size: 2.6rem;
 	font-weight: 400;
-	text-transform: capitalize;
 }
 .form-input-wrapper {
 	padding-top: 20px;

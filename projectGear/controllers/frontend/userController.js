@@ -146,7 +146,7 @@ exports.postLogin = async (req,res, next)=>{
 
   exports.logOut = (req,res) =>{
     req.logout();
-    res.redirect('/');
+    res.redirect('back');
   }
 
   exports.getUserInfo = async (req,res) => {
