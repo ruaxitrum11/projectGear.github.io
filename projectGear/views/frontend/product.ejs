@@ -27,14 +27,17 @@
 						<%if(product.productColor && product.productColor.length){%>
 						<%for(var i = 0 ; i< product.productColor.length ; i++){%>
 						<%if(i==0){%>
-						<span class="product-color color-active" id="product-color-first" style="background-color:<%=product.productColor[i].colorId.colorCode%>" onclick=showProduct('<%=product.productColor[i].colorId._id%>','<%=product._id%>') ></span>
+						<span class="product-color product-color-<%=product._id%> color-active" data-idProduct="<%=product.productColor[i].colorId._id%>" id="product-color-first" style="background-color:<%=product.productColor[i].colorId.colorCode%>" onclick=showProduct('<%=product.productColor[i].colorId._id%>','<%=product._id%>') ></span>
 						<%}else{%>
-						<span class="product-color" style="background-color:<%=product.productColor[i].colorId.colorCode%>;border:1px solid #000;" onclick=showProduct('<%=product.productColor[i].colorId._id%>','<%=product._id%>')></span>
+						<span class="product-color product-color-<%=product._id%>" data-idProduct="<%=product.productColor[i].colorId._id%>" style="background-color:<%=product.productColor[i].colorId.colorCode%>;border:1px solid #000;" onclick=showProduct('<%=product.productColor[i].colorId._id%>','<%=product._id%>')></span>
 						<%}%>
 						<%}%>
 						<%}%>
 					</div>
 					<div class="product-details-price">
+
+						<p></p>
+						<a href="#" onclick="addToCart('<%=product._id%>')" data-toggle="modal" data-target="#cart-modal">mua sản phẩm</a>
 					</div>
 				</div>
 			</div>
@@ -57,7 +60,8 @@
 					<li><a href="#product-main-specifications">thông số kĩ thuật</a></li>
 				</ul>
 				<div class="product-price-fixed">
-					
+					<p></p>
+					<a href="#" onclick="addToCart('<%=product._id%>')" data-toggle="modal" data-target="#cart-modal">mua sản phẩm</a>
 				</div>
 			</div>
 			<div class="product-main-info" >

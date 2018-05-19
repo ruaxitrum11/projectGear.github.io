@@ -26,10 +26,10 @@ function showProduct(idColor , idProduct){
 
 			//show price product
 			var xhtmlPrice = '';
-			xhtmlPrice += '<p>'+results.dataProductColor.colorPrice.
-			toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
-			xhtmlPrice += '<a href="#">mua sản phẩm</a>';
-			$('.product-details-price').html(xhtmlPrice);
+			xhtmlPrice += results.dataProductColor.colorPrice.
+			toLocaleString('vi', {style : 'currency', currency : 'VND'});
+			
+			$('.product-details-price p').html(xhtmlPrice);
 
 			//show image product
 			var xhtmlImages = '';
@@ -50,10 +50,10 @@ function showProduct(idColor , idProduct){
 
 			//show price product fixed 
 			var xhtmlPriceFixed = '';
-			xhtmlPriceFixed += '<p>'+results.dataProductColor.colorPrice.
-			toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>';
-			xhtmlPriceFixed += '<a href="#">mua hàng</a>';
-			$('.product-price-fixed').html(xhtmlPriceFixed)
+			xhtmlPriceFixed += results.dataProductColor.colorPrice.
+			toLocaleString('vi', {style : 'currency', currency : 'VND'});
+			
+			$('.product-price-fixed p').html(xhtmlPriceFixed)
 		}
 	})
 }

@@ -351,14 +351,20 @@ if(!cart){
 
 function addToCart(idProductCart,cart){
 
-
+	var idColorProduct = ($('.product-color-'+idProductCart+'.color-active').attr('data-idproduct'))
+	// console.log(idColorProduct)
 	
 	var idColorCart = ($('.option-color-'+idProductCart+'.option-color-active span').attr('data-colorid'));
 	// console.log(idColorCart)
-	var cartId = $('.product-id-'+idProductCart).attr('data-id');
+	// var cartId = $('.product-id-'+idProductCart).attr('data-id');
+	cartId = idProductCart
 	// var cartName = $('.product-name-'+idProductCart).attr('data-name');
 	// var cartThumb = $('.product-thumb-'+idProductCart).attr('data-thumb');
-	var cartColorId = idColorCart
+	if(idColorCart){
+		var cartColorId = idColorCart
+	}else if(idColorProduct){
+		var cartColorId = idColorProduct
+	}
 	// var cartColorCode = $('.option-color-'+idProductCart+'.option-color-active span').attr('data-colorCode');
 	var cartColorQuantity = 1 ;
 	// var cartColorPrice = $('.new-product-category-price-'+idProductCart+'>p').text().replace(/\D/g, '');
@@ -565,7 +571,7 @@ function openCart() {
 			totalCart += (parseInt($(this).text().replace(/\D/g, '')));
 		})
 		// console.log(totalCart)
-	
+
 
 		var numberOfItemCart = JSON.parse(localStorage.getItem('cart'));
 
