@@ -143,16 +143,17 @@
 	color: #FF6602;
 	padding-left: 10px;
 }
-.checkout-information-form input {
+.checkout-information-form input , .checkout-information-form textarea{
 	float: right;
 	width: 65%;
 	padding: 5px 0px 5px 20px;
 	border : 1px solid #cecccc;
 	border-radius: 5px;
 }
-.checkout-information-form input:focus {
+.checkout-information-form input:focus , .checkout-information-form textarea:focus  {
 	outline: none;
 }
+
 .paymentMethod-form , .checkout-paymentMethod-content  {
 	width: 100%;
 	float: left;

@@ -1,0 +1,227 @@
+  <%- include('../include/admin-header-top') %>
+
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style>
+
+  .form-product-edit {
+    margin-top: 30px;
+    width: 100%;
+    float: left;
+    padding: 0 10%;
+  }
+  .form-product-edit>span {
+    font-size: 1.6rem;
+    width: 15%;
+    float: left;
+  }
+  .form-product-add-input>a {
+    font-size: 5rem;
+  }
+  .form-product-add-input>img {
+    width: 100%;
+  }
+  .form-product-edit>input  , .form-product-edit>textarea{
+    border-radius: 5px;
+    border : none;
+    padding: 5px 0;
+    width: 40%;
+    padding-left: 20px;
+    float: left;
+  }
+  .form-product-edit>textarea {
+    height: 100px;
+  }
+  .form-product-edit>input:focus , .form-product-edit>textarea:focus{
+    outline: none;
+  }
+  .form-product-add-input {
+    width: 80%;
+    display: inline-block;
+  }
+  .active {
+    margin-bottom: 20px;
+  }
+
+  .active-block {
+    margin-left: 15.4%;
+  }
+  input.status-active {
+    width: 5%!important;
+  }
+  span.label {
+    width: 5%!important;
+    font-size: 90%!important;
+  }
+  .button-active {
+    float: left;
+    margin-left: 10%;
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+  .button-active a {
+    display: inline-block;
+    font-size: 2rem;
+    padding: 10px 30px;
+    background-color: #dd4b39;
+    color: #fff;
+  }
+
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+  }
+
+
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Chi tiết hóa đơn
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content ">
+
+    <div class="container content-edit">     
+      <div class="form-product-edit">
+        <span>Mã hóa đơn</span>
+        <input disabled type="text"  value="<%=billInfo.billNumber%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Trạng thái</span>
+        <div class="active">
+          <input class="status-active" type="radio" name="status" value="1" <%if(billInfo.status == 1 ){%>checked<%}%> >
+          <span class="label label-info">Đang xử lý</span>
+        </div>
+        <div class="active active-block">
+          <input class="status-active" type="radio" name="status" value="2" <%if(billInfo.status == 2 ){%>checked<%}%> >
+          <span class="label label-success">Đã hoàn thành</span>
+        </div>
+        <div class="active active-block">
+          <input class="status-active" type="radio" name="status" value="3" <%if(billInfo.status == 3 ){%>checked<%}%> >
+          <span class="label label-danger">Hủy bỏ</span>
+        </div>
+      </div>
+      <div class="form-product-edit">
+        <span>Tổng tiền</span>
+        <input disabled type="text"  value="<%=billInfo.totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Tên khách hàng</span>
+        <input disabled type="text"  value="<%=billInfo.clientName%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Email khách hàng</span>
+        <input disabled type="text"  value="<%=billInfo.clientEmail%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Số điện thoại</span>
+        <input disabled type="text"  value="<%=billInfo.clientPhoneNumber%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Địa chỉ</span>
+        <input disabled type="text"  value="<%=billInfo.clientAddress%>">
+      </div>
+      <div class="form-product-edit">
+        <span>Ghi chú</span>
+        <textarea disabled><%=billInfo.clientDescription%></textarea>
+      </div>
+      <div class="form-product-edit">
+        <span>Thông tin sản phẩm</span>
+
+        <div class="form-product-bill-content" style="float: left;width: 100%;background-color: #fff;margin-top: 30px;">
+
+         <%if(billInfo.productInfos && billInfo.productInfos.length){%>
+         <%for(var i = 0; i < billInfo.productInfos.length ; i++){%>
+         <div class="form-product-bill-item" style="padding: 20px 0 ">
+          <div class="container-fluid">
+           <div class="cart-thumb col-xs-2">
+            <img src="/upload/thumbProduct/<%=billInfo.productInfos[i].productImage%>" style="width: 100%;">
+          </div>
+          <div class="cart-product col-xs-4" style="padding-top: 30px;">
+            <p style="font-size: 2rem;text-transform: capitalize;"><%=billInfo.productInfos[i].productName%></p>
+          </div>
+
+          <div class="cart-color col-xs-1" style="padding-top: 30px;" >
+            <p style="background-color:<%=billInfo.productInfos[i].productColorCode%>;height: 20px ;width: 20px;border-radius: 50%; border:1px solid #000;"></p>
+          </div>
+          <div class="cart-quantum col-xs-2" style="padding-top: 30px;">
+            <input style="text-align: center; width: 80%;" disabled type="number" value="<%=billInfo.productInfos[i].productQuantity%>">
+          </div>
+          <div class="cart-price col-xs-3" style="padding-top: 30px">
+            <p style="font-size: 1.8rem;"><%=billInfo.productInfos[i].productPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>
+          </div>
+        </div>
+      </div>
+      <%}%>
+      <%}%>
+
+    </div>
+
+  </div>
+
+  <div class="form-user-add button-active">
+    <a href="javascript:void(0)" onclick="postBillEdit('<%=billInfo._id%>')">Cập Nhật</a>
+  </div>
+
+
+</div>
+
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+<script>
+ function postBillEdit(id){
+
+  var status = $('input[name=status]:checked').val();
+
+
+  $.ajax({
+    url: '/admin/bill/edit',
+    type: 'post',
+    data: {
+      id : id,
+      status : status ,
+    },
+    dataType: 'json',
+  }).done(function(results){
+    console.log(results);
+    if (results.status == true) {
+      $.confirm({
+        title: 'Thông báo!',
+        content:'<span class="text-success"><strong class="fa fa-check"></strong> Cập nhật thành công !</span>',
+        buttons: {
+          'Ok': function () {
+            window.location.replace('/admin/bill/list');
+          }
+        }
+      });
+    }else{
+      console.log(results)
+      $.alert({
+        title: 'Thông Báo !',
+        content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+      })
+    }
+  })
+}
+</script>

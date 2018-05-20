@@ -15,21 +15,11 @@ const User = require('../../models/User');
  * GET /
  * Home page.
  */
- exports.admin = (req, res) => {
+ exports.admin = async (req, res) => {
+  // let userAdmin = await User.find({status:1,role:1})
   // console.log("Index Frontend")
-  // const user = new User({
-  //   userName: "huyhung",
-  //   password: "huyhung",
-  //   avatar: 'no_avatar.png'
-  // });
-
-  // user.save((err) => {
-  //   if (err) { return next(err) 
-  //     console.log(err)
-  //   }
-  //     console.log("Done")
-  // });
-
-  // console.log("ahihi")
-  return res.render('backend/admin');
+  
+  return res.render('backend/admin' , {
+    // userAdmin : userAdmin[0]
+  });
 }

@@ -94,10 +94,10 @@ exports.changeColor = async(req,res) =>{
 
 
 	// console.log(req.body.postData)
+	if (req.body.postData) {
+		let arrID = [];
 
-	let arrID = [];
-
-	var items = Object.keys(req.body.postData);
+		var items = Object.keys(req.body.postData);
 
 	// console.log(items)
 
@@ -134,6 +134,6 @@ exports.changeColor = async(req,res) =>{
 	// console.log(product[0].productColor.idColorLookup[0])
 	return res.send({status:true , productCart : productCart } )
 
+}
 
-	
 }

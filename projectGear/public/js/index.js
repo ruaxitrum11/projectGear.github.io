@@ -458,7 +458,7 @@ function addToCart(idProductCart,cart){
 					xhtml += '<div class="cart-color col-xs-1" >';
 					xhtml += '<p style="background-color:'+results.productCart[i].productColor.idColorLookup[0].colorCode+'"></p>';
 					xhtml += '</div>';
-					xhtml += '<div class="cart-quantum col-xs-2">';
+					xhtml += '<div class="cart-quantum col-xs-2" style="padding-left:0">';
 					xhtml += '<input oninput="changeQuantum(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')" type="number" min="1" name="" value="'+dataLocal[j].cartColorQuantity+'" id="cart-quantum-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'">';
 					xhtml += '<a href="#" class="remove-productCart" onclick="removeCartItem(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')">Xóa</a>';
 					xhtml += '</div>';
@@ -550,7 +550,7 @@ function openCart() {
 					xhtml += '<div class="cart-color col-xs-1" >';
 					xhtml += '<p style="background-color:'+results.productCart[i].productColor.idColorLookup[0].colorCode+'"></p>';
 					xhtml += '</div>';
-					xhtml += '<div class="cart-quantum col-xs-2">';
+					xhtml += '<div class="cart-quantum col-xs-2" style="padding-left:0">';
 					xhtml += '<input oninput="changeQuantum(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')" type="number" min="1" name="" value="'+dataLocal[j].cartColorQuantity+'" id="cart-quantum-'+results.productCart[i].productColor.colorId+'-'+results.productCart[i]._id+'">';
 					xhtml += '<a href="#" class="remove-productCart" onclick="removeCartItem(\''+results.productCart[i].productColor.colorId+'\' , \''+results.productCart[i]._id+'\')">Xóa</a>';
 					xhtml += '</div>';

@@ -69,6 +69,7 @@ var backend_galleries = require('./routes/backend/gallery');
 var backend_specifications = require('./routes/backend/specifications')
 var backend_slides = require('./routes/backend/slide')
 var backend_blogs = require('./routes/backend/blog');
+var backend_bills = require('./routes/backend/bill');
 
 app.use((req, res, next) => {
 	res.locals.user = req.user;
@@ -97,6 +98,7 @@ app.use('/admin/gallery',backend_galleries);
 app.use('/admin/specifications',backend_specifications);
 app.use('/admin/slide',backend_slides);
 app.use('/admin/blog',backend_blogs)
+app.use('/admin/bill',backend_bills)
 
 app.listen(4000);
 console.log('listening port 4000');

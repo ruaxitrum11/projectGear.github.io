@@ -9,12 +9,12 @@ var path = require('path');
 // const passportConfig = require('../../config/passport'); 
 
 
-const checkoutController = require('../../controllers/frontend/checkoutController');
+const blogController = require('../../controllers/frontend/blogController');
 
-// Route is : /checkout
+// Route is : /blog
 
-router.get('/', checkoutController.checkout);
-router.post('/addBill' , checkoutController.validatorClient , checkoutController.addBill) 
+router.post('/checkout', blogController.blog);
+
 
 
 module.exports = router;

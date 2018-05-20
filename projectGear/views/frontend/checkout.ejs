@@ -1,6 +1,14 @@
 <%- include('include/header-top') %>
 <link rel="stylesheet" href="/css/homepage.css">
 <link rel="stylesheet" href="/css/checkout.css">
+<style>
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+	-webkit-appearance: none; 
+	margin: 0; 
+}
+</style>
 
 <header class="nav-wrap hidden-xs hidden-sm" id="header-product-category">
 	<nav class="navbar navbar-default navbar-default-header">
@@ -87,7 +95,7 @@
 
 					</div>
 					<div class="checkout-item-totalPay">
-					
+
 					</div>
 				</div>
 			</div>
@@ -103,25 +111,31 @@
 							<p>Họ tên
 								<span>*</span>
 							</p>
-							<input  type="text" name="" value="">
+							<input  type="text" name="nameUser" value="">
 						</div>
 						<div class="checkout-information-form">
 							<p>Email
 								<span>*</span>
 							</p>
-							<input  type="text" name="" value="">
+							<input  type="text" name="email" value="">
 						</div>
 						<div class="checkout-information-form">
 							<p>Số điện thoại
 								<span>*</span>
 							</p>
-							<input  type="text" name="" value="">
+							<input  type="number" name="phoneNumber" value="">
 						</div>
 						<div class="checkout-information-form">
 							<p>Địa chỉ
 								<span>*</span>
 							</p>
-							<input type="text" name="" value="">
+							<input type="text" name="address" value="">
+						</div>
+						<div class="checkout-information-form">
+							<p>Ghi chú
+								<span> </span>
+							</p>
+							<textarea style="height: 100px;"></textarea>
 						</div>
 					</div>
 					<%}else{%>
@@ -131,25 +145,25 @@
 							<p>Họ tên
 								<span>*</span>
 							</p>
-							<input  type="text" name="" value="<%=user.nameUser%>">
+							<input  type="text" name="nameUser" value="<%=user.nameUser%>">
 						</div>
 						<div class="checkout-information-form">
 							<p>Email
 								<span>*</span>
 							</p>
-							<input  type="text" name="" value="<%=user.email%>">
+							<input  type="text" name="email" value="<%=user.email%>">
 						</div>
 						<div class="checkout-information-form">
 							<p>Số điện thoại
 								<span>*</span>
 							</p>
-							<input  type="text" name="" value="<%=user.phoneNumber%>">
+							<input  type="number" name="phoneNumber" value="<%=user.phoneNumber%>">
 						</div>
 						<div class="checkout-information-form">
 							<p>Địa chỉ
 								<span>*</span>
 							</p>
-							<input type="text" name="" value="<%=user.address%>">
+							<input type="text" name="address" value="<%=user.address%>">
 						</div>
 					</div>
 					<%}%>
