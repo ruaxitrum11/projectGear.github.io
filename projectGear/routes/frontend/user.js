@@ -16,7 +16,8 @@ router.post('/create', userController.validatorCreateUser, userController.create
 router.post('/login',  userController.postLogin);
 router.get('/logout', userController.logOut);
 router.get('/:userId', userController.getUserInfo);
-router.post('/updateUserInfo' ,userController.updateUserInfo)
+router.post('/updateUserInfo' , userController.updateUserInfo)
+router.post('/showOderHistory' , userController.showOderHistory)
 
 
 module.exports = router;

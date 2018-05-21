@@ -48,6 +48,7 @@ const User = require('../../models/User');
 const Product = require('../../models/Product');
 const Category = require('../../models/Category');
 const Brand = require('../../models/Brand');
+const Bill = require('../../models/Bill');
 // Method
 /**
  * GET /
@@ -194,20 +195,50 @@ exports.postLogin = async (req,res, next)=>{
               userDataUpdate.avatar = req.file.filename;
             }
 
-          console.log(userDataUpdate)
+            console.log(userDataUpdate)
 
-          let updateUserInfo = await User.update({ _id: req.body.userIdUpdate}, { $set: userDataUpdate});
+            let updateUserInfo = await User.update({ _id: req.body.userIdUpdate}, { $set: userDataUpdate});
 
-          console.log('vao day')
-          console.log(updateUserInfo)
-          if (updateUserInfo) {
-            return res.send({status:true});
+            console.log('vao day')
+            console.log(updateUserInfo)
+            if (updateUserInfo) {
+              return res.send({status:true});
+            }
           }
         }
-      }
-      catch(errors){
+        catch(errors){
+          return res.send({status:false, errors : errors});
+        }
+
+      })
+  }
+
+  exports.showOderHistory = async (req,res) => {
+    if(req.body) {
+
+      try{
+        let userIdCurrent = mongoose.Types.ObjectId(req.body.userIdCurrent)
+        let userInformation = await User.aggregate([
+          {$match: {_id : userIdCurrent }},
+          {$project: {
+            email :1,
+          }},
+          {$lookup : {
+            from : "bills",
+            localField : "email",
+            foreignField : "clientEmail",
+            as : "emailForeign"
+          }}
+          ])
+        // console.log('aaaaaaaaaaaa')
+        // console.log(userInformation)
+        // console.log(userInformation[0].emailForeign)
+        res.send({status:true,userInformation : userInformation[0]})
+      }catch(errors){
+        console.log(errors);
         return res.send({status:false, errors : errors});
       }
-
-    })
+    }
   }
+
+  // ấn vào đâu thì chạy hàm này? ????? :(ok )

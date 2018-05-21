@@ -10,6 +10,7 @@
  const moment = require('moment');
  const path = require('path');
  var mongoose = require('mongoose');
+ var nodemailer =  require('nodemailer')
 
 
  const { check, validationResult } = require('express-validator/check');
@@ -121,7 +122,7 @@ const Bill = require('../../models/Bill');
  						for(var j = 0 ; j < checkBillNotInvalid.length ; j++) {
  							if(productBill[i]._id == checkBillNotInvalid[j].productId && productBill[i].productColor.colorId == checkBillNotInvalid[j].productColorId){
  								let errors = [{msg:'Sản phẩm '+productBill[i].productName+' chỉ còn lại '+productBill[i].productColor.colorQuantity+' chiếc . Quý khách vui lòng chọn lại số lượng sản phẩm !'}]
- 								console.log(errors)
+ 								// console.log(errors)
  								return res.send({status:false,errors:errors})
  							}
  						}
@@ -180,8 +181,82 @@ const Bill = require('../../models/Bill');
  								}
  							}
  						}
- 						return res.send({status:true});	
+ 						res.send({status:true});	
  					}
+
+ 					let transporter =  nodemailer.createTransport({ // config mail server
+ 						service: 'Gmail',
+ 						auth: {
+ 							user: 'ghostgaminggear@gmail.com',
+ 							pass: 'hieu5894'
+ 						}
+ 					});
+ 					// console.log(req.body.clientEmail)
+ 					// console.log(bill.billNumber)
+
+ 					var xhtml = '';
+
+ 					xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">'+req.body.clientName+'</span> , </p>';
+ 					xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
+ 					xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+bill.billNumber+'</span> đã được chấp nhận</p>';
+ 					xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+req.body.totalPrice+'</span> VNĐ</p>';
+ 					xhtml += '<p>Đơn hàng của bạn gồm : </p>';
+ 					xhtml += '<table class="table" style="width: 80%;text-align: center;">';
+ 					xhtml += '<thead>';
+ 					xhtml += '<tr>';
+ 					xhtml += '<th style="text-align: center;">Tên sản phẩm</th>';
+ 					xhtml += '<th style="text-align: center;">Màu sắc</th>';
+ 					xhtml += '<th style="text-align: center;">Số lượng </th>';
+ 					xhtml += '<th style="text-align: center;">Giá tiền</th>';
+ 					xhtml += '</tr>';
+ 					xhtml += '</thead>';
+ 					xhtml += '<tbody>';
+ 					for (var i = 0; i < checkBillInvalid.length; i++) {
+ 						xhtml += '<tr>';
+ 						xhtml += '<td style="text-transform:capitalize">'+checkBillInvalid[i].productName+'</td>';
+ 						xhtml += '<td><p style="height:20px ;background-color:'+checkBillInvalid[i].productColorCode+'"></p></td>';
+ 						xhtml += '<td>'+checkBillInvalid[i].productQuantity+'</td>';
+ 						xhtml += '<td>'+checkBillInvalid[i].productPrice+' đ</td>';
+ 						xhtml += '</tr>';
+ 					}
+ 					xhtml += '</tbody>';
+ 					xhtml += '</table>';
+ 					xhtml += '<p>Bạn sẽ nhận được sản phẩm trong khoảng thời gian 2 ngày.</p>';
+ 					xhtml += '<p>Mọi ý kiến thắc mắc , xin vui lòng liên hệ : </p>';
+ 					xhtml += '<ul>';
+ 					xhtml += '<li><span>Website</span> : ghostgaminggear.com.vn </li>';
+ 					xhtml += '<br>'
+ 					xhtml += '<li><span>Email</span> : ghostgaminggear@gmail.com</li>';
+ 					xhtml += '<br>'
+ 					xhtml += '<li><span>Facebook</span> : https://www.facebook.com/ghostgamingear</li>';
+ 					xhtml += '<br>'
+ 					xhtml += '<li><span>Youtube</span> : https://www.youtube.com/ghostgamingear</li>';
+ 					xhtml += '<br>'
+ 					xhtml += '<li><span>Twitter</span> : https://www.twitter.com/ghostgamingear</li>';
+ 					xhtml += '<br>'
+ 					xhtml += '<li><span>Twitch</span>: https://www.twitch.com/ghostgamingear</li>';
+ 					xhtml += '<br>'
+ 					xhtml += '<li><span>Instagram</span> : https://www.instagram.com/ghostgamingear</li>';
+ 					xhtml += '</ul>';
+
+ 					let mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+ 						from: 'Ghost Gaming Gear',
+ 						to: ''+req.body.clientEmail+'',
+ 						subject: 'GhostGamingGear thông báo đơn hàng , mã hóa đơn : '+bill.billNumber ,
+ 						text: 'You recieved message from ' ,
+ 						html: xhtml
+ 					}
+
+ 					transporter.sendMail(mainOptions, function(err, info){
+ 						if (err) {
+ 							console.log(err);
+ 							// res.redirect('/');
+ 						} else {
+ 							console.log('Message sent: ' +  info.response);
+ 							// res.redirect('/');
+ 						}
+ 					});
+
  				}
  			}
 

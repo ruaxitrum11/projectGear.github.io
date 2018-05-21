@@ -32,7 +32,7 @@
 						<i class="fa fa-user"></i>
 						<span>Thông tin cá nhân</span>
 					</li>
-					<li class="user-info-left-order">
+					<li class="user-info-left-order" onclick="showOderHistory('<%=userCurrent._id%>')">
 						<i class="fa fa-shopping-cart"></i>
 						<span>Lịch sử giao dịch</span>
 					</li>
@@ -47,98 +47,80 @@
 				</ul>
 			</div>
 			<div class="user-info-right col-sm-9">
-				<div class="user-info-profile">
+				<div class="user-info-main user-info-profile">
 					<h2 class="user-info-right-title">
 						Thông tin cá nhân
 					</h2>
 					<div class="user-right-content">
-						<form>
-							<div class="user-right-item">
-								<p>Họ tên</p>
-								<input type="text" name="nameUser" value="<%=userCurrent.nameUser%>">
-							</div>
-							<div class="user-right-item">
-								<p>Ảnh đại diện</p>
-								<input id="fileAvatar" type="file" name="file">
-								<img id="avatarPreview" src="" style="width: 25%; margin : 15px 0" >
-							</div>	
-							<div class="user-right-item">
-								<p>Email</p>
-								<input type="text" disabled name="email" value="<%=userCurrent.email%>">
-							</div>
-							<div class="user-right-item">
-								<p>Số điện thoại</p>
-								<input type="text" disabled name="phoneNumber" value="<%=userCurrent.phoneNumber%>">
-							</div>	
-							<div class="user-right-item">
-								<p>Địa chỉ</p>
-								<input type="text" name="address" value="<%=userCurrent.address%>">
-							</div>	
-							<div class="user-right-item">
-								<p>Ngày Sinh</p>
-								<input type="date" name="birthDay" value="<%= moment(userCurrent.birthDay).format('YYYY-MM-DD')%>">
-							</div>
-							<div class="user-right-item">
-								<p>Giới Tính</p>
-								<input type="radio" name="gender" value="0" style="width: 5%" <%if (userCurrent.gender == 0){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nam</span>
-								<input type="radio" name="gender" value="1" style="width: 5%;margin-left: 25px" <%if (userCurrent.gender == 1){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nữ</span>
-							</div>
-							<div class="user-right-item user-right-item-button">
-								<input type="button" name="" value="Cập nhật" onclick="updateUserInfo('<%=userCurrent._id%>')">
-							</div>
-						</form>
+						<div class="user-right-item">
+							<p>Họ tên</p>
+							<input type="text" name="nameUser" value="<%=userCurrent.nameUser%>">
+						</div>
+						<div class="user-right-item">
+							<p>Ảnh đại diện</p>
+							<input id="fileAvatar" type="file" name="file">
+							<img id="avatarPreview" src="" style="width: 25%; margin : 15px 0" >
+						</div>	
+						<div class="user-right-item">
+							<p>Email</p>
+							<input type="text" disabled name="email" value="<%=userCurrent.email%>">
+						</div>
+						<div class="user-right-item">
+							<p>Số điện thoại</p>
+							<input type="text" disabled name="phoneNumber" value="<%=userCurrent.phoneNumber%>">
+						</div>	
+						<div class="user-right-item">
+							<p>Địa chỉ</p>
+							<input type="text" name="address" value="<%=userCurrent.address%>">
+						</div>	
+						<div class="user-right-item">
+							<p>Ngày Sinh</p>
+							<input type="date" name="birthDay" value="<%= moment(userCurrent.birthDay).format('YYYY-MM-DD')%>">
+						</div>
+						<div class="user-right-item">
+							<p>Giới Tính</p>
+							<input type="radio" name="gender" value="0" style="width: 5%" <%if (userCurrent.gender == 0){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nam</span>
+							<input type="radio" name="gender" value="1" style="width: 5%;margin-left: 25px" <%if (userCurrent.gender == 1){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nữ</span>
+						</div>
+						<div class="user-right-item user-right-item-button">
+							<input type="button" name="" value="Cập nhật" onclick="updateUserInfo('<%=userCurrent._id%>')">
+						</div>
 					</div>
 				</div>
-				<div class="user-info-order">
+				<!-- <div class="user-info-order">
 					<h2 class="user-info-right-title">
 						Lịch sử giao dịch
 					</h2>
 					<div class="user-right-content">
-						<div class="user-right-order-item user-right-order-title">
-							<ul>
-								<li>Mã Giao Dịch</li>
-								<li>Tổng sản phẩm</li>
-								<li>Tổng tiền(VNĐ)</li>
-								<li>Thời gian</li>
-								<li>Trạng Thái</li>
-							</ul>
-						</div>
-						<div class="user-right-order-item">
-							<ul>
-								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
-								<li>3</li>
-								<li>4.500.000</li>
-								<li>05/04/2018</li>
-								<li>Đang xử lý</li>
-							</ul>
-						</div>
-						<div class="user-right-order-item">
-							<ul>
-								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
-								<li>3</li>
-								<li>4.500.000</li>
-								<li>05/04/2018</li>
-								<li>Đang xử lý</li>
-							</ul>
-						</div>
-						<div class="user-right-order-item">
-							<ul>
-								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
-								<li>3</li>
-								<li>4.500.000</li>
-								<li>05/04/2018</li>
-								<li>Hoàn Thành</li>
-							</ul>
-						</div>
-						<div class="user-right-order-item">
-							<ul>
-								<li class="order-item-id" data-toggle="modal" data-target="#orderDetails">157953</li>
-								<li>3</li>
-								<li>4.500.000</li>
-								<li>05/04/2018</li>
-								<li>Đang xử lý</li>
-							</ul>
-						</div>
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Mã Giao Dịch</th>
+									<th>Tổng sản phẩm</th>
+									<th>Tổng tiền</th>
+									<th>Thời gian</th>
+									<th>Trạng Thái</th>
+									<th>Thao tác</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.com</td>
+								</tr>
+								<tr>
+									<td>Mary</td>
+									<td>Moe</td>
+									<td>mary@example.com</td>
+								</tr>
+								<tr>
+									<td>July</td>
+									<td>Dooley</td>
+									<td>july@example.com</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 				<div class="user-info-trophy">
@@ -192,7 +174,7 @@
 							</div>
 						</form>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>

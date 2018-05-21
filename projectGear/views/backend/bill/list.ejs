@@ -8,6 +8,13 @@
   table.table.table-bordered , table.table.table-bordered>thead>tr>th {
     text-align: center;
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
   .add-newColor {
     margin : 20px 0;
     font-size: 3rem;
@@ -113,7 +120,7 @@ input.status-active {
 
         <div class="add-searchColor">
           <span class="search-icon glyphicon glyphicon-search"></span>
-          <input class="input-text bill-search" type="text" name="" placeholder="Nhập mã hóa đơn">
+          <input class="input-text bill-search" type="number" name="" placeholder="Nhập mã hóa đơn">
 
           <input class="input-text blog-author-search" type="text" name="" placeholder="Nhập email khách hàng">
           <select class="blog-status">
