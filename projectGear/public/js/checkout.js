@@ -132,7 +132,7 @@ function changeQuantum(idColorChange , idProductChange){
     // console.log(idProductChange)
     var productQuantumCart = $('#cart-quantum-'+idColorChange+'-'+idProductChange).val();
     // console.log(productQuantumCart)
-    console.log(idColorChange)
+    // console.log(idColorChange)
     // console.log('#cart-price-'+id)
     var productPriceCart = $('#cart-price-'+idColorChange+'-'+idProductChange).attr('data-colorPrice');
 
@@ -191,7 +191,7 @@ function addBill(){
 
         
     }
-    console.log(productInfos)
+    // console.log(productInfos)
     var totalPrice = $('.checkout-item-totalPay p').text().replace(/\D/g, '');
 
     // console.log(totalPrice)
@@ -244,6 +244,7 @@ function addBill(){
       }
   });
     }else{
+        console.log(results.errors)
         $.alert({
           title: 'Thông Báo !',
           content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
