@@ -20,6 +20,14 @@
 
     <!-- Main content -->
     <section class="content">
+      <!-- <div class="form-group col-lg-3 col-md-4 col-sm-6 col-xs-9">
+        <div class="input-group">
+          <div class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+          </div> 
+          <input type="text" class="form-control pull-right" id="reservationtime" name="date_time_start">
+        </div>
+      </div> -->
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -93,13 +101,13 @@
             <!-- Tabs within a box -->
             <ul class="nav nav-tabs pull-right">
               <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-              <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-              <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
+              <!-- <li><a href="#sales-chart" data-toggle="tab">Donut</a></li> -->
+              <!-- <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li> -->
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
               <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+              <!-- <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div> -->
             </div>
           </div>
           <!-- /.nav-tabs-custom -->
@@ -523,10 +531,76 @@
         </section>
         <!-- /.content -->
       </div>
-    <!-- /.content-wrapper -->
+      <!-- /.content-wrapper -->
 
-    <%- include('include/admin-footer') %>
+      <%- include('include/admin-footer') %>
 
-    <%- include('include/admin-control-sidebar') %>
+      <%- include('include/admin-control-sidebar') %>
 
-    <%- include('include/admin-js.ejs') %>
+      <%- include('include/admin-js.ejs') %>
+
+      <script type="text/javascript">
+
+
+        function totalBillChart(){
+
+
+          var now = new Date();
+          var yearCurrent = now.getFullYear(), monthCurrent = now.getMonth()+1;
+          var lastDay = new Date(yearCurrent, monthCurrent, 0);
+
+          var timeBegin = yearCurrent+'-'+monthCurrent+'-01';
+          var timeEnd = yearCurrent+'-'+monthCurrent+'-'+lastDay.getDate();   
+
+          // console.log(timeBegin);
+          // console.log(timeEnd);
+
+          $.ajax({
+            url: '/admin/revenue',
+            type: 'post',
+            data: {
+              timeBegin : timeBegin , 
+              timeEnd : timeEnd
+            },
+            dataType: 'json',
+          }).done(function(results){
+            console.log(results.revenue)
+           var dataChart = [];
+            // console.log(results.revenue)
+            if(results.revenue && results.revenue.length) {
+              for (var i = 0; i < results.revenue.length; i++) {
+                var perData = {}
+                perData.x = moment(results.revenue[i].createdAt).format('YYYY-MM-DD')
+                perData.total_bill = parseInt(results.revenue[i].totalBill)
+                dataChart.push(perData)
+              }
+            }
+            // console.log(dataChart)
+            var area = new Morris.Area({
+              element   : 'revenue-chart',
+              resize    : true,
+              data : dataChart,
+              xkey      : 'x',
+              ykeys     : ['total_bill'],
+              labels    : ['Tổng tiền bán'],
+              lineColors: ['#f99910'],
+              hideHover : 'auto'
+            });
+
+            // console.log(area)
+          })
+        } 
+
+          // $('#revenue-chart').html('');
+
+          $( document ).ready(function() {
+            totalBillChart();
+            $('#reservationtime').daterangepicker({
+              timePicker: true, 
+              timePickerIncrement: 5, 
+              locale: {
+                format: 'YYYY/DD/MM h:mm A'
+              },
+            });
+          })
+        </script>

@@ -8,10 +8,58 @@ const bcrypt = require('bcrypt-nodejs');
 const multer = require('multer');
 const path = require('path');
 const moment = require('moment');
+const Bill = require('../../models/Bill');
+const Revenue = require('../../models/Revenue');
+
+var CronJob = require('cron').CronJob;
+
+/*======================== ANALYTICS BILL ===========*/
+new CronJob("00 58 23 * * *", function() {
+	setTimeout(sumTotalBill);
+},null, true, 'Asia/Ho_Chi_Minh');
+
+async function sumTotalBill(){
+	let today = new Date(),
+	year 	= today.getFullYear(),
+	month 	= today.getMonth() + 1,
+	day 	= today.getDate();
+	if(month < 10){ month = '0'+month }
+		if(day < 10){ day = '0'+day }
+
+			let startDay = today.setHours(0,0,0,0);
+		let endDay = today.setHours(23,59,59,999);
+
+			// let startDay = new Date(${year}-${month}-${day} 00:00:00);
+		// let endDay = new Date(${year}-${month}-${day} 23:59:59);
+
+		let billTotal = await Bill.find({createdAt:{$gte:startDay , $lte:endDay}}).select({createdAt:1,totalPrice:1}).lean();
+
+		let sumAllBill = 0;
+
+		if (billTotal && billTotal.length) {
+
+			for (var i = 0; i < billTotal.length; i++) {
+				if(billTotal[i].createdAt){
+					sumAllBill += billTotal[i].totalPrice;
+				}
+			}
+		}
+
+		let revenue = new Revenue({
+			totalBill : sumAllBill
+		})
+
+		let saveRevenue = await revenue.save();
+
+		if (saveRevenue) {
+			console.log("CronJob success !")
+		}else{
+			console.log("CronJob fails !")
+		}
+	}
 
 
-
-const { check, validationResult } = require('express-validator/check');
+	const { check, validationResult } = require('express-validator/check');
 
 //Setup multer upload
 // let storage = multer.diskStorage({
@@ -46,7 +94,8 @@ const { check, validationResult } = require('express-validator/check');
 // }).single('fileBlog');
 
  // Models
- const Bill = require('../../models/Bill');
+
+
 
 
 // Method

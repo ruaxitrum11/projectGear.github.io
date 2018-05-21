@@ -183,3 +183,24 @@
 <%- include('include/footer') %>
 <script src="/js/product.js"></script>
 
+<script type="text/javascript">
+	function countRead () {
+		var checkRead = window.location.href.indexOf('/product/<%=product._id%>');
+		if (checkRead) {
+			console.log("askjndkjasdn")
+			$.ajax({
+				url: '/product/countRead',
+				type: 'post',
+				data : {
+					id : "<%=product._id%>"
+				},
+				dataType:'json',
+			}).done(function(data){
+			});
+		}
+	}
+	$( document ).ready(function() {
+		countRead();
+	})
+</script>
+

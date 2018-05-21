@@ -137,3 +137,24 @@ exports.changeColor = async(req,res) =>{
 }
 
 }
+
+exports.countRead = async (req,res) =>{
+	if (req.body.id) {
+		Product.findOne({_id: req.body.id }, (err, existingProduct) =>{
+			if (err) { console.log(err) }
+				if (existingProduct) {
+					let old_views = parseInt(existingProduct.views);
+					let new_views = old_views + 1;
+				// console.log(new_views);
+				Product.findOneAndUpdate(
+					{_id: req.body.id},
+					{$set:{views:new_views}},
+					{upsert: true},
+					function(err,results){
+						if (err) { return next(err); }
+						res.send({status:1});
+					});
+			}
+		})
+	}
+}

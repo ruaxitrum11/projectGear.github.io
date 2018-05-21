@@ -11,5 +11,6 @@ var path = require('path');
 const adminController = require('../../controllers/backend/adminController');
 
 router.get('/', adminController.admin);
+router.post('/revenue' , adminController.revenue)
 
 module.exports = router;

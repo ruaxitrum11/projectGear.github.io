@@ -34,7 +34,8 @@ const productSchema = new mongoose.Schema({
       productSpecificationsDescription : String
     }]
   }],
-  status : {type : Number , default : 1 } //1 : active , 2 : block
+  status : {type : Number , default : 1 }, //1 : active , 2 : block
+  views : {type : Number, default :0}
 } , { timestamps: true });
 
 const Product = mconnect.model('Product', productSchema);
