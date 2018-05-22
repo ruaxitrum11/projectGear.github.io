@@ -424,8 +424,7 @@ exports.getProductEdit = async (req,res) =>{
 			let gallery = await  Gallery.find({}).select({_id : 1 , galleryName : 1 }).lean();
 			let specifications = await  Specifications.find({}).select({_id : 1 , specificationsName : 1 }).lean();
 
-			// console.log(product[0].productColor)
-
+			// console.log(product[0].productColor
 			let colorTotal = []
 			for (var i = 0; i < color.length; i++) {
 				colorTotal.push(color[i]._id.toString())
@@ -450,16 +449,19 @@ exports.getProductEdit = async (req,res) =>{
 			// console.log(specificationsTotal)		
 	
 			let productSpecificationsTotal = []
-			for (var j = 0; j < product[0].productSpecifications.length; j++) {
-				productSpecificationsTotal.push(product[0].productSpecifications[j].productSpecificationsId.toString())
+			if( product[0].productSpecifications && product[0].productSpecifications.length > 0){
+				for (var j = 0; j < product[0].productSpecifications.length; j++) {
+					productSpecificationsTotal.push(product[0].productSpecifications[j].productSpecificationsId.toString())
+				}
 			}
-
+			
 			// console.log(productSpecificationsTotal)
 
 
 			let specificationsLeft = await _.difference(specificationsTotal,productSpecificationsTotal);
 			
 			// console.log(specificationsLeft)
+			// console.log('chet chua')
 
 			res.render('backend/product/edit',{
 				product:product[0],
@@ -473,6 +475,8 @@ exports.getProductEdit = async (req,res) =>{
 			})
 
 		}catch(err){
+			console.log(err)
+			return res.send(err.message)
 		}
 	}
 }

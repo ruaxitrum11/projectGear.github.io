@@ -67,31 +67,7 @@ input[type=number]::-webkit-outer-spin-button {
 						<p>Sản Phẩm của bạn</p>
 					</div>
 					<div class="checkout-item-content">
-						<!-- <div class="checkout-item-content-item item-block checkout-item-1">
-							<div class="container-fluid">
-								<div class="checkout-item-thumb col-sm-3">
-									<a href="">
-										<img src="/img/product/newproduct1.png">
-									</a>
-								</div>
-								<div class="checkout-item-details col-sm-9">
-									<div class="row">
-										<div class="checkout-item-product col-sm-5">
-											<p>Arctis 3 Bluetooth</p>
-										</div>
-										<div class="checkout-item-quantum col-sm-3">
-											<input type='number' name='quantity' min='1' value='1' class='qty' />
-											<p class="remove-product remove-product-1">
-												Xóa
-											</p>
-										</div>
-										<div class="checkout-item-price col-sm-4">
-											<p>1.500.000<span>VNĐ</span></p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div> -->
+						
 
 					</div>
 					<div class="checkout-item-totalPay">
@@ -196,6 +172,7 @@ input[type=number]::-webkit-outer-spin-button {
 			</div>
 		</div>
 	</div>
+
 </section>
 
 <%- include('include/all-modal') %>
@@ -203,3 +180,7 @@ input[type=number]::-webkit-outer-spin-button {
 <%- include('include/footer') %>
 
 <script src="/js/checkout.js"></script>
+<script>
+	var user = <%- JSON.stringify(user) %>
+	console.log(user)
+</script>

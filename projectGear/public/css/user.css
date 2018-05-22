@@ -164,10 +164,14 @@ h2.user-info-right-title{
 	width: 30%;
 	font-weight: 700;
 	text-transform: capitalize;
+	padding-left: 6%;
+	text-align: left;
 }
 .order-details span {
 	float: left;
 	width: 69%;
+	text-align: left;
+	padding-left: 10%;
 }
 .order-details-toggle {
 	cursor: pointer;

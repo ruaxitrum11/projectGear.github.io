@@ -233,13 +233,14 @@ section {
 	z-index: 100;
 }
 .saleoff p{
-	padding: 7px 12px;
-	background-color: #6EEB83;
-	color: #227531;
+	padding: 5px 15px;
+	background-color: #FF6602;
+	color: #fff;
 	position: relative;
-	top : 20px;
-	left: 20px;
+	top : 10px;
+	left: 15px;
 	border-radius: 5px;
+	font-size: 1.6rem;
 	text-transform: uppercase;
 }
 

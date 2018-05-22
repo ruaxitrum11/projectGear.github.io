@@ -4,9 +4,10 @@ var postData = _.groupBy(dataLocal, function (item) {
     return item.cartId
 })
 
-$( document ).ready(function() {
 
+$( document ).ready(function() {
 // console.log(dataLocal)
+
 $.ajax({
     url: '/product/addToCart',
     type: 'post',
@@ -54,9 +55,22 @@ $.ajax({
 
 
     var xhtmlCheckOut = '';
+    xhtmlCheckOut += '<div class="checkOutToTalPrice">'
+    xhtmlCheckOut += '<h2>Tổng hóa đơn :</h2>'
+    xhtmlCheckOut += '<p style="font-size:2rem;color:#000;font-weight:bold">'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+
+    xhtmlCheckOut += '</div>'
+    // console.log(user)
+    xhtmlCheckOut += '<div class="checkOutToTalPrice">'
+    xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+    xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+
+    xhtmlCheckOut += '</div>'
+    xhtmlCheckOut += '<div class="checkOutToTalPrice">'
     xhtmlCheckOut += '<h2>Thành Tiền :</h2>'
     xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
     $('.checkout-item-totalPay').html(xhtmlCheckOut)
+    xhtmlCheckOut += '</div>'
     
 
 

@@ -239,9 +239,11 @@ const Bill = require('../../models/Bill');
  					xhtml += '<li><span>Instagram</span> : https://www.instagram.com/ghostgamingear</li>';
  					xhtml += '</ul>';
 
+ 					let mailList = ''+req.body.clientEmail+',ghostgaminggear@gmail.com';
+
  					let mainOptions = { // thiết lập đối tượng, nội dung gửi mail
  						from: 'Ghost Gaming Gear',
- 						to: ''+req.body.clientEmail+'',
+ 						to: mailList,
  						subject: 'GhostGamingGear thông báo đơn hàng , mã hóa đơn : '+bill.billNumber ,
  						text: 'You recieved message from ' ,
  						html: xhtml

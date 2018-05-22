@@ -10,6 +10,8 @@ const path = require('path');
 const moment = require('moment');
 const Bill = require('../../models/Bill');
 const Revenue = require('../../models/Revenue');
+var nodemailer =  require('nodemailer')
+
 
 var CronJob = require('cron').CronJob;
 
@@ -188,14 +190,149 @@ exports.postBillEdit = async (req,res) => {
 				let errors = [{msg:"Cập nhật trạng thái hóa đơn thất bại"}]
 				return res.send({status:false, errors : errors});
 			}
-			return res.send({status:true});
+			res.send({status:true});
 
-		}
-	}
-	catch(errors){
-		console.log(errors);
-		return res.send({status:false, errors : errors});
-	}
+			let billCurrent = await Bill.find({_id:req.body.id})
+
+			if(billCurrent[0].status == 2 ) {
+
+			  let transporter =  nodemailer.createTransport({ // config mail server
+			  	service: 'Gmail',
+			  	auth: {
+			  		user: 'ghostgaminggear@gmail.com',
+			  		pass: 'hieu5894'
+			  	}
+			  });
+
+
+			  var xhtml = '';
+
+			  xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].clientName+'</span> , </p>';
+			  xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
+
+			  xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billNumber+'</span> đã được xác nhận thành công</p>';
+			  xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].totalPrice+'</span> VNĐ</p>';
+			  xhtml += '<p>Đơn hàng của bạn gồm : </p>';
+			  xhtml += '<table class="table" style="width: 80%;text-align: center;">';
+			  xhtml += '<thead>';
+			  xhtml += '<tr>';
+			  xhtml += '<th style="text-align: center;">Tên sản phẩm</th>';
+			  xhtml += '<th style="text-align: center;">Màu sắc</th>';
+			  xhtml += '<th style="text-align: center;">Số lượng </th>';
+			  xhtml += '<th style="text-align: center;">Giá tiền</th>';
+			  xhtml += '</tr>';
+			  xhtml += '</thead>';
+			  xhtml += '<tbody>';
+			  for (var i = 0; i < billCurrent[0].productInfos.length; i++) {
+			  	xhtml += '<tr>';
+			  	xhtml += '<td style="text-transform:capitalize">'+billCurrent[0].productInfos[i].productName+'</td>';
+			  	xhtml += '<td><p style="height:20px ;background-color:'+billCurrent[0].productInfos[i].productColorCode+'"></p></td>';
+			  	xhtml += '<td>'+billCurrent[0].productInfos[i].productQuantity+'</td>';
+			  	xhtml += '<td>'+billCurrent[0].productInfos[i].productPrice+' đ</td>';
+			  	xhtml += '</tr>';
+			  }
+			  xhtml += '</tbody>';
+			  xhtml += '</table>';
+			  xhtml += '<p>Mọi ý kiến thắc mắc , xin vui lòng liên hệ : </p>';
+			  xhtml += '<ul>';
+			  xhtml += '<li><span>Website</span> : ghostgaminggear.com.vn </li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Email</span> : ghostgaminggear@gmail.com</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Facebook</span> : https://www.facebook.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Youtube</span> : https://www.youtube.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Twitter</span> : https://www.twitter.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Twitch</span>: https://www.twitch.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Instagram</span> : https://www.instagram.com/ghostgamingear</li>';
+			  xhtml += '</ul>';
+
+			  let mailList = ''+billCurrent[0].clientEmail+',ghostgaminggear@gmail.com';
+			  // console.log(mailList)
+
+          let mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+          	from: 'Ghost Gaming Gear',
+          	to: mailList,
+          	subject: 'GhostGamingGear thông báo đơn hàng , mã hóa đơn : '+billCurrent[0].billNumber+' đã được xác nhận thành công' ,
+          	text: 'You recieved message from ' ,
+          	html: xhtml
+          }
+
+          transporter.sendMail(mainOptions, function(err, info){
+          	if (err) {
+          		console.log(err);
+              // res.redirect('/');
+          } else {
+          	console.log('Message sent: ' +  info.response);
+              // res.redirect('/');
+          }
+      });
+
+      }else if(billCurrent[0].status == 3 ) {
+
+			  let transporter =  nodemailer.createTransport({ // config mail server
+			  	service: 'Gmail',
+			  	auth: {
+			  		user: 'ghostgaminggear@gmail.com',
+			  		pass: 'hieu5894'
+			  	}
+			  });
+
+
+			  var xhtml = '';
+
+			  xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].clientName+'</span> , </p>';
+			  xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
+
+			  xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billNumber+'</span> đã bị hủy bỏ</p>';
+			  xhtml += '<p>Mọi ý kiến thắc mắc , xin vui lòng liên hệ : </p>';
+			  xhtml += '<ul>';
+			  xhtml += '<li><span>Website</span> : ghostgaminggear.com.vn </li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Email</span> : ghostgaminggear@gmail.com</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Facebook</span> : https://www.facebook.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Youtube</span> : https://www.youtube.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Twitter</span> : https://www.twitter.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Twitch</span>: https://www.twitch.com/ghostgamingear</li>';
+			  xhtml += '<br>'
+			  xhtml += '<li><span>Instagram</span> : https://www.instagram.com/ghostgamingear</li>';
+			  xhtml += '</ul>';
+
+			  let mailList = ''+billCurrent[0].clientEmail+',ghostgaminggear@gmail.com';
+			  console.log(mailList)
+
+          let mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+          	from: 'Ghost Gaming Gear',
+          	to: mailList,
+          	subject: 'GhostGamingGear thông báo đơn hàng , mã hóa đơn : '+billCurrent[0].billNumber+' đã bị hủy bỏ' ,
+          	text: 'You recieved message from ' ,
+          	html: xhtml
+          }
+
+          transporter.sendMail(mainOptions, function(err, info){
+          	if (err) {
+          		console.log(err);
+              // res.redirect('/');
+          } else {
+          	console.log('Message sent: ' +  info.response);
+              // res.redirect('/');
+          }
+      });
+
+      }
+  }
+}
+catch(errors){
+	console.log(errors);
+	return res.send({status:false, errors : errors});
+}
 }
 
 

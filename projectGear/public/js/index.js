@@ -348,6 +348,40 @@ function loginUser() {
 	}
 }
 
+function forgotPassword  (){
+	var userName = $('input[name=username]').val()
+	$.ajax({
+		url: '/user/forgotPassword',
+		type: 'post',
+		data: {
+			userName : userName
+		} ,
+		dataType: 'json'
+	}).done(function(results){
+		if (results.status == true) {
+			$.confirm({
+				title: 'Thông báo!',
+				content:'<span class="text-success"><strong class="fa fa-check"></strong> Vui lòng truy cập email của bạn để nhận mật khẩu mới !</span>',
+				buttons: {
+					'Ok': function () {
+						window.location.reload();
+					}
+				}
+
+			});
+
+		}else{
+			// console.log(results.errors)
+			$.alert({
+				title: 'Thông Báo !',
+				content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>'
+			})
+
+		}
+	})
+
+}
+
 function isEmail(email) {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	return regex.test(email);

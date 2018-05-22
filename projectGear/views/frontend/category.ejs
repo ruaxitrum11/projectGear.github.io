@@ -30,8 +30,13 @@
 			<div class="product-category-content new-product-category-content">
 				<%for(var j = 0 ; j < product.length ; j++){%>
 				<%if(brand[i]._id.toString()== product[j].productBrand.toString()){%>
-			
+
 				<div class="product-category-item new-product-category-item product-id-<%=product[j]._id%>" data-id ="<%=product[j]._id%>">
+					<div class="saleoff saleoff-<%=product[j]._id%>">
+						<%if(product[j].productColor[0].colorPromotion > 0){%>
+						<p>- <%=product[j].productColor[0].colorPromotion%>%</p>
+						<%}%>
+					</div>
 					<div class="product-category-thubnail new-product-category-thubnail product-thumb-<%=product[j]._id%>" data-thumb="<%=product[j].productThumb%>">
 						<img src="/upload/thumbProduct/<%=product[j].productThumb%>">
 					</div>
@@ -40,10 +45,13 @@
 							<div class="product-category-title new-product-category-title col-xs-7 product-name-<%=product[j]._id%>" data-name ="<%=product[j].productName%>">
 								<p><%=product[j].productName%></p>
 							</div>
-							<%var convertVND = product[j].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>
-						
+							<%var promotionPrice = product[j].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>
+							<% var oldPrice=((product[j].productColor[0].colorPrice)/(1-product[j].productColor[0].colorPromotion/100)).toLocaleString('vi', {style : 'currency', currency : 'VND'}) %>
 							<div class="product-category-price new-product-category-price-<%=product[j]._id%> col-xs-5">
-								<p><%=convertVND%></p>
+								<%if(product[j].productColor[0].colorPromotion > 0){%>
+								<p style="font-size: 1.4rem;color:#a5a7aa;text-decoration: line-through;"><%=oldPrice%></p>
+								<%}%>
+								<p><%=promotionPrice%></p>
 							</div>
 						</div>
 					</div>
