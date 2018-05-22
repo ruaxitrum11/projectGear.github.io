@@ -12,5 +12,8 @@ const adminController = require('../../controllers/backend/adminController');
 
 router.get('/', adminController.admin);
 router.post('/revenue' , adminController.revenue)
+router.get('/countTotal' , adminController.countTotal)
+
 
 module.exports = router;
+

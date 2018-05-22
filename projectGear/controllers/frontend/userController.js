@@ -407,6 +407,8 @@ exports.getUserInfo = async (req,res) => {
             xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].clientName+'</span> , </p>';
             xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
             xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billNumber+'</span> đã được xác nhận thành công</p>';
+            xhtml += '<p>Tổng hóa đơn : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPrice+'</span> VNĐ</p>';
+            xhtml += '<p>Khuyến mãi : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPromotion+'</span> %</p>';
             xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].totalPrice+'</span> VNĐ</p>';
             xhtml += '<p>Đơn hàng của bạn gồm : </p>';
             xhtml += '<table class="table" style="width: 80%;text-align: center;">';

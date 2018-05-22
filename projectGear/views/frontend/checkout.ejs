@@ -181,6 +181,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 <script src="/js/checkout.js"></script>
 <script>
-	var user = <%- JSON.stringify(user) %>
-	console.log(user)
+	
+	
+	var userData = <%- JSON.stringify(user || {"level":0}) %> 
+	// console.log(userData)
+
+
 </script>

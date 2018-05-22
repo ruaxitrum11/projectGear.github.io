@@ -131,6 +131,8 @@ const Bill = require('../../models/Bill');
  					const bill = new Bill({
  						productInfos : checkBillInvalid,
  						totalPrice : req.body.totalPrice , 
+ 						billPrice : req.body.billPrice , 
+ 						billPromotion : req.body.billPromotion,
  						clientName : req.body.clientName , 
  						clientEmail : req.body.clientEmail , 
  						clientPhoneNumber : req.body.clientPhoneNumber ,
@@ -199,6 +201,8 @@ const Bill = require('../../models/Bill');
  					xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">'+req.body.clientName+'</span> , </p>';
  					xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
  					xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+bill.billNumber+'</span> đã được chấp nhận</p>';
+ 					xhtml += '<p>Tổng đơn hàng : <span style="font-size:2rem;font-weight:bold">'+req.body.billPrice+'</span> VNĐ</p>';
+ 					xhtml += '<p>Khuyến mãi : <span style="font-size:2rem;font-weight:bold">'+req.body.billPromotion+'</span> %</p>';
  					xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+req.body.totalPrice+'</span> VNĐ</p>';
  					xhtml += '<p>Đơn hàng của bạn gồm : </p>';
  					xhtml += '<table class="table" style="width: 80%;text-align: center;">';

@@ -7,6 +7,10 @@ var postData = _.groupBy(dataLocal, function (item) {
 
 $( document ).ready(function() {
 // console.log(dataLocal)
+// console.log(user)
+
+// var user = JSON.stringify(<%=user%>)
+// console.log(userPromotion)
 
 $.ajax({
     url: '/product/addToCart',
@@ -55,20 +59,44 @@ $.ajax({
 
 
     var xhtmlCheckOut = '';
-    xhtmlCheckOut += '<div class="checkOutToTalPrice">'
+    xhtmlCheckOut += '<div class="checkOutPrice">'
     xhtmlCheckOut += '<h2>Tổng hóa đơn :</h2>'
-    xhtmlCheckOut += '<p style="font-size:2rem;color:#000;font-weight:bold">'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+    xhtmlCheckOut += '<p style="font-size:2rem;color:#000;font-weight:bold;width:25%;">'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
 
     xhtmlCheckOut += '</div>'
-    // console.log(user)
-    xhtmlCheckOut += '<div class="checkOutToTalPrice">'
-    xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
-    xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+    console.log(userData)
+    if( userData.level == 0 || userData.level == 1 ){
+        xhtmlCheckOut += '<div class="checkOutPromotion">'
+        xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+        xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">0%</p>'
+        xhtmlCheckOut += '</div>'
+        var totalCheckOut = totalCart*1
+    }else if(userData.level == 2){
+        xhtmlCheckOut += '<div class="checkOutPromotion">'
+        xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+        xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">3%</p>'
+        xhtmlCheckOut += '</div>'
+        var totalCheckOut = totalCart*0.97
+    }else if(userData.level == 3) {
+        xhtmlCheckOut += '<div class="checkOutPromotion">'
+        xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+        xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">6%</p>'
+        xhtmlCheckOut += '</div>'
+        var totalCheckOut = totalCart*0.94
+    }else if(userData.level == 4) {
+        xhtmlCheckOut += '<div class="checkOutPromotion">'
+        xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+        xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">10%</p>'
+        xhtmlCheckOut += '</div>'
+        var totalCheckOut = totalCart*0.9
+    }
 
-    xhtmlCheckOut += '</div>'
+
+    // console.log(totalCheckOut)
+
     xhtmlCheckOut += '<div class="checkOutToTalPrice">'
     xhtmlCheckOut += '<h2>Thành Tiền :</h2>'
-    xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+    xhtmlCheckOut += '<p style="width:25%;">'+totalCheckOut.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
     $('.checkout-item-totalPay').html(xhtmlCheckOut)
     xhtmlCheckOut += '</div>'
     
@@ -83,12 +111,12 @@ if(dataLocal.length > 0){
     $('.checkout-confirm-area div').html(xhtmlButtonPay)
 
 }else{
- $('.checkout-item-totalPay').html('')
- $('.checkout-item-content').html('Vui lòng quay trở lại trang chủ để chọn sản phẩm !')
+   $('.checkout-item-totalPay').html('')
+   $('.checkout-item-content').html('Vui lòng quay trở lại trang chủ để chọn sản phẩm !')
 
- var xhtmlButtonBack = '';
- xhtmlButtonBack += '<a href="/">Trở lại trang chủ</a>'
- $('.checkout-confirm-area div').html(xhtmlButtonBack)
+   var xhtmlButtonBack = '';
+   xhtmlButtonBack += '<a href="/">Trở lại trang chủ</a>'
+   $('.checkout-confirm-area div').html(xhtmlButtonBack)
 } 
 
 
@@ -121,11 +149,48 @@ function removeCartItem (idColorRemove , idProductRemove){
     xhtml += numberOfItemCart.length
     $('.number-product-cart').html(xhtml)
 
+
+
     if(numberOfItemCart.length > 0){
+
         var xhtmlCheckOut = '';
+        xhtmlCheckOut += '<div class="checkOutPrice">'
+        xhtmlCheckOut += '<h2>Tổng hóa đơn :</h2>'
+        xhtmlCheckOut += '<p style="font-size:2rem;color:#000;font-weight:bold;width:25%;">'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+
+        xhtmlCheckOut += '</div>'
+        console.log(userData)
+        if( userData.level == 0 || userData.level == 1 ){
+            xhtmlCheckOut += '<div class="checkOutPromotion">'
+            xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+            xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">0%</p>'
+            xhtmlCheckOut += '</div>'
+            var totalCheckOut = totalCart*1
+        }else if(userData.level == 2){
+            xhtmlCheckOut += '<div class="checkOutPromotion">'
+            xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+            xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">3%</p>'
+            xhtmlCheckOut += '</div>'
+            var totalCheckOut = totalCart*0.97
+        }else if(userData.level == 3) {
+            xhtmlCheckOut += '<div class="checkOutPromotion">'
+            xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+            xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">6%</p>'
+            xhtmlCheckOut += '</div>'
+            var totalCheckOut = totalCart*0.94
+        }else if(userData.level == 4) {
+            xhtmlCheckOut += '<div class="checkOutPromotion">'
+            xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
+            xhtmlCheckOut += '<p style="width:25%;font-size:2rem;color:#000">10%</p>'
+            xhtmlCheckOut += '</div>'
+            var totalCheckOut = totalCart*0.9
+        }
+
+        xhtmlCheckOut += '<div class="checkOutToTalPrice">'
         xhtmlCheckOut += '<h2>Thành Tiền :</h2>'
-        xhtmlCheckOut += '<p>'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
+        xhtmlCheckOut += '<p style="width:25%;">'+totalCheckOut.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
         $('.checkout-item-totalPay').html(xhtmlCheckOut)
+        xhtmlCheckOut += '</div>'
 
         var xhtmlButtonPay = '';
         xhtmlButtonPay += '<a style="cursor:pointer" onclick="addBill()">Thanh toán</a>'
@@ -180,8 +245,9 @@ function changeQuantum(idColorChange , idProductChange){
         totalCart+= (parseInt($(this).text().replace(/\D/g, '')));
     })
     // console.log(totalCart)
-
-    $('.checkout-item-totalPay>p').html(totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'}))
+    var totalCheckOut = totalCart*(1-parseInt($('.checkOutPromotion p').text().replace(/\D/g, ''))/100) 
+    $('.checkOutPrice p').html(totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'}))
+    $('.checkOutToTalPrice p').html(totalCheckOut.toLocaleString('vi', {style : 'currency', currency : 'VND'}))
 }
 
 function addBill(){
@@ -206,7 +272,11 @@ function addBill(){
         
     }
     // console.log(productInfos)
-    var totalPrice = $('.checkout-item-totalPay p').text().replace(/\D/g, '');
+    var billPrice = $('.checkOutPrice p').text().replace(/\D/g, '');
+
+    var billPromotion = $('.checkOutPromotion p').text().replace(/\D/g, '');
+
+    var totalPrice = $('.checkOutToTalPrice p').text().replace(/\D/g, '');
 
     // console.log(totalPrice)
     var clientName = $('input[name="nameUser"]').val();
@@ -236,6 +306,8 @@ function addBill(){
         data: {
             productInfos : productInfos ,
             totalPrice : totalPrice , 
+            billPrice : billPrice , 
+            billPromotion : billPromotion,
             clientName : clientName , 
             clientEmail : clientEmail ,
             clientPhoneNumber : clientPhoneNumber ,

@@ -17,6 +17,8 @@ const billSchema = new mongoose.Schema({
 		productQuantity : Number,
 	}] ,
 	totalPrice : Number,
+	billPrice : Number , 
+	billPromotion : Number ,
 	clientName : String ,
 	clientEmail : String ,
 	clientPhoneNumber : String ,

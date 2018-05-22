@@ -232,6 +232,14 @@ function updateUserInfo(userIdUpdate){
           xhtml += '<span>'+moment(results.userInformation.emailForeign[i].updatedAt).format('HH:mm , DD-MM-YYYY')+'</span>';
           xhtml += '</div>';
           xhtml += '<div class="order-details day-recieved">';
+          xhtml += '<p>Tổng hóa đơn (VNĐ)</p>';
+          xhtml += '<span>'+results.userInformation.emailForeign[i].billPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</span>';
+          xhtml += '</div>';
+          xhtml += '<div class="order-details day-recieved">';
+          xhtml += '<p>Khuyến mãi (VNĐ)</p>';
+          xhtml += '<span>'+results.userInformation.emailForeign[i].billPromotion+' %</span>';
+          xhtml += '</div>';
+          xhtml += '<div class="order-details day-recieved">';
           xhtml += '<p>tổng thanh toán (VNĐ)</p>';
           xhtml += '<span>'+results.userInformation.emailForeign[i].totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</span>';
           xhtml += '</div>';

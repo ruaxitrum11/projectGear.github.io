@@ -34,7 +34,7 @@ async function sumTotalBill(){
 			// let startDay = new Date(${year}-${month}-${day} 00:00:00);
 		// let endDay = new Date(${year}-${month}-${day} 23:59:59);
 
-		let billTotal = await Bill.find({createdAt:{$gte:startDay , $lte:endDay}}).select({createdAt:1,totalPrice:1}).lean();
+		let billTotal = await Bill.find({createdAt:{$gte:startDay , $lte:endDay},status:2}).select({createdAt:1,totalPrice:1}).lean();
 
 		let sumAllBill = 0;
 
@@ -211,6 +211,8 @@ exports.postBillEdit = async (req,res) => {
 			  xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
 
 			  xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billNumber+'</span> đã được xác nhận thành công</p>';
+			  xhtml += '<p>Tổng đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPrice+'</span> VNĐ</p>';
+			  xhtml += '<p>Khuyến mãi : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPromotion+'</span> %</p>';
 			  xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].totalPrice+'</span> VNĐ</p>';
 			  xhtml += '<p>Đơn hàng của bạn gồm : </p>';
 			  xhtml += '<table class="table" style="width: 80%;text-align: center;">';
