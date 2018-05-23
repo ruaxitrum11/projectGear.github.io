@@ -51,12 +51,6 @@ var frontend_blogs = require('./routes/frontend/blog');
 var frontend_checkouts = require('./routes/frontend/checkout');
 
 
-// var frontend_case = require('./routes/frontend/case');
-// var frontend_match = require('./routes/frontend/match');
-// var frontend_coupon = require('./routes/frontend/coupon');
-// var frontend_events = require('./routes/frontend/events');
-// var frontend_myplay = require('./routes/frontend/myplay');
-// var frontend_sysmessage = require('./routes/frontend/sysmessage')
 
 /*BACKEND*/
 var admin = require('./routes/backend/admin');
@@ -70,6 +64,7 @@ var backend_specifications = require('./routes/backend/specifications')
 var backend_slides = require('./routes/backend/slide')
 var backend_blogs = require('./routes/backend/blog');
 var backend_bills = require('./routes/backend/bill');
+var backend_statisticals = require('./routes/backend/statistical');
 
 app.use((req, res, next) => {
 	res.locals.user = req.user;
@@ -99,6 +94,8 @@ app.use('/admin/specifications',backend_specifications);
 app.use('/admin/slide',backend_slides);
 app.use('/admin/blog',backend_blogs)
 app.use('/admin/bill',backend_bills)
+app.use('/admin/statistical',backend_statisticals)
+
 
 app.listen(4000);
 console.log('listening port 4000');

@@ -20,6 +20,12 @@ new CronJob("00 58 23 * * *", function() {
 	setTimeout(sumTotalBill);
 },null, true, 'Asia/Ho_Chi_Minh');
 
+
+// let startDay = new Date().setHours(0,0,0,0)
+// console.log(startDay)
+
+
+
 async function sumTotalBill(){
 	let today = new Date(),
 	year 	= today.getFullYear(),
@@ -28,8 +34,11 @@ async function sumTotalBill(){
 	if(month < 10){ month = '0'+month }
 		if(day < 10){ day = '0'+day }
 
-			let startDay = today.setHours(0,0,0,0);
+		let startDay = today.setHours(00,00,00,00);
 		let endDay = today.setHours(23,59,59,999);
+
+		// console.log(startDay)
+		// console.log(endDay)
 
 			// let startDay = new Date(${year}-${month}-${day} 00:00:00);
 		// let endDay = new Date(${year}-${month}-${day} 23:59:59);
@@ -46,12 +55,16 @@ async function sumTotalBill(){
 				}
 			}
 		}
+		let billCountNumber = await Bill.find({createdAt:{$gte:startDay , $lte:endDay},status:2}).count({status:2})
 
-		let revenue = new Revenue({
-			totalBill : sumAllBill
-		})
+		// console.log(billCountNumber)
 
-		let saveRevenue = await revenue.save();
+		// let revenue = new Revenue({
+		// 	totalBill : sumAllBill,
+		// 	numberOfBill : billCountNumber
+		// })
+
+		// let saveRevenue = await revenue.save();
 
 		if (saveRevenue) {
 			console.log("CronJob success !")

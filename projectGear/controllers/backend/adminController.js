@@ -30,11 +30,10 @@ const Bill = require('../../models/Bill');
 }
 
 exports.revenue = async (req,res) => {
-
+	console.log(req.body)
 	try {
-		let revenue = await Revenue.find({}).lean()
-
-
+		let revenue = await Revenue.find({createdAt:{$gte:req.body.timeBegin , $lte:req.body.timeEnd}}).lean()
+		console.log(revenue)
 		return res.send({status:true,revenue:revenue,moment:moment})
 
 	}catch(errors){
@@ -79,13 +78,25 @@ exports.countTotal = async (req,res) => {
 		}
 		// console.log(countTotalPurchased)
 		
+		let countProcessingBill = await Bill.count({status:1})
+
+		let countCompletedBill = await Bill.count({status:2})
+
+		let countCancelBill = await Bill.count({status:3})
+
+		// console.log(countProcessingBill)
+		// console.log(countCompletedBill)
+		// console.log(countCancelBill)
 	
 
 		return res.send({status:true,
 			countTotalBill:countTotalBill , 
 			countTotalRevene:countTotalRevene , 
 			countTotalUser:countTotalUser , 
-			countTotalPurchased : countTotalPurchased
+			countTotalPurchased : countTotalPurchased,
+			countProcessingBill : countProcessingBill ,
+			countCompletedBill : countCompletedBill , 
+			countCancelBill : countCancelBill,
 		})
 		
 

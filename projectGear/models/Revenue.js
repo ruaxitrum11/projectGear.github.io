@@ -5,7 +5,8 @@ const mconnect = require('../config/connDB');
 var Schema = mongoose.Schema;
 
 const revenueSchema = new mongoose.Schema({
-	totalBill : Number 
+	totalBill : Number ,
+	numberOfBill : Number
 }, { timestamps: true });
 
 const Revenue = mconnect.model('Revenue', revenueSchema);
