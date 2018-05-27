@@ -117,11 +117,11 @@
         <span>Tổng hóa đơn</span>
         <input disabled type="text"  value="<%=billInfo.billPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>">
       </div>
-       <div class="form-product-edit">
+      <div class="form-product-edit">
         <span>Khuyến mãi</span>
         <input disabled type="text"  value="<%=billInfo.billPromotion%> %">
       </div>
-       <div class="form-product-edit">
+      <div class="form-product-edit">
         <span>Tổng thanh toán</span>
         <input disabled type="text"  value="<%=billInfo.totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>">
       </div>
@@ -198,6 +198,12 @@
 <%- include('../include/admin-js.ejs') %>
 
 <script>
+
+ $( document ).ready(function() {
+  $('.bill-main').addClass('active')
+  $('.bill-info').addClass('active')
+
+});
  function postBillEdit(id){
 
   var status = $('input[name=status]:checked').val();

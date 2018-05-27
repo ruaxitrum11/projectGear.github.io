@@ -15,6 +15,7 @@ const productController = require('../../controllers/backend/productController')
 // Route is : /admin/product/
 router.get('/list', productController.list);
 router.get('/listProduct', productController.listProduct);
+router.get('/listProductStatistical', productController.listProductStatistical);
 router.post('/delete', productController.deleteProduct);
 router.get('/edit/:id', productController.getProductEdit);
 router.post('/edit',productController.validatorProductEdit, productController.postProductEdit);

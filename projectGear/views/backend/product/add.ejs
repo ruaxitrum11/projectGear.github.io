@@ -263,143 +263,143 @@ input[type=number]::-webkit-outer-spin-button {
 
           </div>
         </div>
-     
-      <div class="form-product-add">
-        <span>Màu sắc</span>
-        <div class="form-product-add-input">
-          <%if(color && color.length){%>
-          <%for(var i = 0 ; i < color.length ; i++){%>
-          <div class="active">
-            <input class="status-active status-active-<%=color[i]._id%>" type="checkbox" name="productColor" value="<%=color[i]._id%>" onclick=showUpload('<%=color[i]._id%>') >
-            <span class="label label-info"><%=color[i].colorName%></span>
-            <div class="form-product-color form-product-color-<%=color[i]._id%>" style="padding-top: 20px;" >
-              <div class="form-product-color-content form-product-color-image">
-                <span>Ảnh sản phẩm</span>
-                <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductImages" onclick=listFileManagerImages(1,'<%=color[i]._id%>')> 
-                  <i class="fa fa-edit"></i>
-                </button>
-                <div class="imagesProduct-<%=color[i]._id%>"></div>
+        
+        <div class="form-product-add">
+          <span>Màu sắc</span>
+          <div class="form-product-add-input">
+            <%if(color && color.length){%>
+            <%for(var i = 0 ; i < color.length ; i++){%>
+            <div class="active">
+              <input class="status-active status-active-<%=color[i]._id%>" type="checkbox" name="productColor" value="<%=color[i]._id%>" onclick=showUpload('<%=color[i]._id%>') >
+              <span class="label label-info"><%=color[i].colorName%></span>
+              <div class="form-product-color form-product-color-<%=color[i]._id%>" style="padding-top: 20px;" >
+                <div class="form-product-color-content form-product-color-image">
+                  <span>Ảnh sản phẩm</span>
+                  <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductImages" onclick=listFileManagerImages(1,'<%=color[i]._id%>')> 
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <div class="imagesProduct-<%=color[i]._id%>"></div>
+                </div>
+                <div class="form-product-color-content form-product-color-price">
+                  <span>Giá tiền</span>
+                  <input class="product-input-price" id="productPrice-<%=color[i]._id%>" type="number" name="price" value="" min="1">
+                </div>
+                <div class="form-product-color-content form-product-color-price">
+                 <span>Khuyến mãi (%)</span>
+                 <input class="product-input-promotion" id="productPromotion-<%=color[i]._id%>" type="number" name="promotion" value="0" min="0" max="50">
+               </div>
+               <div class="form-product-color-content form-product-color-price">
+                <span>Số lượng</span>
+                <input class="product-input-quantity" id="productQuantity-<%=color[i]._id%>" type="number" name="quantity" value="" min="0">
               </div>
-              <div class="form-product-color-content form-product-color-price">
-                <span>Giá tiền</span>
-                <input class="product-input-price" id="productPrice-<%=color[i]._id%>" type="number" name="price" value="" min="1">
-              </div>
-              <div class="form-product-color-content form-product-color-price">
-               <span>Khuyến mãi (%)</span>
-               <input class="product-input-promotion" id="productPromotion-<%=color[i]._id%>" type="number" name="promotion" value="0" min="0" max="50">
-             </div>
-             <div class="form-product-color-content form-product-color-price">
-              <span>Số lượng</span>
-              <input class="product-input-quantity" id="productQuantity-<%=color[i]._id%>" type="number" name="quantity" value="" min="0">
             </div>
-          </div>
-        </div> 
-        <%}%>
-        <%}%>
+          </div> 
+          <%}%>
+          <%}%>
+
+        </div>
 
       </div>
 
+      <div class="form-product-add">
+        <span>Mô tả</span>
+        <textarea class="description" name="description"></textarea>
+
+      </div>
+
+
+
     </div>
 
-    <div class="form-product-add">
-      <span>Mô tả</span>
-      <textarea class="description" name="description"></textarea>
-
+    <div class="feturesview-edit" style="width: 100%;float: left; display: none;">
+      <div class="details-product col-xs-12">
+        <div class="details-product-title">
+          <h2 style="text-align: center;">Giới thiệu</h2>
+        </div>
+        <div class="details-product-form">
+         <div class="form-product-add">
+          <span>Slogan giới thiệu</span>
+          <input id="fetures_slogan" type="text" name="fetures_slogan" value="">
+        </div>
+        <div class="form-product-add">
+          <span>Ảnh nền</span>
+          <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductFeturesBackground" onclick="listFileManager(1)"> 
+            <i class="fa fa-edit"></i>
+          </button>
+          <div class="fetures-background" style="margin-top: 20px">
+            <img id="image-fetures-background" style="width: 50%;">
+          </div>
+        </div>
+        <div class="form-product-add">
+          <span>Link nhúng video</span>
+          <input id="fetures_link" type="text" name="fetures_link" value="">
+        </div>
+      </div>
     </div>
-
-
-
   </div>
 
-  <div class="feturesview-edit" style="width: 100%;float: left; display: none;">
+  <div class="productInfo-edit" style="width: 100%;float: left;display: none;">
     <div class="details-product col-xs-12">
       <div class="details-product-title">
-        <h2 style="text-align: center;">Giới thiệu</h2>
+        <h2 style="text-align: center;">Tính năng</h2>
       </div>
-      <div class="details-product-form">
-       <div class="form-product-add">
-        <span>Slogan giới thiệu</span>
-        <input id="fetures_slogan" type="text" name="fetures_slogan" value="">
-      </div>
-      <div class="form-product-add">
-        <span>Ảnh nền</span>
-        <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductFeturesBackground" onclick="listFileManager(1)"> 
-          <i class="fa fa-edit"></i>
-        </button>
-        <div class="fetures-background" style="margin-top: 20px">
-          <img id="image-fetures-background" style="width: 50%;">
-        </div>
-      </div>
-      <div class="form-product-add">
-        <span>Link nhúng video</span>
-        <input id="fetures_link" type="text" name="fetures_link" value="">
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="productInfo-edit" style="width: 100%;float: left;display: none;">
-  <div class="details-product col-xs-12">
-    <div class="details-product-title">
-      <h2 style="text-align: center;">Tính năng</h2>
-    </div>
-    <div class="details-product-form details-productInfo-form">
-    <div class="details-productInfo-item">
-      <div class="form-product-add">
-        <span>Tên tính năng</span>
-        <input class="productInfo-slogan" type="text" name="productInfo-slogan" value="">
-      </div>
-      <div class="form-product-add">
-        <span>Mô tả tính năng</span>
-        <textarea class="productInfo-description" style="height: 80px;"></textarea>
-      </div>
-      <span class="remove-productInfo-input glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;margin-left:10%;margin-top:30px;color:#dd4b39;"></span>
-    </div>
-  </div>
-  <div class="details-product-form details-productInfoButton-form">
-    <div class="form-product-add">
-      <button onclick="productInfoAdd()" style="padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
-    </div>
-  </div>
-</div>
-</div>
-
-<div class="specifications-edit" style="width: 100%;float: left;display: none;">
-  <div class="details-product col-xs-12">
-    <div class="details-product-title">
-      <h2 style="text-align: center;">Thông số kĩ thuật</h2>
-    </div>
-    <div class="details-product-form details-specifications-form">
-      <%if(specifications && specifications.length){%>
-      <%for(var i=0 ; i<specifications.length ;i++){%>
-      <div class="form-product-add" style="border-bottom: 1px solid #c1c1c1; padding: 20px 10%;">
-        <input class="status-active specifications-active-<%=specifications[i]._id%>" type="checkbox" name="productSpecifications" value="<%=specifications[i]._id%>" onclick=showSpecifications('<%=specifications[i]._id%>') >
-        <span class="label label-default" style="width: auto!important; font-size: 2rem!important;"><%=specifications[i].specificationsName%></span>
-        <div class="specifications-content specifications-content-<%=specifications[i]._id%>" style="display: none;">
-          <div class="specifications-details-form specifications-details-form-<%=specifications[i]._id%>" style="float: left;width: 100%;">
-            <div class="specifications-details specifications-details-<%=specifications[i]._id%>">
-              <div class="specifications-content-form">
-                <span style="float: left;width: 15%">Kiểu</span>
-                <input class="specificationsMenu-<%=specifications[i]._id%>" type="text" name="specificationsMenu" style="float: left;width: 70%;">
-              </div>
-              <div class="specifications-content-form">
-                <span style="float: left;width: 15%">Mô tả</span>
-                <textarea class="specificationsDescription-<%=specifications[i]._id%>" style="float: left;width: 70%;"></textarea>
-              </div>
-              <span class="remove-specifications-content glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;float: left;width: 5%;color:#dd4b39;margin: 20px 0"></span>
-
-            </div>
+      <div class="details-product-form details-productInfo-form">
+        <div class="details-productInfo-item">
+          <div class="form-product-add">
+            <span>Tên tính năng</span>
+            <input class="productInfo-slogan" type="text" name="productInfo-slogan" value="">
           </div>
-          <button onclick=specificationsContentAdd('<%=specifications[i]._id%>') style="display:block;padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
+          <div class="form-product-add">
+            <span>Mô tả tính năng</span>
+            <textarea class="productInfo-description" style="height: 80px;"></textarea>
+          </div>
+          <span class="remove-productInfo-input glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;margin-left:10%;margin-top:30px;color:#dd4b39;"></span>
         </div>
-
       </div>
-      <%}%>
-      <%}%>
+      <div class="details-product-form details-productInfoButton-form">
+        <div class="form-product-add">
+          <button onclick="productInfoAdd()" style="padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
+        </div>
+      </div>
     </div>
-
   </div>
-</div>
+
+  <div class="specifications-edit" style="width: 100%;float: left;display: none;">
+    <div class="details-product col-xs-12">
+      <div class="details-product-title">
+        <h2 style="text-align: center;">Thông số kĩ thuật</h2>
+      </div>
+      <div class="details-product-form details-specifications-form">
+        <%if(specifications && specifications.length){%>
+        <%for(var i=0 ; i<specifications.length ;i++){%>
+        <div class="form-product-add" style="border-bottom: 1px solid #c1c1c1; padding: 20px 10%;">
+          <input class="status-active specifications-active-<%=specifications[i]._id%>" type="checkbox" name="productSpecifications" value="<%=specifications[i]._id%>" onclick=showSpecifications('<%=specifications[i]._id%>') >
+          <span class="label label-default" style="width: auto!important; font-size: 2rem!important;"><%=specifications[i].specificationsName%></span>
+          <div class="specifications-content specifications-content-<%=specifications[i]._id%>" style="display: none;">
+            <div class="specifications-details-form specifications-details-form-<%=specifications[i]._id%>" style="float: left;width: 100%;">
+              <div class="specifications-details specifications-details-<%=specifications[i]._id%>">
+                <div class="specifications-content-form">
+                  <span style="float: left;width: 15%">Kiểu</span>
+                  <input class="specificationsMenu-<%=specifications[i]._id%>" type="text" name="specificationsMenu" style="float: left;width: 70%;">
+                </div>
+                <div class="specifications-content-form">
+                  <span style="float: left;width: 15%">Mô tả</span>
+                  <textarea class="specificationsDescription-<%=specifications[i]._id%>" style="float: left;width: 70%;"></textarea>
+                </div>
+                <span class="remove-specifications-content glyphicon glyphicon-minus-sign" style="cursor: pointer;font-size:2.4rem;float: left;width: 5%;color:#dd4b39;margin: 20px 0"></span>
+
+              </div>
+            </div>
+            <button onclick=specificationsContentAdd('<%=specifications[i]._id%>') style="display:block;padding: 5px 10px;background-color: #00c0ef;border:none;"><i class="fa fa-plus" style="color: #fff; font-size: 2rem;"></i></button>
+          </div>
+
+        </div>
+        <%}%>
+        <%}%>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
@@ -532,7 +532,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 <script type="text/javascript">
-
+  $( document ).ready(function() {
+    $('.product-main').addClass('active')
+    $('.product-info').addClass('active')
+  });
 
   $("#uploadImages").bind("click",function () {
     $("#file").click();

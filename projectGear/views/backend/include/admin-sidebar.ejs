@@ -25,7 +25,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Thanh điều hướng</li>
-        <li class="active treeview" style="width: 100%;">
+        <li class="treeview dashboard-main">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Trang tổng quan</span>
             <span class="pull-right-container">
@@ -33,10 +33,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active" ><a href="/admin"><i class="fa fa-circle-o"></i> Tổng quan</a></li>
+            <li class="" ><a href="/admin"><i class="fa fa-circle-o"></i> Tổng quan</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview user-main">
           <a href="#">
             <i class="fa fa-users"></i>
             <span>Người Dùng</span>
@@ -45,8 +45,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/user/list"><i class="fa fa-circle-o"></i>Danh sách người dùng</a></li>
-            <li><a href="/admin/user/listPurchased"><i class="fa fa-circle-o"></i>Top khách hàng</a></li>
+            <li class="user-info"><a href="/admin/user/list"><i class="fa fa-circle-o"></i>Danh sách người dùng</a></li>
+            <li class="user-IpBlock-info"><a href="/admin/user/listPurchased"><i class="fa fa-circle-o"></i>Top khách hàng</a></li>
           </ul>
         </li>
        <!--  <li>
@@ -57,7 +57,7 @@
             </span>
           </a>
         </li> -->
-        <li class="treeview">
+        <li class="treeview product-main">
           <a href="#">
             <i class="fa fa-product-hunt"></i>
             <span>Trang Sản Phẩm</span>
@@ -66,15 +66,16 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/product/list"><i class="fa fa-circle-o"></i>Thông tin sản phẩm</a></li>
-            <li><a href="/admin/category/list"><i class="fa fa-circle-o"></i>Danh mục sản phẩm</a></li>
-            <li><a href="/admin/brand/list"><i class="fa fa-circle-o"></i>Danh mục nhãn hiệu</a></li>
-            <li><a href="/admin/color/list"><i class="fa fa-circle-o"></i>Màu sản phẩm</a></li>
-            <li><a href="/admin/specifications/list"><i class="fa fa-circle-o"></i>Thông số sản phẩm</a></li>
-            <li><a href="/admin/gallery/list"><i class="fa fa-circle-o"></i>Ảnh sản phẩm</a></li>
+            <li class="product-info"><a href="/admin/product/list"><i class="fa fa-circle-o"></i>Thông tin sản phẩm</a></li>
+            <li class="category-info"><a href="/admin/category/list"><i class="fa fa-circle-o"></i>Danh mục sản phẩm</a></li>
+            <li class="brand-info"><a href="/admin/brand/list"><i class="fa fa-circle-o"></i>Danh mục nhãn hiệu</a></li>
+            <li class="color-info"><a href="/admin/color/list"><i class="fa fa-circle-o"></i>Màu sản phẩm</a></li>
+            <li class="specifications-info"><a href="/admin/specifications/list"><i class="fa fa-circle-o"></i>Thông số sản phẩm</a></li>
+            <li class="gallery-info"><a href="/admin/gallery/list"><i class="fa fa-circle-o"></i>Ảnh sản phẩm</a></li>
+            <li class="product-statistical-info"><a href="/admin/statistical/product"><i class="fa fa-circle-o"></i>Thống kê sản phẩm</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview bill-main">
           <a href="#">
             <i class="fa fa-shopping-cart"></i>
             <span>Đơn hàng</span>
@@ -83,12 +84,12 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/bill/list"><i class="fa fa-circle-o"></i>Danh sách đơn hàng</a></li>
-            <li><a href="/admin/statistical/revenue"><i class="fa fa-circle-o"></i>Doanh thu bán hàng</a></li>
-            <li><a href="/admin/statistical/status"><i class="fa fa-circle-o"></i>Trạng thái đơn hàng</a></li>
+            <li class="bill-info"><a href="/admin/bill/list"><i class="fa fa-circle-o"></i>Danh sách đơn hàng</a></li>
+            <li class="revenue-statistical"><a href="/admin/statistical/revenue"><i class="fa fa-circle-o"></i>Doanh thu bán hàng</a></li>
+            <li class="status-statistical"><a href="/admin/statistical/status"><i class="fa fa-circle-o"></i>Trạng thái đơn hàng</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview slide-main">
           <a href="#">
             <i class="fa fa-sliders"></i>
             <span>Trang trình bày</span>
@@ -97,10 +98,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/slide/list"><i class="fa fa-circle-o"></i>Thông tin trang trình bày</a></li>
+            <li class="slide-info"><a href="/admin/slide/list"><i class="fa fa-circle-o"></i>Danh sách SlideShow</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview blog-main">
           <a href="#">
             <i class="fa fa-rss"></i>
             <span>Trang tin tức</span>
@@ -109,7 +110,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/admin/blog/list"><i class="fa fa-circle-o"></i>Thông tin trang tin tức</a></li>
+            <li class="blog-info"><a href="/admin/blog/list"><i class="fa fa-circle-o"></i>Thông tin trang tin tức</a></li>
           </ul>
         </li>
     <!--     <li class="treeview">

@@ -667,7 +667,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 <script type="text/javascript">
 
-
+  $( document ).ready(function() {
+    $('.product-main').addClass('active')
+    $('.product-info').addClass('active')
+  });
 
   var productCategory =  <%-JSON.stringify(product.productCategory)%>
   $('.select-category').val(productCategory)

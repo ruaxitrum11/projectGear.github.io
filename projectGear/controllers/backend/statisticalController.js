@@ -31,3 +31,7 @@ const { check, validationResult } = require('express-validator/check');
   exports.status = async (req, res) => {
  	return res.render('backend/statistical/status');
  }
+
+  exports.product = async (req, res) => {
+ 	return res.render('backend/statistical/product');
+ }

@@ -13,12 +13,12 @@
     width: 100%;
     padding: 0 10%;
   }
-.form-user-add>span {
+  .form-user-add>span {
     font-size: 1.6rem;
     width: 15%;
     display: inline-block;
   }
- .form-user-add>input {
+  .form-user-add>input {
     border-radius: 5px;
     border : none;
     padding: 5px 0;
@@ -176,64 +176,68 @@
 <%- include('../include/admin-js.ejs') %>
 
 <script>
+ $( document ).ready(function() {
+  $('.user-main').addClass('active')
+  $('.user-info').addClass('active')
+});
 
-  function postUserAdd() {
+ function postUserAdd() {
 
-    var userName = $("input[name=userName]").val();
-    var email = $("input[name=email]").val();
-    var password = $("input[name=password]").val();
-    var password_confirm = $("input[name=password_confirm]").val();
-    var nameUser = $("input[name=nameUser]").val();
-    var phoneNumber = $("input[name=phoneNumber]").val();
-    var address = $("input[name=address]").val();
-    var birthDay = $("input[name=birthDay]").val();
-    var gender = $("input[name=gender]:checked").val();
-    var status =  $("input[name=status]:checked").val();
-    var level = $("input[name=level]:checked").val();
-    var role = $("input[name=role]:checked").val();
+  var userName = $("input[name=userName]").val();
+  var email = $("input[name=email]").val();
+  var password = $("input[name=password]").val();
+  var password_confirm = $("input[name=password_confirm]").val();
+  var nameUser = $("input[name=nameUser]").val();
+  var phoneNumber = $("input[name=phoneNumber]").val();
+  var address = $("input[name=address]").val();
+  var birthDay = $("input[name=birthDay]").val();
+  var gender = $("input[name=gender]:checked").val();
+  var status =  $("input[name=status]:checked").val();
+  var level = $("input[name=level]:checked").val();
+  var role = $("input[name=role]:checked").val();
 
-    $.ajax({
-      url: '/admin/user/addUser',
-      type: 'post',
-      data: {
-        userName : userName.trim(),
-        email : email.trim(),
-        password : password,
-        password_confirm : password_confirm,
-        nameUser : nameUser,
-        phoneNumber : phoneNumber,
-        address : address,
-        birthDay : birthDay,
-        gender : gender,
-        status : status,
-        level : level,
-        role : role
-      },
-      dataType: 'json',
-    }).done(function(results){
-      console.log(results);
-      if (results.status == true) {
-        $.confirm({
-          title: 'Thông Báo!',
-          content: '<span class="text-success"><strong class="fa fa-check"></strong>Tạo tài khoản thành công</span>',
-          buttons: {
-            Ok: function () {
+  $.ajax({
+    url: '/admin/user/addUser',
+    type: 'post',
+    data: {
+      userName : userName.trim(),
+      email : email.trim(),
+      password : password,
+      password_confirm : password_confirm,
+      nameUser : nameUser,
+      phoneNumber : phoneNumber,
+      address : address,
+      birthDay : birthDay,
+      gender : gender,
+      status : status,
+      level : level,
+      role : role
+    },
+    dataType: 'json',
+  }).done(function(results){
+    console.log(results);
+    if (results.status == true) {
+      $.confirm({
+        title: 'Thông Báo!',
+        content: '<span class="text-success"><strong class="fa fa-check"></strong>Tạo tài khoản thành công</span>',
+        buttons: {
+          Ok: function () {
               // $.alert('Ok');
               window.location.replace("/admin/user/list");
             },
           }
         });
-      }else{
-        $.alert({
-          title: 'Thông Báo !',
-          content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>'
-        })
+    }else{
+      $.alert({
+        title: 'Thông Báo !',
+        content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>'
+      })
 
-      }
+    }
 
-    })
+  })
 
-  }
+}
 
 
 

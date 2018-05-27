@@ -177,7 +177,10 @@
 
 <script type="text/javascript">
 
-
+  $( document ).ready(function() {
+    $('.user-main').addClass('active')
+    $('.user-info').addClass('active')
+  });
   function updateUser(id) {
 
     var new_email = $("input[name=email]").val();

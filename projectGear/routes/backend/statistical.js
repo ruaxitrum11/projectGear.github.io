@@ -15,7 +15,7 @@ const statisticalController  = require('../../controllers/backend/statisticalCon
 // Route is : /admin/statistical/
 router.get('/revenue', statisticalController.revenue);
 router.get('/status', statisticalController.status);
-// router.post('/delete', slideController.deleteSlide);
+router.get('/product', statisticalController.product);
 // router.get('/edit/:id', slideController.getSlideEdit);
 // router.post('/edit', slideController.postSlideEdit);
 // router.post('/addSlide',  slideController.postSlideAdd);

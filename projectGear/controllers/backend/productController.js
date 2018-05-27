@@ -121,7 +121,67 @@ let upload = multer({
 
  		res.send({status: true, page : page, totalPage : totalPage, listProduct : listProduct});
 
+ 		// console.log(listProduct)	
 
+ 	}catch(err){
+ 		res.send({status:false})
+    // console.log("===============err=========================")
+    console.log(err)
+    // console.log("===============err=========================")
+}
+}
+
+exports.listProductStatistical = async (req,res) =>{
+	let page = 1;
+	let limit = 20;
+	let totalPage = 1;
+	let query = {};
+	if (req.query.page) {
+		page = parseInt(req.query.page);
+	}
+
+	if(req.query.product_search_text && req.query.product_search_text !=""){
+		let regex = new RegExp(req.query.product_search_text.trim(), 'i')
+		query = {productName: {$regex : regex}}
+	} 
+
+
+	let skip = (page - 1)*limit;
+
+	try{
+		let [count, data1 , data2 ] = await Promise.all([
+			Product.count(query),
+			Product.find(query)
+			.sort({'productColor.colorNumberPurchased' : -1}).skip(skip).limit(limit),
+			Product.find(query)
+			.sort({views : -1}).skip(skip).limit(limit)
+			])
+
+		let listProductNumberPurchased = [];
+		let listProductViews = []
+ 		// console.log(data[0].productColor)
+ 		if (count && count >0) {
+ 			totalPage = Math.ceil(count/limit);
+ 		}
+
+ 		if (data1 && data1.length) {
+ 			listProductNumberPurchased = data1;
+ 		}
+
+ 		if (data2 && data2.length) {
+ 			listProductViews = data2;
+ 		}
+
+
+ 		res.send({
+ 			status: true, 
+ 			page : page, 
+ 			totalPage : totalPage, 
+ 			listProductNumberPurchased : listProductNumberPurchased , 
+ 			listProductViews : listProductViews
+ 		});
+
+ 		// console.log(listProduct)	
 
  	}catch(err){
  		res.send({status:false})
@@ -447,7 +507,7 @@ exports.getProductEdit = async (req,res) =>{
 			}	
 
 			// console.log(specificationsTotal)		
-	
+
 			let productSpecificationsTotal = []
 			if( product[0].productSpecifications && product[0].productSpecifications.length > 0){
 				for (var j = 0; j < product[0].productSpecifications.length; j++) {

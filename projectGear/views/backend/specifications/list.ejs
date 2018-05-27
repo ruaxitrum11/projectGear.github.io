@@ -189,6 +189,8 @@ input.status-active {
   <script type="text/javascript">
     $( document ).ready(function() {
       listSpecifications(1);
+      $('.product-main').addClass('active')
+      $('.specifications-info').addClass('active')
     });
 
     $('select').on('change', function() {
@@ -240,7 +242,7 @@ input.status-active {
 
             xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listSpecifications[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeSpecifications(\''+results.listSpecifications[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
 
-          
+
             xhtml += '</td>'
             xhtml += '</tr>';
 

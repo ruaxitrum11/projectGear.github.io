@@ -142,71 +142,77 @@
 
 <script>
 
- function readURL(input) {
-
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      $('#blogPreview').attr('src', e.target.result);
-    }
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-$("#fileBlog").change(function() {
-  readURL(this);
-});
+  $( document ).ready(function() {
+    $('.blog-main').addClass('active')
+    $('.blog-info').addClass('active')
+  });
+  
+  function readURL(input) {
 
 
-function postUserEdit(id) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
 
- var blogTitle = $( "input[name=blogTitle]").val();
- var blogDescription = $(".blogDescription").val();
- var blogAuthor = $("input[name=blogAuthor]").val();
- var blogContent = $(".blogContent").val();
- var blogImage =  $('input[type=file]')[0].files[0];
- var status = $('input[name=status]:checked').val();
- var id = id;
-
- var formData = new FormData();
-
- formData.append('fileBlog',blogImage)
- formData.append('blogTitle' , blogTitle)
- formData.append('blogDescription' , blogDescription)
- formData.append('blogAuthor' , blogAuthor)
- formData.append('blogContent' , blogContent)
- formData.append('status' , status)
- formData.append('id' , id)
-
-
- $.ajax({
-  url: '/admin/blog/editBlog',
-  type: 'post',
-  data: formData,
-  contentType:false,
-  processData:false
-}).done(function(results){
-
-  if (results.status == true) {
-    $.confirm({
-      title: 'Thông báo!',
-      content:'<span class="text-success"><strong class="fa fa-check"></strong>Sửa tin tức thành công !</span>',
-      buttons: {
-        'Ok': function () {
-          window.location.replace('/admin/blog/list');
-        }
+      reader.onload = function(e) {
+        $('#blogPreview').attr('src', e.target.result);
       }
-    });
-  }else{
-    console.log(results)
-    $.alert({
-      title: 'Thông Báo !',
-      content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
-    })
+
+      reader.readAsDataURL(input.files[0]);
+    }
   }
-})
+
+  $("#fileBlog").change(function() {
+    readURL(this);
+  });
+
+
+  function postUserEdit(id) {
+
+   var blogTitle = $( "input[name=blogTitle]").val();
+   var blogDescription = $(".blogDescription").val();
+   var blogAuthor = $("input[name=blogAuthor]").val();
+   var blogContent = $(".blogContent").val();
+   var blogImage =  $('input[type=file]')[0].files[0];
+   var status = $('input[name=status]:checked').val();
+   var id = id;
+
+   var formData = new FormData();
+
+   formData.append('fileBlog',blogImage)
+   formData.append('blogTitle' , blogTitle)
+   formData.append('blogDescription' , blogDescription)
+   formData.append('blogAuthor' , blogAuthor)
+   formData.append('blogContent' , blogContent)
+   formData.append('status' , status)
+   formData.append('id' , id)
+
+
+   $.ajax({
+    url: '/admin/blog/editBlog',
+    type: 'post',
+    data: formData,
+    contentType:false,
+    processData:false
+  }).done(function(results){
+
+    if (results.status == true) {
+      $.confirm({
+        title: 'Thông báo!',
+        content:'<span class="text-success"><strong class="fa fa-check"></strong>Sửa tin tức thành công !</span>',
+        buttons: {
+          'Ok': function () {
+            window.location.replace('/admin/blog/list');
+          }
+        }
+      });
+    }else{
+      console.log(results)
+      $.alert({
+        title: 'Thông Báo !',
+        content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>',
+      })
+    }
+  })
 
 }
 

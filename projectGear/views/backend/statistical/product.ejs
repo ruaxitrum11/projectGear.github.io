@@ -1,0 +1,601 @@
+  <%- include('../include/admin-header-top') %>
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
+  .add-newProduct {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchProduct {
+    margin : 20px 0;
+  }
+  .add-searchProduct input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchProduct select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchProduct span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+.form-productInfo {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+span.form-productInfo-tilte{
+  float: left;
+  width: 20%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 30px;
+}
+span.form-productInfo-icon {
+  width: 1%;
+  float: left;
+}
+span.form-productInfo-content  {
+  float: left;
+  width: 69%;
+  font-size: 1.6rem;
+  text-align: left;
+  padding-left: 30px;
+}
+.option-list a {
+  padding: 15px 30px;
+  background-color: #fff;
+  margin-right: 20px;
+  cursor: pointer;
+  color: #000;
+}
+.option-list-active {
+  border : 1px solid #000;
+}
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Thống kê sản phẩm
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="container">      
+      <div class="option-list" style="float: left;width: 100%;margin: 50px 0;">
+        <a class="list-purchased option-list-active">Xem theo số lượng bán</a>
+        <a class="list-view">Xem theo số lượt xem</a>
+
+      </div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tên sản phẩm</th>
+            <th>Hình ảnh</th>
+            <th>Số lượng bán</th>
+            <th>Số lượt xem</th>
+            <th>Trạng thái</th>
+            <th>Xử Lý</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+      <div class="col-xs-12" style="text-align: center;" id="pagination-list-product">
+
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../include/admin-footer') %>
+
+<%- include('../include/admin-control-sidebar') %>
+
+<%- include('../include/admin-js.ejs') %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    listProductNumberPurchased(1);
+    $('.product-main').addClass('active')
+    $('.product-statistical-info').addClass('active')
+  });
+  $(".list-purchased").click(function(){
+    $(".option-list a").removeClass("option-list-active");
+    $(this).addClass("option-list-active")
+    listProductNumberPurchased(1);
+  });
+
+  $(".list-view").click(function(){
+    $(".option-list a").removeClass("option-list-active");
+    $(this).addClass("option-list-active")
+    listProductViews(1);
+  });
+
+  function listProductNumberPurchased(page) {
+    var product_category = $('.product-category :selected').val();
+    var product_brand = $('.product-brand :selected').val();
+    var product_status = $('.product-status :selected').val();
+    var product_search_text = $('.product-search-text').val();
+
+    $.ajax({
+      url: '/admin/product/listProductStatistical',
+      type: 'GET',
+      data: {
+        page : page,
+        product_category : product_category,
+        product_brand : product_brand,
+        product_search_text:product_search_text
+      },
+      dataType: 'json',
+    }).done(function(results){
+      if (results.status) {
+
+        var xhtml = '';
+
+        if (results.listProductNumberPurchased && results.listProductNumberPurchased.length) {
+          for (var i = 0 ;  i <= results.listProductNumberPurchased.length - 1; i++) {
+
+            if(results.listProductNumberPurchased[i].createdAt){
+              var date = new Date(results.listProductNumberPurchased[i].createdAt);
+              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+            }
+
+            xhtml += '<tr>';
+
+            xhtml += '<td>'+results.listProductNumberPurchased[i].productName+'</td>';
+
+            xhtml += '<td><img src="/upload/thumbProduct/'+results.listProductNumberPurchased[i].productThumb+'" style="width:80px;height80px;"></td>';
+
+            if (results.listProductNumberPurchased[i].productColor && results.listProductNumberPurchased[i].productColor.length) {
+             var totalNumberPurchased = 0;
+             for (var ii = 0; ii < results.listProductNumberPurchased[i].productColor.length; ii++) {
+              totalNumberPurchased += results.listProductNumberPurchased[i].productColor[ii].colorNumberPurchased
+            }
+            // console.log(totalNumberPurchased)
+            xhtml += '<td style="font-size:2.4rem;">'+totalNumberPurchased+'</td>';
+          }
+
+
+          xhtml += '<td style="font-size:2.4rem;">'+results.listProductNumberPurchased[i].views+'</td>';
+
+          if(results.listProductNumberPurchased[i].status == 1){
+           xhtml += '<td><span class="label label-success">Active</span></td>';
+         } else {
+           xhtml += '<td><span class="label label-danger">Block</span></td>';
+         }
+
+            // xhtml += '<td>'+results.listProductNumberPurchased[i].description+'</td>';
+
+            xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listProductNumberPurchased[i]._id+'-productInfo"><span class="label label-default"><span class="glyphicon glyphicon-check"></span> Xem</span></a> ';
+
+            //Modal productInfo
+
+            xhtml += '<div class="modal fade" id="modal-'+results.listProductNumberPurchased[i]._id+'-productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xhtml += '<div class="modal-dialog" role="document" style="width:950px">';
+            xhtml += '<div class="modal-content modal-productInfo">';
+            xhtml += '<div class="modal-header">';
+            xhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xhtml += '<h4 class="modal-title">Thông tin sản phẩm : <strong>'+results.listProductNumberPurchased[i].productName+'</strong></h4>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-body">';
+            xhtml += '<div class="box-body">';
+            
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Hình ảnh</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if(results.listProductNumberPurchased[i].productThumb){
+              xhtml += '<span  class="form-productInfo-content"><img src="/upload/thumbProduct/'+results.listProductNumberPurchased[i].productThumb+'" style="height:auto; width:25%;"/></span>';
+            }
+            xhtml += '</div>';
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Loại sản phẩm</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+
+            if (results.listProductNumberPurchased[i].productCategory) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProductNumberPurchased[i].productCategory.categoryName+'</span>';
+            }else {
+              xhtml += '<span class="form-productInfo-content"></span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Nhãn hiệu</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProductNumberPurchased[i].productBrand) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProductNumberPurchased[i].productBrand.brandName+'</span>';
+            }else {
+              xhtml += '<span class="form-productInfo-content"></span>';
+            }
+            xhtml += '</div>';
+
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Màu<p style="font-weight: normal;font-size: 1.4rem;font-style: italic;">( Click để xem chi tiết )</p></span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProductNumberPurchased[i].productColor) {
+              xhtml += '<span class="form-productInfo-content">';
+              for (var ii = 0; ii < results.listProductNumberPurchased[i].productColor.length; ii++) {
+                // console.log(results.listProductNumberPurchased[i].productColor[ii].colorNumberPurchased)
+
+
+                xhtml += '<div class="infoColor-title" style="margin-bottom : 20px">'
+                xhtml += '<span class="label label-primary" style ="cursor:pointer" onclick=showInfoColor(\''+results.listProductNumberPurchased[i].productColor[ii].colorId._id+'\')>'+results.listProductNumberPurchased[i].productColor[ii].colorId.colorName+'</span>';
+                xhtml += '</div>'
+                xhtml += '<div class="infoColor-'+results.listProductNumberPurchased[i].productColor[ii].colorId._id+'" style="margin-bottom : 20px;display:none">';
+
+                var convertVND = results.listProductNumberPurchased[i].productColor[ii].colorPrice;
+                
+                productColorPrice = convertVND.toLocaleString('vi', {style : 'currency', currency : 'VND'});
+
+
+                xhtml += '<div class="infoColor-content" style="width:100%; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Giá tiền</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+productColorPrice+'</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100%; margin-bottom:30px; ">';
+                xhtml += '<p style="width:20%;display:inline-block">Khuyến mãi</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+results.listProductNumberPurchased[i].productColor[ii].colorPromotion+' %</span>';
+                xhtml += '</div>';
+                var totalQuantity = results.listProductNumberPurchased[i].productColor[ii].colorQuantity + results.listProductNumberPurchased[i].productColor[ii].colorNumberPurchased
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Tổng số</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+totalQuantity+' chiếc</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Đã bán</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+results.listProductNumberPurchased[i].productColor[ii].colorNumberPurchased+' chiếc</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Số lượng còn</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+results.listProductNumberPurchased[i].productColor[ii].colorQuantity+' chiếc</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+
+                xhtml += '<p style="width:20%;display:inline-block">Hình ảnh ( '+(results.listProductNumberPurchased[i].productColor[ii].colorImages.length) +' )</p>';
+                if(results.listProductNumberPurchased[i].productColor[ii].colorImages){
+                  for (var iii = 0; iii < results.listProductNumberPurchased[i].productColor[ii].colorImages.length; iii++) {
+                    xhtml += '<img style="width:100%;margin-bottom:20px;" src="/upload/thumbProduct/'+results.listProductNumberPurchased[i].productColor[ii].colorImages[iii]+'">'
+                  }
+                }
+                xhtml += '</div>';
+
+
+                xhtml += '</div>';
+              }
+
+              '</span>';
+            }
+            xhtml += '</div>';
+
+
+
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Mô tả</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProductNumberPurchased[i].productDescription) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProductNumberPurchased[i].productDescription+'</span>';
+            }
+            xhtml += '</div>';
+
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+          }
+          $("table tbody").html(xhtml)
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductNumberPurchased(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductNumberPurchased('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listProductNumberPurchased('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductNumberPurchased('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductNumberPurchased('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-product').html(pagiHtml);
+      } else {
+        $('#pagination-list-product').html('');
+      }
+
+    }
+  })
+}
+
+
+function listProductViews(page) {
+  var product_category = $('.product-category :selected').val();
+  var product_brand = $('.product-brand :selected').val();
+  var product_status = $('.product-status :selected').val();
+  var product_search_text = $('.product-search-text').val();
+
+  $.ajax({
+    url: '/admin/product/listProductStatistical',
+    type: 'GET',
+    data: {
+      page : page,
+      product_category : product_category,
+      product_brand : product_brand,
+      product_search_text:product_search_text
+    },
+    dataType: 'json',
+  }).done(function(results){
+    if (results.status) {
+
+      var xhtml = '';
+
+      if (results.listProductViews && results.listProductViews.length) {
+        for (var i = 0 ;  i <= results.listProductViews.length - 1; i++) {
+
+          if(results.listProductViews[i].createdAt){
+            var date = new Date(results.listProductViews[i].createdAt);
+            var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+          }
+
+          xhtml += '<tr>';
+
+          xhtml += '<td>'+results.listProductViews[i].productName+'</td>';
+
+          xhtml += '<td><img src="/upload/thumbProduct/'+results.listProductViews[i].productThumb+'" style="width:80px;height80px;"></td>';
+
+          if (results.listProductViews[i].productColor && results.listProductViews[i].productColor.length) {
+           var totalNumberPurchased = 0;
+           for (var ii = 0; ii < results.listProductViews[i].productColor.length; ii++) {
+            totalNumberPurchased += results.listProductViews[i].productColor[ii].colorNumberPurchased
+          }
+            // console.log(totalNumberPurchased)
+            xhtml += '<td style="font-size:2.4rem;">'+totalNumberPurchased+'</td>';
+          }
+
+
+          xhtml += '<td style="font-size:2.4rem;">'+results.listProductViews[i].views+'</td>';
+
+          if(results.listProductViews[i].status == 1){
+           xhtml += '<td><span class="label label-success">Active</span></td>';
+         } else {
+           xhtml += '<td><span class="label label-danger">Block</span></td>';
+         }
+
+            // xhtml += '<td>'+results.listProductViews[i].description+'</td>';
+
+            xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listProductViews[i]._id+'-productInfo"><span class="label label-default"><span class="glyphicon glyphicon-check"></span> Xem</span></a> ';
+
+            //Modal productInfo
+
+            xhtml += '<div class="modal fade" id="modal-'+results.listProductViews[i]._id+'-productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+            xhtml += '<div class="modal-dialog" role="document" style="width:950px">';
+            xhtml += '<div class="modal-content modal-productInfo">';
+            xhtml += '<div class="modal-header">';
+            xhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            xhtml += '<h4 class="modal-title">Thông tin sản phẩm : <strong>'+results.listProductViews[i].productName+'</strong></h4>';
+            xhtml += '</div>';
+
+            xhtml += '<div class="modal-body">';
+            xhtml += '<div class="box-body">';
+            
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Hình ảnh</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if(results.listProductViews[i].productThumb){
+              xhtml += '<span  class="form-productInfo-content"><img src="/upload/thumbProduct/'+results.listProductViews[i].productThumb+'" style="height:auto; width:25%;"/></span>';
+            }
+            xhtml += '</div>';
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Loại sản phẩm</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+
+            if (results.listProductViews[i].productCategory) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProductViews[i].productCategory.categoryName+'</span>';
+            }else {
+              xhtml += '<span class="form-productInfo-content"></span>';
+            }
+            xhtml += '</div>';
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Nhãn hiệu</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProductViews[i].productBrand) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProductViews[i].productBrand.brandName+'</span>';
+            }else {
+              xhtml += '<span class="form-productInfo-content"></span>';
+            }
+            xhtml += '</div>';
+
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Màu<p style="font-weight: normal;font-size: 1.4rem;font-style: italic;">( Click để xem chi tiết )</p></span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProductViews[i].productColor) {
+              xhtml += '<span class="form-productInfo-content">';
+              for (var ii = 0; ii < results.listProductViews[i].productColor.length; ii++) {
+                // console.log(results.listProductViews[i].productColor[ii].colorNumberPurchased)
+
+
+                xhtml += '<div class="infoColor-title" style="margin-bottom : 20px">'
+                xhtml += '<span class="label label-primary" style ="cursor:pointer" onclick=showInfoColor(\''+results.listProductViews[i].productColor[ii].colorId._id+'\')>'+results.listProductViews[i].productColor[ii].colorId.colorName+'</span>';
+                xhtml += '</div>'
+                xhtml += '<div class="infoColor-'+results.listProductViews[i].productColor[ii].colorId._id+'" style="margin-bottom : 20px;display:none">';
+
+                var convertVND = results.listProductViews[i].productColor[ii].colorPrice;
+                
+                productColorPrice = convertVND.toLocaleString('vi', {style : 'currency', currency : 'VND'});
+
+
+                xhtml += '<div class="infoColor-content" style="width:100%; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Giá tiền</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+productColorPrice+'</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100%; margin-bottom:30px; ">';
+                xhtml += '<p style="width:20%;display:inline-block">Khuyến mãi</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+results.listProductViews[i].productColor[ii].colorPromotion+' %</span>';
+                xhtml += '</div>';
+                var totalQuantity = results.listProductViews[i].productColor[ii].colorQuantity + results.listProductViews[i].productColor[ii].colorNumberPurchased
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Tổng số</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+totalQuantity+' chiếc</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Đã bán</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+results.listProductViews[i].productColor[ii].colorNumberPurchased+' chiếc</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+                xhtml += '<p style="width:20%;display:inline-block">Số lượng còn</p>';
+                xhtml += '<span class = "label label-success" style="font-size:1.4rem;">'+results.listProductViews[i].productColor[ii].colorQuantity+' chiếc</span>';
+                xhtml += '</div>';
+                xhtml += '<div class="infoColor-content" style="width:100% ; margin-bottom:30px;">';
+
+                xhtml += '<p style="width:20%;display:inline-block">Hình ảnh ( '+(results.listProductViews[i].productColor[ii].colorImages.length) +' )</p>';
+                if(results.listProductViews[i].productColor[ii].colorImages){
+                  for (var iii = 0; iii < results.listProductViews[i].productColor[ii].colorImages.length; iii++) {
+                    xhtml += '<img style="width:100%;margin-bottom:20px;" src="/upload/thumbProduct/'+results.listProductViews[i].productColor[ii].colorImages[iii]+'">'
+                  }
+                }
+                xhtml += '</div>';
+
+
+                xhtml += '</div>';
+              }
+
+              '</span>';
+            }
+            xhtml += '</div>';
+
+
+
+
+            xhtml += '<div class="form-productInfo">';
+            xhtml += '<span class="form-productInfo-tilte">Mô tả</span>';
+            xhtml += '<span class="form-productInfo-icon">:</span>';
+            if (results.listProductViews[i].productDescription) {
+              xhtml += '<span class="form-productInfo-content">'+results.listProductViews[i].productDescription+'</span>';
+            }
+            xhtml += '</div>';
+
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+            xhtml += '</div>';
+            xhtml += '</div>';
+            xhtml += '</div>';
+
+
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+          }
+          $("table tbody").html(xhtml)
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+       if(results.totalPage > 1) {
+        var pagiHtml = '';
+        pagiHtml ='<ul class="pagination">';
+        if (results.page != 1){ 
+          var pagePriv = parseInt(results.page) - 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductViews(1)""><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>  ';                  
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductViews('+ pagePriv +')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>';
+        }
+
+        var _begin =  results.page - 8; 
+        var _end = results.page + 8;
+        if (_begin < 1){ 
+          _begin = 1;
+        }
+        if (_end > results.totalPage ) {
+          _end = results.totalPage;
+        } 
+        for (var i = _begin; i <= _end; i++) {
+          if(results.page == i) { 
+            pagiHtml += '<li class="active" ><a href="javascript:void(0)">'+ i +'</a></li>';
+          } else { 
+            pagiHtml += '<li><a href="javascript:void(0)" onclick="listProductViews('+ i +')">'+i+'</a></li>';
+          }
+        } 
+        if (results.page < results.totalPage ) {
+          var pageNext = parseInt(results.page) + 1; 
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductViews('+ pageNext +')"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>';
+          pagiHtml += '<li class="" ><a href="javascript:void(0)" onclick="listProductViews('+ results.totalPage +')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>';
+        } 
+        pagiHtml += '</ul>';
+
+        $('#pagination-list-product').html(pagiHtml);
+      } else {
+        $('#pagination-list-product').html('');
+      }
+
+    }
+  })
+}
+
+function showInfoColor(id){
+ $('.infoColor-'+id+'').toggle(500)
+}
+
+</script>
+

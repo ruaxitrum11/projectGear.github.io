@@ -466,7 +466,7 @@ function showInfoLevel(userIdCurrent){
   	
   	xhtml += '</div>';
   	xhtml += '<div class="user-trophy-content trophy-info">';
-  	xhtml += '<a href="">Thông tin danh hiệu</a>';
+  	xhtml += '<a href="#">Thông tin danh hiệu</a>';
   	xhtml += '</div>';
   	xhtml += '</div>';
   	xhtml += '</div>';

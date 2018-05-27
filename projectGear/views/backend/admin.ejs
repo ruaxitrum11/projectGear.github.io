@@ -565,7 +565,7 @@
 
             var cancelBillPercent = (results.countCancelBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
 
-      
+
             $('.progress-processing input').val(processingBillPercent).trigger('change');
             $('.progress-success input').val(completedBillPercent).trigger('change');
             $('.progress-cancel input').val(cancelBillPercent).trigger('change');
@@ -646,5 +646,7 @@
                 format: 'YYYY/DD/MM h:mm A'
               },
             });
+            $('.dashboard-main').addClass('active')
+            $('.dashboard-main li').addClass('active')
           })
         </script>

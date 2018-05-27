@@ -161,6 +161,10 @@
 
 <script type="text/javascript">
 
+    $( document ).ready(function() {
+    $('.product-main').addClass('active')
+    $('.category-info').addClass('active')
+  });
 
   function postCategoryEdit(id){
     var categoryName = $('input[name=categoryName]').val();
