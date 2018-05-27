@@ -324,7 +324,7 @@ span.product-color {
 	padding-top: 20px;
 }
 .product-involve-item-content {
-	padding-left: 30px;
+	padding:0 30px 30px;
 }
 h2.product-involve-item-name {
 	font-size: 2.6rem;

@@ -99,7 +99,7 @@
             	data : dataChart,
             	xkey      : 'x',
             	ykeys     : ['total_bill'],
-            	labels    : ['Tổng tiền bán'],
+            	labels    : ['Tổng tiền bán (VNĐ)'],
             	lineColors: ['#FF6602'],
             	hideHover : 'auto'
             });
@@ -165,13 +165,14 @@
             	data : dataChart,
             	xkey      : 'x',
             	ykeys     : ['total_bill'],
-            	labels    : ['Tổng tiền bán'],
+            	labels    : ['Tổng tiền bán (VNĐ)'],
             	lineColors: ['#FF6602'],
             	hideHover : 'auto'
             });
             // console.log(area)
             // $('#revenue-chart').html(area);
             // console.log(area)
+             $('.text-revenue-chart').text( moment(dataChart[0].x).format('DD/MM/YYYY') +' -- ' +moment(dataChart[dataChart.length-1].x).format('DD/MM/YYYY'));
         })
           }
       </script>

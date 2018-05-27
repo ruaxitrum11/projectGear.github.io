@@ -10,10 +10,20 @@
  const moment = require('moment');
  const path = require('path');
  var mongoose = require('mongoose');
- var nodemailer =  require('nodemailer')
+ var nodemailer =  require('nodemailer');
+ const requestIp = require('request-ip');
+
+// inside middleware handler
+const ipMiddleware = function(req, res, next) {
+	const clientIp = requestIp.getClientIp(req); 
+	next();
+};
+
+// on localhost you'll see 127.0.0.1 if you're using IPv4 
+// or ::1, ::ffff:127.0.0.1 if you're using IPv6
 
 
- const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 
 
 // Models
@@ -49,6 +59,9 @@ const Bill = require('../../models/Bill');
  exports.addBill = async (req,res) => {
  	// console.log(req.body)
  	if (req.body) {
+ 		console.log('req.clientIp')
+ 		console.log(req.clientIp)
+ 		console.log('req.clientIp')
  		// console.log(req.body)
  		const errors = validationResult(req);
  		if (!errors.isEmpty()) {

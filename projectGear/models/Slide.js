@@ -10,7 +10,7 @@ const slideSchema = new mongoose.Schema({
 	slideLink : String,
 	slideImage : String,
 	isSlideMain : {type:Number , default : 0}, //1:true , 0:false
-  status : {type : Number , default : 0} , //1 : active , 0: block 
+  status : {type : Number , default : 1} , //1 : active , 0: block 
 }, { timestamps: true });
 
 const Slide = mconnect.model('Slide', slideSchema);

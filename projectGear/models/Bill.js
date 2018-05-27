@@ -19,9 +19,10 @@ const billSchema = new mongoose.Schema({
 	totalPrice : Number,
 	billPrice : Number , 
 	billPromotion : Number ,
+	clientIp : String ,
 	clientName : String ,
 	clientEmail : String ,
-	clientPhoneNumber : String ,
+	clientPhoneNumber : Number ,
 	clientAddress : String ,
 	clientDescription : String,
   status : {type : Number , default : 1 } //1 : processing , 2 : completed , 3 : canceled

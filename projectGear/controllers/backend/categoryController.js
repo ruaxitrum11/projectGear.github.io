@@ -90,7 +90,6 @@ let upload = multer({
  		let [count, data] = await Promise.all([
  			Category.count(query),
  			Category.find(query)
- 			.populate('Product')
  			.sort({createdAt : -1}).skip(skip).limit(limit)
  			])
 

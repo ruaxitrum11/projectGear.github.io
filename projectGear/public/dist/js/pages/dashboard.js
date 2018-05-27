@@ -47,6 +47,7 @@ $(function () {
 
   /* jQueryKnob */
   $('.knob').knob();
+  $('.knob').trigger('change');
 
   // jvectormap data
   var visitorsData = {

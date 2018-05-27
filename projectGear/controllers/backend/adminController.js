@@ -30,10 +30,10 @@ const Bill = require('../../models/Bill');
 }
 
 exports.revenue = async (req,res) => {
-	console.log(req.body)
+	// console.log(req.body)
 	try {
 		let revenue = await Revenue.find({createdAt:{$gte:req.body.timeBegin , $lte:req.body.timeEnd}}).lean()
-		console.log(revenue)
+		// console.log(revenue)
 		return res.send({status:true,revenue:revenue,moment:moment})
 
 	}catch(errors){

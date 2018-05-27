@@ -8,7 +8,6 @@ const colorSchema = new mongoose.Schema({
 	colorName : String ,
 	colorCode : String ,
   status : {type : Number , default : 1} , //1 : active , 0: block 
-  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
 }, { timestamps: true });
 
 const Color = mconnect.model('Color', colorSchema);

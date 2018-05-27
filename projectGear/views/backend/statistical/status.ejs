@@ -1,0 +1,114 @@
+  <%- include('../include/admin-header-top') %>
+
+
+  <%- include('../include/admin-header') %>
+
+  <%- include('../include/admin-sidebar') %>
+
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  	<!-- Content Header (Page header) -->
+  	<section class="content-header">
+  		<h1>
+  			Trạng thái đơn hàng
+  		</h1>
+  	</section>
+
+  	<!-- Main content -->
+  	<section class="content ">
+  		<div class="col-md-12">
+
+       <div class="box box-solid bg-teal-gradient" style="background:#FF6602!important">
+        <div class="box-header">
+          <i class="fa fa-th"></i>
+
+          <h3 class="box-title"></h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse" style="background-color:#FF6602!important"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn bg-teal btn-sm" data-widget="remove" style="background-color:#FF6602!important"><i class="fa fa-times"></i>
+            </button>
+          </div>
+        </div>
+       <!--        <div class="box-body border-radius-none">
+                <div class="chart" id="line-chart" style="height: 250px;"></div>
+              </div> -->
+
+              <div class="box-footer no-border">
+                <div class="row">
+                  <div class="col-xs-4 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
+
+                    <div class="knob-label">Đang xử lý</div>
+                  </div>
+
+                  <div class="col-xs-4 text-center progress-success" style="border-right: 1px solid #f4f4f4">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
+
+                    <div class="knob-label">Đã hoàn thành</div>
+                  </div>
+
+                  <div class="col-xs-4 text-center progress-cancel">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
+
+                    <div class="knob-label">Hủy bỏ</div>
+                  </div>
+
+                </div>
+
+              </div>
+              
+            </div>
+          </div>
+
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+
+      <%- include('../include/admin-footer') %>
+
+      <%- include('../include/admin-control-sidebar') %>
+
+      <%- include('../include/admin-js.ejs') %>
+
+      <script>
+
+        function countTotal(){
+          $.ajax({
+            url:'/admin/countTotal',
+            type:'get',
+          }).done(function(results){
+
+            // console.log(results)
+
+            var processingBillPercent = (results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
+
+            var completedBillPercent = (results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
+
+            var cancelBillPercent = (results.countCancelBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
+
+
+            $('.progress-processing input').val(processingBillPercent).trigger('change');
+            $('.progress-success input').val(completedBillPercent).trigger('change');
+            $('.progress-cancel input').val(cancelBillPercent).trigger('change');
+          })
+
+        }
+
+        $( document ).ready(function() {
+          countTotal();
+          $('#reservationtime').daterangepicker({
+            timePicker: true, 
+            timePickerIncrement: 5, 
+            locale: {
+              format: 'YYYY/DD/MM h:mm A'
+            },
+          });
+        })
+      </script>

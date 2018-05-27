@@ -102,6 +102,7 @@ span.form-productInfo-content  {
             <th>Tên sản phẩm</th>
             <th>Loại sản phẩm</th>
             <th>Nhãn hiệu</th>
+            <th>Trạng thái</th>
             <th>Xử Lý</th>
           </tr>
         </thead>
@@ -186,6 +187,12 @@ span.form-productInfo-content  {
             if (results.listProduct[i].productBrand) {
               xhtml += '<td><span class="label label-info">'+results.listProduct[i].productBrand.brandName+'</span></td>';
             }
+
+            if(results.listProduct[i].status == 1){
+               xhtml += '<td><span class="label label-success">Active</span></td>';
+             } else {
+               xhtml += '<td><span class="label label-danger">Block</span></td>';
+             }
 
             // xhtml += '<td>'+results.listProduct[i].description+'</td>';
 

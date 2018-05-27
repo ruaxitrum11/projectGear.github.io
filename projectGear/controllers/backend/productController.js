@@ -526,6 +526,7 @@ exports.postProductEdit = async (req,res) => {
 				productBrand : req.body.productBrand,
 				productColor : req.body.productColor,
 				productDescription : req.body.productDescription,
+				status : req.body.status,
 				productFeturesSolgan : req.body.productFeturesSolgan ,
 				productFeturesBanner : req.body.productFeturesBanner , 
 				productFeturesLink : req.body.productFeturesLink ,

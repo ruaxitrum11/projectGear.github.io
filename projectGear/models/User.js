@@ -5,14 +5,14 @@ const mconnect = require('../config/connDB');
 const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
-  userName : String,
-  password: String,
-  avatar: String,
+  email: { type: String, unique: true }, 
+  userName : String, 
+  password: String, 
+  avatar: String, 
   nameUser : String,
-  phoneNumber : String,
+  phoneNumber : Number,
   address: String,
-  birthDay :{type : Date , default : 0 },
+  birthDay : Date,
   gender : {type : Number , default : 0}, // 0 : Nam , 1 : Nữ
   role : {type: Number, default: 0}, // 0 : Normal, 1 : Admin
   level : {type: Number, default: 1}, // 1: Normal, 2: Silver, 3: Gold, 4: Platinum

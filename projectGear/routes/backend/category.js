@@ -19,7 +19,6 @@ router.post('/delete', categoryController.deleteCategory);
 router.get('/edit/:id', categoryController.getCategoryEdit);
 router.post('/edit', categoryController.postCategoryEdit);
 router.post('/addCategory',  categoryController.postCategoryAdd);
-
 router.post('/uploadCategoryBanner', categoryController.uploadCategoryBanner);
 
 module.exports = router;

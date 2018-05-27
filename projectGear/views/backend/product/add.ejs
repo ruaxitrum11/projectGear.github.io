@@ -344,15 +344,6 @@ input[type=number]::-webkit-outer-spin-button {
       <h2 style="text-align: center;">Tính năng</h2>
     </div>
     <div class="details-product-form details-productInfo-form">
-     <div class="form-product-add">
-      <span>Hình ảnh</span>
-      <button type="button" class="btn btn-info btn-lg" style="padding: 5px 10px;" data-toggle="modal" data-target="#modalProductInfoImage" onclick="listFileManager(1)"> 
-        <i class="fa fa-edit"></i>
-      </button>
-      <div class="fetures-background" style="margin-top: 20px">
-        <img id="image-productInfo-image" style="width: 50%;">
-      </div>
-    </div>
     <div class="details-productInfo-item">
       <div class="form-product-add">
         <span>Tên tính năng</span>
@@ -1180,7 +1171,7 @@ function removeImages(){
 
     var productFeturesLink = $("#fetures_link").val();
 
-    var productInfoImage = $("#image-productInfo-image").attr('src');
+    var productInfoImage = $('.image-thumb img').attr('src') ;
 
     var productInfo = []
 

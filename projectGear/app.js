@@ -11,6 +11,8 @@ const passportConfig = require('./config/passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const requestIp = require('request-ip');
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
@@ -18,6 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 app.use(cookieParser('keyboard cat'));
+app.use(requestIp.mw())
 
 // var csrf = require('csurf');
 
