@@ -147,6 +147,7 @@ const Bill = require('../../models/Bill');
  						billPrice : req.body.billPrice , 
  						billPromotion : req.body.billPromotion,
  						clientName : req.body.clientName , 
+ 						clientIp : req.clientIp,
  						clientEmail : req.body.clientEmail , 
  						clientPhoneNumber : req.body.clientPhoneNumber ,
  						clientAddress : req.body.clientAddress , 

@@ -136,6 +136,7 @@ input.status-active {
             <tr>
               <th>Mã đơn hàng</th>
               <th>Email khách hàng</th>
+              <th>Địa chỉ IP</th>
               <th>Trạng thái</th>
               <th>Ngày tạo</th>
               <th>Tổng tiền</th>
@@ -222,6 +223,8 @@ input.status-active {
             xhtml += '<td>'+results.listBill[i].billNumber+'</td>';
 
             xhtml += '<td>'+results.listBill[i].clientEmail+'</td>';
+
+            xhtml += '<td>'+results.listBill[i].clientIp+'</td>';
             
 
             if (results.listBill[i].status == 1) {
