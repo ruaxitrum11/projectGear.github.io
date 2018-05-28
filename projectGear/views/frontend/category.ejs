@@ -28,6 +28,7 @@
 				<h2><%=categoryCurrent[0].categoryName%> <%=brand[i].brandName%></h2>
 			</div>
 			<div class="product-category-content new-product-category-content">
+				<%if(product && product.length){%>
 				<%for(var j = 0 ; j < product.length ; j++){%>
 				<%if(brand[i]._id.toString()== product[j].productBrand.toString()){%>
 
@@ -93,6 +94,7 @@
 			</div>
 		</div>
 	</div>
+	<%}%>
 	<%}%>
 	<%}%>
 
