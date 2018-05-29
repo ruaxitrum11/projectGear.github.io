@@ -18,6 +18,8 @@ router.post('/showProduct' , productController.showProduct)
 router.post('/addToCart',productController.addToCart)
 router.post('/changeColor',productController.changeColor)
 
+router.get('/search/product',productController.search)
+
 router.post('/countRead', productController.countRead);
 
 

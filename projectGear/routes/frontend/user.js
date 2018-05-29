@@ -15,7 +15,7 @@ const userController = require('../../controllers/frontend/userController');
 router.post('/create', userController.validatorCreateUser, userController.create);
 router.post('/login',  userController.postLogin);
 router.get('/logout', userController.logOut);
-router.get('/:userId', userController.getUserInfo);
+router.get('/:userId', passportConfig.isAuthenticated, userController.getUserInfo);
 router.post('/forgotPassword' , userController.forgotPassword);
 router.post('/updateUserInfo' , userController.updateUserInfo)
 router.post('/showInfoUser' , userController.showInfoUser)

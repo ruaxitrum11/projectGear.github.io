@@ -15,6 +15,7 @@ const Category = require('../../models/Category');
 const Brand = require('../../models/Brand');
 const Color = require('../../models/Color');
 const Slide = require('../../models/Slide');
+const Review = require('../../models/Review');
 // Method
 /**
  * GET /
@@ -34,7 +35,7 @@ const Slide = require('../../models/Slide');
 
  	let categoryBanner = categoryMenu
 
-
+ 	let review = await Review.find({status:1}).sort({createdAt:-1}).lean();
 
 
  	return res.render('frontend/index' , {
@@ -44,7 +45,8 @@ const Slide = require('../../models/Slide');
  		categoryBanner : categoryBanner,
  		productFirst : productFirst ,
  		slideIsMain : slideIsMain ,
- 		slideNormal : slideNormal
+ 		slideNormal : slideNormal,
+ 		review : review 
  	});
  }
 

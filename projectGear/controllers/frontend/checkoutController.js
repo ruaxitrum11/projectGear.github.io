@@ -67,7 +67,7 @@ const IpBlocked = require('../../models/IpBlocked');
  		if(ip && ip.length ) {
  			for (var i = 0; i < ip.length; i++) {
  				if(req.clientIp == ip[i].ipBlockedAddress) {
- 					let errors = [{msg:'Địa chỉ Ip của bạn đã bị chặn do vi phạm điều khoản . Vui lòng liên hệ hỗ trợ trực tuyến để được hỗ trợ'}]
+ 					let errors = [{msg:'Địa chỉ Ip bạn sử dụng không thể thanh toán vì hủy bỏ quá nhiều đơn hàng . Vui lòng liên hệ hỗ trợ trực tuyến để được hỗ trợ'}]
  					return res.send({status:false,errors:errors})
  				}
  			}

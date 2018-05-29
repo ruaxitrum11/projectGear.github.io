@@ -15,12 +15,12 @@ const blogController = require('../../controllers/backend/blogController');
 // Route is : /admin/blog/
 router.get('/list', blogController.list);
 
-router.get('/listBlog', blogController.listBlog);
-router.post('/delete', blogController.deleteBlog);
-router.get('/edit/:id', blogController.getBlogEdit);
-router.post('/editBlog', blogController.postBlogEdit);
-router.get('/add',blogController.getBlogAdd);
-router.post('/addBlog',blogController.postBlogAdd);
+router.get('/listBlog',passportConfig.isAuthAdmin, blogController.listBlog);
+router.post('/delete',passportConfig.isAuthAdmin, blogController.deleteBlog);
+router.get('/edit/:id',passportConfig.isAuthAdmin, blogController.getBlogEdit);
+router.post('/editBlog',passportConfig.isAuthAdmin, blogController.postBlogEdit);
+router.get('/add',passportConfig.isAuthAdmin,blogController.getBlogAdd);
+router.post('/addBlog',passportConfig.isAuthAdmin,blogController.postBlogAdd);
 
 
 

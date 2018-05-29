@@ -17,7 +17,7 @@ const { check, validationResult } = require('express-validator/check');
 let storage = multer.diskStorage({
     // Configuring multer to upload folder
     destination: function(req, file, cb) {
-    	cb(null, './public/upload/blog')
+    	cb(null, './public/upload/avatar')
     },
     // Rename file to save in the database.
     filename: function(req, file, cb) {
@@ -43,10 +43,10 @@ let upload = multer({
 		// }
 		cb(null, true);
 	}
-}).single('fileBlog');
+}).single('fileReview');
 
  // Models
- const Blog = require('../../models/Blog');
+ const Review = require('../../models/Review');
 
 
 // Method
@@ -56,10 +56,10 @@ let upload = multer({
  */
 
  exports.list = async (req, res) => {
- 	return res.render('backend/blog/list');
+ 	return res.render('backend/review/list');
  }
 
- exports.listBlog = async (req,res) =>{
+ exports.listReview = async (req,res) =>{
  	let page = 1;
  	let limit = 20;
  	let totalPage = 1;
@@ -70,7 +70,7 @@ let upload = multer({
 
  	if(req.query.blog_author && req.query.blog_author !=""){
  		let regex = new RegExp(req.query.blog_author.trim(), 'i')
- 		query = {blogAuthor: {$regex : regex}}
+ 		query = {reviewName: {$regex : regex}}
  	} 
 
  	if (req.query.blog_status && req.query.blog_status !="") {
@@ -83,22 +83,22 @@ let upload = multer({
 
  	try{
  		let [count, data] = await Promise.all([
- 			Blog.count(query),
- 			Blog.find(query)
- 			.sort({createdAt : -1}).skip(skip).limit(limit)
+ 			Review.count(query),
+ 			Review.find(query)
+ 			.sort({createdAt : -1 }).skip(skip).limit(limit)
  			])
 
- 		let listBlog = [];
+ 		let listReview = [];
 
  		if (count && count >0) {
  			totalPage = Math.ceil(count/limit);
  		}
 
  		if (data && data.length) {
- 			listBlog = data;
+ 			listReview = data;
  		}
 
- 		res.send({status: true, page : page, totalPage : totalPage, listBlog : listBlog});
+ 		res.send({status: true, page : page, totalPage : totalPage, listReview : listReview});
 
 
 
@@ -110,11 +110,11 @@ let upload = multer({
 }
 }
 
-exports.getBlogAdd = async (req,res) => {
-	res.render('backend/blog/add');
+exports.getReviewAdd = async (req,res) => {
+	res.render('backend/review/add');
 }
 
-exports.postBlogAdd = async (req,res) => {
+exports.postReviewAdd = async (req,res) => {
 	upload (req,res,async function(err) {
 		if(err) {
 			console.log(err);
@@ -130,34 +130,30 @@ exports.postBlogAdd = async (req,res) => {
 			// console.log(req.body)
 			if (req.body) {
 				
-				if (req.body.blogTitle == "") {
-					let errors = [{msg:"Tiêu đề tin tức không được để trống"}]
+				if (req.body.reviewName == "") {
+					let errors = [{msg:"Người đánh giá không được để trống"}]
 					return res.send({status:false, errors : errors});
-				} else if (req.body.blogDescription == ""){
-					let errors = [{msg:"Mô tả tin tức không được để trống"}]
+				} else if (req.body.reviewDescription == ""){
+					let errors = [{msg:"Mô tả đánh giá không được để trống"}]
 					return res.send({status:false, errors : errors});
-				}else if (req.body.blogAuthor == ""){
-					let errors = [{msg:"Tác giả không được để trống"}]
-					return res.send({status:false, errors : errors});
-				}else if (req.body.blogContent == ""){
-					let errors = [{msg:"Nội dung tin tức không được để trống"}]
+				}else if (req.body.reviewContent == ""){
+					let errors = [{msg:"Nội dung đánh giá không được để trống"}]
 					return res.send({status:false, errors : errors});
 				}else{
 
-					const blog = new Blog({
-						blogTitle : req.body.blogTitle,
-						blogDescription : req.body.blogDescription,
-						blogAuthor : req.body.blogAuthor,
-						blogContent : req.body.blogContent,
+					const review = new Review({
+						reviewName : req.body.reviewName,
+						reviewDescription : req.body.reviewDescription,
+						reviewContent : req.body.reviewContent,
 					});
 
 					if (req.file) {
-						blog.blogImage = req.file.filename;
+						review.reviewImage = req.file.filename;
 					}
 
-					let saveBlog = await blog.save();
-					if (!saveBlog) {
-						let errors = [{msg:"Thêm tin tức thất bại"}]
+					let saveReview = await review.save();
+					if (!saveReview) {
+						let errors = [{msg:"Thêm đánh giá thất bại"}]
 						return res.send({status:false, errors : errors});
 					}
 					return res.send({status:true});
@@ -175,17 +171,23 @@ exports.postBlogAdd = async (req,res) => {
 }
 
 
-exports.getBlogEdit = async (req,res) =>{
+exports.getReviewEdit = async (req,res) =>{
 	if (req.params && req.params.id) {
 		try{
-			let blog = await Blog.find({_id : req.params.id});
-			res.render('backend/blog/edit',{blog:blog[0],moment:moment})
+			let review = await Review.find({_id : req.params.id});
+			let countReview = await Review.find({status:1}).count();
+			// console.log(countReview)
+			res.render('backend/review/edit',{
+				review:review[0],
+				countReview : countReview ,
+				moment:moment
+				})
 		}catch(err){
 		}
 	}
 }
 
-exports.postBlogEdit = async (req,res) => {
+exports.postReviewEdit = async (req,res) => {
 	upload (req,res,async function(err) {
 		if(err) {
 			console.log(err);
@@ -195,36 +197,32 @@ exports.postBlogEdit = async (req,res) => {
 		try{
 			// console.log(req.body)
 			if (req.body) {
-				
-				if (req.body.blogTitle == "") {
-					let errors = [{msg:"Tiêu đề tin tức không được để trống"}]
+
+				if (req.body.reviewName == "") {
+					let errors = [{msg:"Người đánh giá không được để trống"}]
 					return res.send({status:false, errors : errors});
-				} else if (req.body.blogDescription == ""){
-					let errors = [{msg:"Mô tả tin tức không được để trống"}]
+				} else if (req.body.reviewDescription == ""){
+					let errors = [{msg:"Mô tả đánh giá không được để trống"}]
 					return res.send({status:false, errors : errors});
-				}else if (req.body.blogAuthor == ""){
-					let errors = [{msg:"Tác giả không được để trống"}]
-					return res.send({status:false, errors : errors});
-				}else if (req.body.blogContent == ""){
-					let errors = [{msg:"Nội dung tin tức không được để trống"}]
+				}else if (req.body.reviewContent == ""){
+					let errors = [{msg:"Nội dung đánh giá không được để trống"}]
 					return res.send({status:false, errors : errors});
 				}else{
 
-					const blogDataUpdate = {
-						blogTitle : req.body.blogTitle,
-						blogDescription : req.body.blogDescription,
-						blogAuthor : req.body.blogAuthor,
-						blogContent : req.body.blogContent,
+					const reviewDataUpdate = {
+						reviewName : req.body.reviewName,
+						reviewDescription : req.body.reviewDescription,
+						reviewContent : req.body.reviewContent,
 						status : req.body.status
 					};
 
 					if (req.file) {
-						blogDataUpdate.blogImage = req.file.filename;
+						reviewDataUpdate.reviewImage = req.file.filename;
 					}
 
-					let updateBlog = await Blog.update({ _id: req.body.id}, { $set: blogDataUpdate});
-					if (!updateBlog) {
-						let errors = [{msg:"Thêm trang trình bày thất bại"}]
+					let updateReview = await Review.update({ _id: req.body.id}, { $set: reviewDataUpdate});
+					if (!updateReview) {
+						let errors = [{msg:"Sửa đánh giá thất bại"}]
 						return res.send({status:false, errors : errors});
 					}
 					return res.send({status:true});
@@ -242,11 +240,11 @@ exports.postBlogEdit = async (req,res) => {
 
 
 
-exports.deleteBlog = async (req,res) =>{
+exports.deleteReview = async (req,res) =>{
 	if (req.body.id) {
 		try{
-			let deleteBlog = await Blog.remove({_id : req.body.id});
-			if (deleteBlog.result) {
+			let deleteReview = await Review.remove({_id : req.body.id});
+			if (deleteReview.result) {
 				res.send({status:true});
 			}else{
 				res.send({status:false});

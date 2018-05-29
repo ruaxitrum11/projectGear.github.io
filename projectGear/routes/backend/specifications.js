@@ -13,12 +13,12 @@ const mongoose = require('mongoose');
 const specificationsController = require('../../controllers/backend/specificationsController');
 
 // Route is : /admin/specifications/
-router.get('/list', specificationsController.list);
-router.get('/listSpecifications', specificationsController.listSpecifications);
-router.post('/delete', specificationsController.deleteSpecifications);
+router.get('/list',passportConfig.isAuthAdmin, specificationsController.list);
+router.get('/listSpecifications', passportConfig.isAuthAdmin,specificationsController.listSpecifications);
+router.post('/delete', passportConfig.isAuthAdmin,specificationsController.deleteSpecifications);
 // // // router.get('/edit/:id', specificationsController.getcolorEdit);
-router.post('/edit', specificationsController.postSpecificationsEdit);
-router.post('/addSpecifications',  specificationsController.postSpecificationsAdd);
+router.post('/edit', passportConfig.isAuthAdmin,specificationsController.postSpecificationsEdit);
+router.post('/addSpecifications', passportConfig.isAuthAdmin, specificationsController.postSpecificationsAdd);
 
 
 

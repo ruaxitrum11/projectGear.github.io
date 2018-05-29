@@ -156,7 +156,7 @@ exports.getUserAdd = async (req,res) =>{
  exports.postUserEdit = async (req,res) =>{
   if (req.body) {
 
-    console.log(req.body);
+    // console.log(req.body);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -212,7 +212,7 @@ check('password_confirm', 'Mật khẩu không trùng khớp').custom((value, { 
 exports.postUserAdd = async (req,res) =>{
  if (req.body) {
 
-  console.log(req.body)
+  // console.log(req.body)
 
 
   const errors = validationResult(req);

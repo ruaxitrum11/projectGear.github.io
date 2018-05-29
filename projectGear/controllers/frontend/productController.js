@@ -7,6 +7,7 @@
  const fs = require('fs');
  const download = require('download');
  const async = require('async');
+ var path = require('path');
  var mongoose = require('mongoose');
 
 // Models
@@ -47,6 +48,24 @@ const Specifications = require('../../models/Specifications')
  		product : product[0],
  		productCategoryCurrent : productCategoryCurrent
  	});
+
+ }
+
+ exports.search = async (req,res) => {
+ 	// console.log('vao day')
+ 	// console.log(req.query.search_product)
+ 	if(req.query.search_product && req.query.search_product !=""){
+ 		let regex = new RegExp(req.query.search_product.trim(), 'i')
+ 		let productSearch = await Product
+ 		.find({productName : regex , status:1})
+ 		.select({productName:1,productThumb:1})
+ 		.sort({views:-1}).limit(6).lean()
+ 		// console.log(productSearch)
+ 		// query = {productName: {$regex : regex}}
+ 		return res.send({status:true,productSearch:productSearch})
+ 	}else{
+ 		return res.send({status:false , msg:"Không tìm thấy !"})
+ 	}
 
  }
 

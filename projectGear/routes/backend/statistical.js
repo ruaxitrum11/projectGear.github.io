@@ -13,11 +13,11 @@ const mongoose = require('mongoose');
 const statisticalController  = require('../../controllers/backend/statisticalController');
 
 // Route is : /admin/statistical/
-router.get('/revenue', statisticalController.revenue);
-router.get('/status', statisticalController.status);
-router.get('/product', statisticalController.product);
-router.get('/listIpCancel', statisticalController.listIpCancel);
-router.post('/postIpBlock', statisticalController.postIpBlock);
+router.get('/revenue',passportConfig.isAuthAdmin, statisticalController.revenue);
+router.get('/status',passportConfig.isAuthAdmin, statisticalController.status);
+router.get('/product',passportConfig.isAuthAdmin, statisticalController.product);
+router.get('/listIpCancel',passportConfig.isAuthAdmin, statisticalController.listIpCancel);
+router.post('/postIpBlock',passportConfig.isAuthAdmin, statisticalController.postIpBlock);
 // router.post('/addSlide',  slideController.postSlideAdd);
 
 

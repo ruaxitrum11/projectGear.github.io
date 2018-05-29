@@ -44,8 +44,9 @@ exports.isAuthenticated = (req, res, next) => {
 }
 
 exports.isAuthAdmin = (req, res, next) => {
-  if(req.user.permission == 1){
+  if(req.user && req.user.role == 1){
     return next();
+  }else {
+    return res.redirect("/");
   }
-  return res.redirect('/');
 }

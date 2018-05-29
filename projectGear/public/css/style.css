@@ -258,7 +258,6 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 	width: 100%;
 	background-color: #2b292a;
 	border-radius : 0;
-	padding: 15px 0px;
 	float: left;
 	width: 100%;
 }
@@ -266,6 +265,7 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 	font-size: 2rem;
 	color: #fff;
 	text-align: center;
+	padding: 15px 0;
 }
 .modal-search-input input{
 	background-color: #2b292a;
@@ -274,6 +274,7 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 	outline: none;
 	color: #fff;
 	font-size: 2rem;
+	padding: 15px 0;
 }
 .modal-search-input input::placeholder{
 	color: #fff;
@@ -468,10 +469,10 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 }
 .homepage-footer-bottom-content>ul>li{
 	display: inline-block;
-	width: 15%;
-	margin-right: 1.3%;
+	width: 18%;
+	margin-right: 1.5%;
 	float: left;
-	padding-top: 20px;
+	padding-top: 30px;
 }
 .homepage-footer-bottom-content>ul>li>a{
 	color: #fff;
@@ -538,18 +539,20 @@ a.icon-close-singin :hover , a.icon-close-singin :focus {
 }
 .review-gallery ul>li {
 	list-style: none;
-	width: 12%;
+	width: 10%;
 	display: inline-block;
 }
 .review-gallery ul>li>img {
-	width: 50%;
+	width: 60px;
+	height: 60px;
 	border-radius: 50%;
 	border: 5px solid #fff;
 	position: relative;
 	top: -60px;
 }
 .review-gallery ul>li.review-active>img {
-	width: 75%;
+	width: 100px;
+	height: 100px;
 	border: 7px solid #fff !important;
 }
 .review-user {
@@ -567,6 +570,7 @@ p.review-user-address {
 .review-information {
 	padding: 20px 200px 100px 200px;
 	position: relative;
+	width: 100%;
 }
 span.review-button {
 	display: inline-block;
@@ -578,6 +582,7 @@ span.review-button {
 	border-radius: 5px;
 	position: absolute;
 	cursor: pointer;
+	float: left;
 }
 span.review-button:hover {
 	background-color: #000;
@@ -588,6 +593,7 @@ span.review-content {
 	width: 69%;
 	display: inline-block;
 	margin: 0 11% 0 17%;
+	float: left;
 }
 .review-social {
 	background-color: #fff;

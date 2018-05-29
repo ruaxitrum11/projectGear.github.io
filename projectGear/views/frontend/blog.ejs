@@ -26,7 +26,7 @@
 								<p><%= moment(blog[i].createdAt).format('DD-MM-YYYY')%></p>
 							</div>
 							<div class="form-article article-title">
-								<a href=""><%=blog[i].blogTitle%></a>
+								<a href="/blog/details/<%=blog[i]._id%>"><%=blog[i].blogTitle%></a>
 							</div>
 							<div class="form-article article-description">
 								<p><%=blog[i].blogDescription%></p>
@@ -46,7 +46,7 @@
 								<p><%= moment(blog[i].createdAt).format('YYYY-MM-DD')%></p>
 							</div>
 							<div class="form-article article-title">
-								<a href=""><%=blog[i].blogTitle%></a>
+								<a href="/blog/details/<%=blog[i]._id%>"><%=blog[i].blogTitle%></a>
 							</div>
 							<div class="form-article article-description">
 								<p><%=blog[i].blogDescription%></p>

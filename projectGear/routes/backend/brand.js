@@ -13,12 +13,12 @@ const mongoose = require('mongoose');
 const brandController = require('../../controllers/backend/brandController');
 
 // Route is : /admin/brand/
-router.get('/list', brandController.list);
-router.get('/listBrand', brandController.listBrand);
-router.post('/delete', brandController.deleteBrand);
+router.get('/list',passportConfig.isAuthAdmin, brandController.list);
+router.get('/listBrand',passportConfig.isAuthAdmin, brandController.listBrand);
+router.post('/delete',passportConfig.isAuthAdmin, brandController.deleteBrand);
 // router.get('/edit/:id', brandController.getBrandEdit);
-router.post('/edit', brandController.postBrandEdit);
-router.post('/addBrand',  brandController.postBrandAdd);
+router.post('/edit',passportConfig.isAuthAdmin, brandController.postBrandEdit);
+router.post('/addBrand', passportConfig.isAuthAdmin, brandController.postBrandAdd);
 
 
 

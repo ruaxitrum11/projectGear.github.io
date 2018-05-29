@@ -1,0 +1,41 @@
+<%- include('include/header-top') %>
+<link rel="stylesheet" href="/css/homepage.css">
+<link rel="stylesheet" href="/css/blog.css">
+
+<%- include('include/header') %>
+
+<!-- section homepage -->
+<section>
+
+	<div class="blog-recommend-area" style="background-image: url(/upload/blog/<%=blog.blogImage%>);">
+		
+	</div>
+	<div class="blog-content-area">
+		<div class="container-fluild">
+			<div class="blog-form-content blog-time">
+				<p style="font-size: 1.6rem;"><%= moment(blog.createdAt).format('DD-MM-YYYY')%></p>
+			</div>
+			<div class="blog-form-content blog-title">
+				<h2 style="margin: 0;font-size: 3.4rem;font-weight: bold;"><%=blog.blogTitle%></h2>
+			</div>
+			<div class="blog-form-content blog-description">
+				<p style="font-size: 2rem;font-style: italic;"><%=blog.blogDescription%></p>
+			</div>
+			<div class="blog-form-content blog-title">
+				<p style="font-size: 1.6rem;">Tác giả : <%=blog.blogAuthor%></p>
+			</div>
+			<div class="blog-form-content blog-content">
+				<%-blog.blogContent%>
+			</div>
+		</div>
+	</div>
+
+
+</section>
+
+<%- include('include/all-modal') %>
+
+<%- include('include/footer') %>
+
+
+

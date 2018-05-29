@@ -13,12 +13,12 @@ const mongoose = require('mongoose');
 const slideController = require('../../controllers/backend/slideController');
 
 // Route is : /admin/slide/
-router.get('/list', slideController.list);
-router.get('/listSlide', slideController.listSlide);
-router.post('/delete', slideController.deleteSlide);
-router.get('/edit/:id', slideController.getSlideEdit);
-router.post('/edit', slideController.postSlideEdit);
-router.post('/addSlide',  slideController.postSlideAdd);
+router.get('/list',passportConfig.isAuthAdmin, slideController.list);
+router.get('/listSlide',passportConfig.isAuthAdmin, slideController.listSlide);
+router.post('/delete',passportConfig.isAuthAdmin, slideController.deleteSlide);
+router.get('/edit/:id',passportConfig.isAuthAdmin, slideController.getSlideEdit);
+router.post('/edit',passportConfig.isAuthAdmin, slideController.postSlideEdit);
+router.post('/addSlide', passportConfig.isAuthAdmin, slideController.postSlideAdd);
 
 
 

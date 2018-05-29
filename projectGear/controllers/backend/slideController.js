@@ -84,7 +84,7 @@ let upload = multer({
  		let [count, data] = await Promise.all([
  			Slide.count(query),
  			Slide.find(query)
- 			.sort({createdAt : -1 , isMain:1}).skip(skip).limit(limit)
+ 			.sort({createdAt : -1}).skip(skip).limit(limit)
  			])
 
  		let listSlide = [];

@@ -15,10 +15,10 @@ const billController = require('../../controllers/backend/billController');
 // Route is : /admin/bill/
 router.get('/list', billController.list);
 
-router.get('/listBill', billController.listBill);
+router.get('/listBill',passportConfig.isAuthAdmin, billController.listBill);
 // router.post('/delete', billController.deleteBlog);
-router.get('/edit/:id', billController.getBillInfo);
-router.post('/edit', billController.postBillEdit);
+router.get('/edit/:id',passportConfig.isAuthAdmin, billController.getBillInfo);
+router.post('/edit',passportConfig.isAuthAdmin, billController.postBillEdit);
 // router.get('/add',billController.getBlogAdd);
 // router.post('/addBlog',billController.postBlogAdd);
 

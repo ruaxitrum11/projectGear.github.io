@@ -45,9 +45,9 @@ const userSchema = new mongoose.Schema({
     bcrypt.genSalt(10, (err, salt) => {
       if (err) { return next(err); }
       bcrypt.hash(password, salt, null, (err, hash) => {
-        console.log(password);
+        // console.log(password);
         this.getUpdate().$set.password = hash;
-        console.log(hash)
+        // console.log(hash)
         next();
       });
     })

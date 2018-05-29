@@ -9,7 +9,7 @@ const reviewSchema = new mongoose.Schema({
 	reviewImage : String ,
 	reviewDescription : String ,
 	reviewContent : String , 
-	status : {type:Number , default : 1 } //1:active , 0 :non-active
+	status : {type:Number , default : 0 } //1:active , 0 :non-active
 }, { timestamps: true });
 
 const Review = mconnect.model('Review', reviewSchema);

@@ -77,115 +77,131 @@ $(document).ready(function(){
 
 
 
+
+
 //review 
-$(document).ready(function(){
-	var stt = 0;
-	var sttUser = 0;
 
-	startReview = parseInt($(".review-content:first").attr("stt"));
-	endReview = parseInt($(".review-content:last").attr("stt"));
 
-	startUserInfo = parseInt($(".review-user:first").attr("stt"));
-	endReUserInfo = parseInt($(".review-user:last").attr("stt"));
+$(document).on('click', '.review-next', function(){
+	// console.log(review[0])
+	review.push(review[0]);
+	review.shift()
+	console.log(review)
 
-	$('.review-user').each(function(){
-		if($(this).is(':visible')){
-			sttUser = parseInt($(this).attr("stt"));
+	if(review && review.length){
+		var xhtml = '';
+
+		xhtml += '<div class="review-gallery">';
+		xhtml += '<ul>';
+
+		for(var i =0 ; i<review.length ; i++){
+			if(i==(review.length-1)/2 || i == review.length /2){
+				xhtml += '<li class="review-gallery-user review-active" >';
+				xhtml += '<img src="/upload/avatar/'+review[i].reviewImage+'">';
+				xhtml += '</li>';
+			}else{
+				xhtml += '<li class="review-gallery-user" >';
+				xhtml += '<img src="/upload/avatar/'+review[i].reviewImage+'" >';
+				xhtml += '</li>';
+			}
 		}
-	});
 
-	$('.review-content').each(function(){
-		if($(this).is(':visible')){
-			stt = parseInt($(this).attr("stt"));
+		xhtml += '</ul>';
+		xhtml += '</div>';
+
+		for(var i =0 ; i<review.length ; i++){
+			if(i==(review.length-1)/2 || i == review.length /2){
+				xhtml += '<div class="review-user" >';
+				xhtml += '<p class="review-user-name">'+review[i].reviewName+'</p>';
+				xhtml += '<p class="review-user-address">'+review[i].reviewDescription+'</p>';
+				xhtml += '</div>';
+			}else{
+				xhtml += '<div class="review-user"  style="display: none;">';
+				xhtml += '<p class="review-user-name">'+review[i].reviewName+'</p>';
+				xhtml += '<p class="review-user-address">'+review[i].reviewDescription+'</p>';
+				xhtml += '</div>';
+			}
 		}
-	});
-
-
-	$('.review-next').click(function(){
 		
-		next = stt ;
-		nextUser = sttUser;
+		xhtml += '<div class="review-information">';
+		xhtml += '<span class="review-button review-previous"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>';
 
-		if(next == endReview) {
-			stt =startReview-1;
-			sttUser = startUserInfo-1;
+		for(var i =0 ; i<review.length ; i++){
+			if(i==(review.length-1)/2 || i == review.length /2){
+				xhtml += '<span class="review-content">'+review[i].reviewContent+'</span>';
+			}else{
+				xhtml += '<span class="review-content" style="display: none;">'+review[i].reviewContent+'</span>';
+			}
 		}
-		next = ++stt ;
-		nextUser = ++sttUser;
-
-		$('.review-content').hide();
-		$('.review-content').eq(next).show();
-
-		$('.review-user').hide();
-		$('.review-user').eq(nextUser).show();
 		
-	});
-	$('.review-previous').click(function(){
-		
-		previous = stt;
-		previousUser = sttUser;
+		xhtml += '<span class="review-button review-next"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+		xhtml += '</div>';
 
-		if(previous == startReview) {
-			stt = endReview+1;
-			sttUser = endReUserInfo + 1;
+		$('.review-social').html(xhtml)
+	}
+})
+
+
+$(document).on('click', '.review-previous', function(){
+	// console.log(review[0])
+	review.unshift(review[review.length-1]);
+	review.pop()
+	console.log(review)
+
+	if(review && review.length){
+		var xhtml = '';
+
+		xhtml += '<div class="review-gallery">';
+		xhtml += '<ul>';
+
+		for(var i =0 ; i<review.length ; i++){
+			if(i==(review.length-1)/2 || i == review.length /2){
+				xhtml += '<li class="review-gallery-user review-active" >';
+				xhtml += '<img src="/upload/avatar/'+review[i].reviewImage+'">';
+				xhtml += '</li>';
+			}else{
+				xhtml += '<li class="review-gallery-user" >';
+				xhtml += '<img src="/upload/avatar/'+review[i].reviewImage+'" >';
+				xhtml += '</li>';
+			}
 		}
-		previous = --stt;
 
-		previousUser = --sttUser;
+		xhtml += '</ul>';
+		xhtml += '</div>';
 
-		$('.review-content').hide();
-		$('.review-content').eq(previous).show();
+		for(var i =0 ; i<review.length ; i++){
+			if(i==(review.length-1)/2 || i == review.length /2){
+				xhtml += '<div class="review-user" >';
+				xhtml += '<p class="review-user-name">'+review[i].reviewName+'</p>';
+				xhtml += '<p class="review-user-address">'+review[i].reviewDescription+'</p>';
+				xhtml += '</div>';
+			}else{
+				xhtml += '<div class="review-user"  style="display: none;">';
+				xhtml += '<p class="review-user-name">'+review[i].reviewName+'</p>';
+				xhtml += '<p class="review-user-address">'+review[i].reviewDescription+'</p>';
+				xhtml += '</div>';
+			}
+		}
+		
+		xhtml += '<div class="review-information">';
+		xhtml += '<span class="review-button review-previous"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>';
 
-		$('.review-user').hide();
-		$('.review-user').eq(previousUser).show();
+		for(var i =0 ; i<review.length ; i++){
+			if(i==(review.length-1)/2 || i == review.length /2){
+				xhtml += '<span class="review-content">'+review[i].reviewContent+'</span>';
+			}else{
+				xhtml += '<span class="review-content" style="display: none;">'+review[i].reviewContent+'</span>';
+			}
+		}
+		
+		xhtml += '<span class="review-button review-next"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+		xhtml += '</div>';
 
-	});
-});
-
-$(document).ready(function(){
-	var sttImage = [
-	"/img/homepage/user1.jpg",
-	"/img/homepage/user2.jpg",
-	"/img/homepage/user3.jpg",
-	"/img/homepage/user4.jpg",
-	"/img/homepage/user5.jpg",
-	"/img/homepage/user6.jpg",
-	"/img/homepage/user7.jpg"
-	];
-
-	// $("#gallery-user1 img").attr("src",sttImage[0]);
-	// $("#gallery-user2 img").attr("src",sttImage[1]);
-	// $("#gallery-user3 img").attr("src",sttImage[2]);
-	// $("#gallery-user4 img").attr("src",sttImage[3]);
-	// $("#gallery-user5 img").attr("src",sttImage[4]);
-	// $("#gallery-user6 img").attr("src",sttImage[5]);
-	// $("#gallery-user7 img").attr("src",sttImage[6]);
-
-	jQuery.each(sttImage, function(index, item) {
-		var galleryUser = '#gallery-user' + (index + 1) + ' img';
-		$(galleryUser).attr('src', item);
-	});
+		$('.review-social').html(xhtml)
+	}
+})
 
 
-	$('.review-previous').click(function(){
-		sttImage.unshift(sttImage[6]);
-		sttImage.pop();
-		jQuery.each(sttImage, function(index, item) {
-			var galleryUser = '#gallery-user' + (index + 1) + ' img';
-			$(galleryUser).attr('src', item);
-		});
-	});
-
-	$('.review-next').click(function(){
-		sttImage.push(sttImage[0]);
-		sttImage.shift();
-		jQuery.each(sttImage, function(index, item) {
-			var galleryUser = '#gallery-user' + (index + 1) + ' img';
-			$(galleryUser).attr('src', item);
-		});
-	});
-
-});
 
 //Smoothie Scrool 
 $(document).ready(function(){
@@ -381,6 +397,38 @@ function forgotPassword  (){
 	})
 
 }
+
+$('.searchProduct').keyup(function(){
+	// console.log('vao day')
+	var search_product = $('input[name=searchProduct]').val()
+	// console.log(search_product)
+	$.ajax({
+		url: '/product/search/product',
+		type: 'get',
+		data: {
+			search_product : search_product
+		} ,
+		dataType: 'json'
+	}).done(function(results){
+		if(results.status == true) {
+			var xhtml = '';
+			if(results.productSearch && results.productSearch.length){
+				for (var i = 0; i < results.productSearch.length; i++) {
+					xhtml += '<li style="list-style-type: none; float: left;width: 90%;padding:10px 0;border-bottom:1px solid #eee;">';
+					xhtml += '<a href="/product/'+results.productSearch[i]._id+'" style="color: #000;">';
+					xhtml += '<span style="padding-top: 15px; float: left;">'+results.productSearch[i].productName+'</span>';
+					xhtml += '<img style="width: 10%;float: right;" src="/upload/thumbProduct/'+results.productSearch[i].productThumb+'">';
+					xhtml += '</a>';
+					xhtml += '</li>';
+				}
+				$('.modal-search-product ul').html(xhtml)
+			}else {
+				xhtml += '<li style="list-style-type: none; float: left;width: 90%;padding:10px 0;border-bottom:1px solid #eee;">Không tìm thấy!</li>';
+				$('.modal-search-product ul').html(xhtml)
+			}	
+		}
+	})
+})
 
 function isEmail(email) {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;

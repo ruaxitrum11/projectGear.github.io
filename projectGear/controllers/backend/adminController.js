@@ -25,6 +25,7 @@ const Bill = require('../../models/Bill');
   // console.log("Index Frontend")
   
   return res.render('backend/admin' , {
+  	moment : moment
     // userAdmin : userAdmin[0]
 });
 }

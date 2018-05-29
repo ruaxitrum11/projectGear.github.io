@@ -52,5 +52,17 @@ const Blog = require('../../models/Blog');
 
  }
 
+exports.blogInfo = async (req,res) => {
 
+	let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+ 	let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+	let blog = await Blog.find({_id : req.params.id})
+
+	res.render('frontend/blogDetails' , {
+		categoryMenu : categoryMenu , 
+ 		categoryDropDown : categoryDropDown,
+ 		blog : blog[0],
+ 		moment : moment
+	})
+}
 

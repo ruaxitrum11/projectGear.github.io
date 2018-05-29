@@ -466,7 +466,7 @@ function showInfoLevel(userIdCurrent){
   	
   	xhtml += '</div>';
   	xhtml += '<div class="user-trophy-content trophy-info">';
-  	xhtml += '<a href="#">Thông tin danh hiệu</a>';
+  	xhtml += '<a href="/aboutUs#upMedals">Thông tin danh hiệu</a>';
   	xhtml += '</div>';
   	xhtml += '</div>';
   	xhtml += '</div>';
@@ -594,7 +594,7 @@ function upLevelUser (userIdCurrent) {
  }
 
  function postChangePass(userIdCurrent) {
-   var current_pass = $("input[name=current_pass]").val();
+  
    var new_pass = $("input[name=new_pass]").val();
    var confirm_new_pass = $("input[name=confirm_new_pass]").val();
    console.log(current_pass)

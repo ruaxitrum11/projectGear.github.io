@@ -13,12 +13,12 @@ const mongoose = require('mongoose');
 const colorController = require('../../controllers/backend/colorController');
 
 // Route is : /admin/color/
-router.get('/list', colorController.list);
-router.get('/listColor', colorController.listColor);
-router.post('/delete', colorController.deleteColor);
+router.get('/list',passportConfig.isAuthAdmin, colorController.list);
+router.get('/listColor',passportConfig.isAuthAdmin, colorController.listColor);
+router.post('/delete',passportConfig.isAuthAdmin, colorController.deleteColor);
 // // router.get('/edit/:id', colorController.getcolorEdit);
-router.post('/edit', colorController.postColorEdit);
-router.post('/addColor',  colorController.postColorAdd);
+router.post('/edit',passportConfig.isAuthAdmin, colorController.postColorEdit);
+router.post('/addColor', passportConfig.isAuthAdmin, colorController.postColorAdd);
 
 
 

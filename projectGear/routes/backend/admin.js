@@ -7,12 +7,13 @@ var path = require('path');
 // console.log(__dirname );
 // console.log ("------------------------");
 // var dir = path.join(__dirname, '..', 'config');
-// const passportConfig = require('../../config/passport');
+
 const adminController = require('../../controllers/backend/adminController');
 
-router.get('/', adminController.admin);
-router.post('/revenue' , adminController.revenue)
-router.get('/countTotal' , adminController.countTotal)
+
+router.get('/',passportConfig.isAuthAdmin, adminController.admin);
+router.post('/revenue' , passportConfig.isAuthAdmin, adminController.revenue)
+router.get('/countTotal' ,passportConfig.isAuthAdmin, adminController.countTotal)
 
 
 module.exports = router;

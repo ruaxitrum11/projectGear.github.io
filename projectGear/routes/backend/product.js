@@ -13,25 +13,25 @@ const mongoose = require('mongoose');
 const productController = require('../../controllers/backend/productController');
 
 // Route is : /admin/product/
-router.get('/list', productController.list);
-router.get('/listProduct', productController.listProduct);
-router.get('/listProductStatistical', productController.listProductStatistical);
-router.post('/delete', productController.deleteProduct);
-router.get('/edit/:id', productController.getProductEdit);
-router.post('/edit',productController.validatorProductEdit, productController.postProductEdit);
-router.get('/add',productController.getProductAdd);
-router.post('/addProduct', productController.validatorProductAdd , productController.postProductAdd);
+router.get('/list',passportConfig.isAuthAdmin, productController.list);
+router.get('/listProduct', passportConfig.isAuthAdmin,productController.listProduct);
+router.get('/listProductStatistical',passportConfig.isAuthAdmin, productController.listProductStatistical);
+router.post('/delete',passportConfig.isAuthAdmin, productController.deleteProduct);
+router.get('/edit/:id', passportConfig.isAuthAdmin,productController.getProductEdit);
+router.post('/edit',passportConfig.isAuthAdmin,productController.validatorProductEdit, productController.postProductEdit);
+router.get('/add',passportConfig.isAuthAdmin,productController.getProductAdd);
+router.post('/addProduct',passportConfig.isAuthAdmin, productController.validatorProductAdd , productController.postProductAdd);
 
 // Route is : /admin/product/
  //Modal ProductThumb
-router.get('/listFileManager',productController.listFileManager);
-router.post('/uploadImages', productController.uploadImages);
-router.post('/removeImageThumb',productController.postProductRemoveImageThumb);
+router.get('/listFileManager',passportConfig.isAuthAdmin,productController.listFileManager);
+router.post('/uploadImages',passportConfig.isAuthAdmin, productController.uploadImages);
+router.post('/removeImageThumb',passportConfig.isAuthAdmin,productController.postProductRemoveImageThumb);
 
 
 // Route is : /admin/product/
  //Modal ProductImages
-router.get('/listFileManagerImages',productController.listFileManagerImages);
+router.get('/listFileManagerImages',passportConfig.isAuthAdmin,productController.listFileManagerImages);
 
 
 

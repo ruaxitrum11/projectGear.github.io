@@ -52,7 +52,7 @@ var frontend_categories = require('./routes/frontend/category');
 var frontend_products = require('./routes/frontend/product');
 var frontend_blogs = require('./routes/frontend/blog');
 var frontend_checkouts = require('./routes/frontend/checkout');
-
+var frontend_aboutUs = require('./routes/frontend/aboutUs');
 
 
 /*BACKEND*/
@@ -68,6 +68,7 @@ var backend_slides = require('./routes/backend/slide')
 var backend_blogs = require('./routes/backend/blog');
 var backend_bills = require('./routes/backend/bill');
 var backend_statisticals = require('./routes/backend/statistical');
+var backend_reviews = require('./routes/backend/review');
 
 app.use((req, res, next) => {
 	res.locals.user = req.user;
@@ -82,6 +83,7 @@ app.use('/category' , frontend_categories);
 app.use('/product',frontend_products);
 app.use('/blog',frontend_blogs);
 app.use('/checkout',frontend_checkouts);
+app.use('/aboutUs',frontend_aboutUs);
 
 
 /*BACKEND Appuse*/
@@ -98,6 +100,7 @@ app.use('/admin/slide',backend_slides);
 app.use('/admin/blog',backend_blogs)
 app.use('/admin/bill',backend_bills)
 app.use('/admin/statistical',backend_statisticals)
+app.use('/admin/review',backend_reviews)
 
 
 app.listen(4000);

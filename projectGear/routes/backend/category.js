@@ -13,12 +13,12 @@ const mongoose = require('mongoose');
 const categoryController = require('../../controllers/backend/categoryController');
 
 // Route is : /admin/category/
-router.get('/list', categoryController.list);
-router.get('/listCategory', categoryController.listCategory);
-router.post('/delete', categoryController.deleteCategory);
-router.get('/edit/:id', categoryController.getCategoryEdit);
-router.post('/edit', categoryController.postCategoryEdit);
-router.post('/addCategory',  categoryController.postCategoryAdd);
-router.post('/uploadCategoryBanner', categoryController.uploadCategoryBanner);
+router.get('/list',passportConfig.isAuthAdmin, categoryController.list);
+router.get('/listCategory', passportConfig.isAuthAdmin,categoryController.listCategory);
+router.post('/delete',passportConfig.isAuthAdmin, categoryController.deleteCategory);
+router.get('/edit/:id', passportConfig.isAuthAdmin,categoryController.getCategoryEdit);
+router.post('/edit',passportConfig.isAuthAdmin, categoryController.postCategoryEdit);
+router.post('/addCategory', passportConfig.isAuthAdmin, categoryController.postCategoryAdd);
+router.post('/uploadCategoryBanner',passportConfig.isAuthAdmin, categoryController.uploadCategoryBanner);
 
 module.exports = router;

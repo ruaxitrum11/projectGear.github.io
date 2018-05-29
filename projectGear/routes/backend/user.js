@@ -12,21 +12,21 @@ const mongoose = require('mongoose');
 const userController = require('../../controllers/backend/userController');
 
 // Route is : /admin/user/
-router.get('/list',  userController.list);
-router.get('/listUser', userController.listUser);
-router.post('/delete', userController.deleteUser);
-router.get('/edit/:id', userController.getUserEdit);
-router.post('/edit', userController.validatorUserEdit, userController.postUserEdit);
-router.get('/add',userController.getUserAdd);
-router.post('/addUser', userController.validatorUserAdd, userController.postUserAdd);
+router.get('/list',passportConfig.isAuthAdmin,  userController.list);
+router.get('/listUser',passportConfig.isAuthAdmin, userController.listUser);
+router.post('/delete',passportConfig.isAuthAdmin, userController.deleteUser);
+router.get('/edit/:id',passportConfig.isAuthAdmin, userController.getUserEdit);
+router.post('/edit',passportConfig.isAuthAdmin, userController.validatorUserEdit, userController.postUserEdit);
+router.get('/add',passportConfig.isAuthAdmin,userController.getUserAdd);
+router.post('/addUser', passportConfig.isAuthAdmin,userController.validatorUserAdd, userController.postUserAdd);
 
-router.post('/uploadAvatar', userController.uploadAvatar);
+router.post('/uploadAvatar',passportConfig.isAuthAdmin, userController.uploadAvatar);
 
 
 
-router.get('/ipblocked',  userController.listBlocked);
-router.get('/listIpBlocked', userController.listIpBlocked);
-router.post('/postIpBlocked', userController.postIpBlocked);
-router.post('/removeIpBlocked', userController.removeIpBlocked);
+router.get('/ipblocked', passportConfig.isAuthAdmin, userController.listBlocked);
+router.get('/listIpBlocked',passportConfig.isAuthAdmin, userController.listIpBlocked);
+router.post('/postIpBlocked', passportConfig.isAuthAdmin,userController.postIpBlocked);
+router.post('/removeIpBlocked', passportConfig.isAuthAdmin,userController.removeIpBlocked);
 
 module.exports = router;

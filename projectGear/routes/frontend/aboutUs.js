@@ -9,13 +9,11 @@ var path = require('path');
 // const passportConfig = require('../../config/passport'); 
 
 
-const blogController = require('../../controllers/frontend/blogController');
+const aboutUsController = require('../../controllers/frontend/aboutUsController');
 
-// Route is : /blog
+// Route is : /aboutUs
 
-router.get('/:page', blogController.blog);
-router.get('/details/:id', blogController.blogInfo);
-
-
+// router.post('/checkout', blogController.blog);
+router.get('/',aboutUsController.aboutUs)
 
 module.exports = router;

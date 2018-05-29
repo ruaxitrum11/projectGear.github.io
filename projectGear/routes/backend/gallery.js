@@ -13,12 +13,12 @@ const mongoose = require('mongoose');
 const galleryController = require('../../controllers/backend/galleryController');
 
 // Route is : /admin/gallery/
-router.get('/list', galleryController.list);
-router.get('/listGallery', galleryController.listGallery);
-router.post('/delete', galleryController.deleteGallery);
+router.get('/list',passportConfig.isAuthAdmin, galleryController.list);
+router.get('/listGallery', passportConfig.isAuthAdmin,galleryController.listGallery);
+router.post('/delete',passportConfig.isAuthAdmin, galleryController.deleteGallery);
 // // // router.get('/edit/:id', colorController.getcolorEdit);
 // router.post('/edit', colorController.postColorEdit);
-router.post('/addGallery',  galleryController.addGallery);
+router.post('/addGallery', passportConfig.isAuthAdmin, galleryController.addGallery);
 
 
 
