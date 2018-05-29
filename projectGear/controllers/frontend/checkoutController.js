@@ -31,7 +31,9 @@ const User = require('../../models/User');
 const Product = require('../../models/Product');
 const Category = require('../../models/Category');
 const Bill = require('../../models/Bill');
+const IpBlocked = require('../../models/IpBlocked');
 // Method
+
 /**
  * GET Category /
  * Laptop.
@@ -59,9 +61,20 @@ const Bill = require('../../models/Bill');
  exports.addBill = async (req,res) => {
  	// console.log(req.body)
  	if (req.body) {
- 		console.log('req.clientIp')
+ 		let ip = await IpBlocked.find({}).select({ipBlockedAddress:1}).lean()
  		console.log(req.clientIp)
- 		console.log('req.clientIp')
+ 		// console.log(Ip.length)
+ 		if(ip && ip.length ) {
+ 			for (var i = 0; i < ip.length; i++) {
+ 				if(req.clientIp == ip[i].ipBlockedAddress) {
+ 					let errors = [{msg:'Địa chỉ Ip của bạn đã bị chặn do vi phạm điều khoản . Vui lòng liên hệ hỗ trợ trực tuyến để được hỗ trợ'}]
+ 					return res.send({status:false,errors:errors})
+ 				}
+ 			}
+ 		}
+
+
+ 		// console.log('req.clientIp')
  		// console.log(req.body)
  		const errors = validationResult(req);
  		if (!errors.isEmpty()) {

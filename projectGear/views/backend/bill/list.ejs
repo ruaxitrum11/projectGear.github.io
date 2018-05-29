@@ -131,81 +131,131 @@ input.status-active {
           </select>
         </div>
 
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Mã đơn hàng</th>
-              <th>Email khách hàng</th>
-              <th>Địa chỉ IP</th>
-              <th>Trạng thái</th>
-              <th>Ngày tạo</th>
-              <th>Tổng tiền</th>
-              <th>Xử Lý</th>
-            </tr>
-          </thead>
-          <tbody>
+        <div style="width: 70%;float: left;">
 
-          </tbody>
-        </table>
+         <div class="box box-solid bg-teal-gradient" style="background:#FF6602!important">
+          <div class="box-header">
+            <i class="fa fa-th"></i>
 
-        <div class="col-xs-12" style="text-align: center;" id="pagination-list-color">
+            <h3 class="box-title"></h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn bg-teal btn-sm" data-widget="collapse" style="background-color:#FF6602!important"><i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn bg-teal btn-sm" data-widget="remove" style="background-color:#FF6602!important"><i class="fa fa-times"></i>
+              </button>
+            </div>
+          </div>
+       <!--        <div class="box-body border-radius-none">
+                <div class="chart" id="line-chart" style="height: 250px;"></div>
+              </div> -->
+
+              <div class="box-footer no-border">
+                <div class="row">
+                  <div class="col-xs-4 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
+
+                    <div class="knob-label">Đang xử lý</div>
+                  </div>
+
+                  <div class="col-xs-4 text-center progress-success" style="border-right: 1px solid #f4f4f4">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
+
+                    <div class="knob-label">Đã hoàn thành</div>
+                  </div>
+
+                  <div class="col-xs-4 text-center progress-cancel">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
+
+                    <div class="knob-label">Hủy bỏ</div>
+                  </div>
+
+                </div>
+
+              </div>
+              
+            </div>
+          </div>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Mã đơn hàng</th>
+                <th>Email khách hàng</th>
+                <th>Địa chỉ IP</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Tổng tiền</th>
+                <th>Xử Lý</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+
+          <div class="col-xs-12" style="text-align: center;" id="pagination-list-color">
+
+          </div>
 
         </div>
 
-      </div>
 
 
 
 
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+    <%- include('../include/admin-footer') %>
 
-  <%- include('../include/admin-footer') %>
+    <%- include('../include/admin-control-sidebar') %>
 
-  <%- include('../include/admin-control-sidebar') %>
+    <%- include('../include/admin-js.ejs') %>
 
-  <%- include('../include/admin-js.ejs') %>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        listBill(1);
+        $('.bill-main').addClass('active')
+        $('.bill-info').addClass('active')
+        countTotal();
+      });
 
-  <script type="text/javascript">
-    $( document ).ready(function() {
-      listBill(1);
-      $('.bill-main').addClass('active')
-      $('.bill-info').addClass('active')
-    });
+      $('select').on('change', function() {
+       listBill(1);
 
-    $('select').on('change', function() {
-     listBill(1);
-     
-   })
+     })
 
-    $('.blog-author-search').keyup(function() {
-     listBill(1);
-   });
+      $('.blog-author-search').keyup(function() {
+       listBill(1);
+     });
 
-    $('.bill-search').keyup(function() {
-     listBill(1);
-   });
+      $('.bill-search').keyup(function() {
+       listBill(1);
+     });
 
-    function listBill(page) {
-      var bill_status = $('.blog-status :selected').val();
-      var bill_text = $('.blog-author-search').val();
-      var bill_number = $('.bill-search').val();
-      console.log(bill_number)
-      $.ajax({
-        url: '/admin/bill/listBill',
-        type: 'GET',
-        data: {
-          page : page,
-          bill_status : bill_status,
-          bill_text : bill_text , 
-          bill_number : bill_number
-        },
-        dataType: 'json',
-      }).done(function(results){
-        if (results.status) {
+      function listBill(page) {
+        var bill_status = $('.blog-status :selected').val();
+        var bill_text = $('.blog-author-search').val();
+        var bill_number = $('.bill-search').val();
+        console.log(bill_number)
+        $.ajax({
+          url: '/admin/bill/listBill',
+          type: 'GET',
+          data: {
+            page : page,
+            bill_status : bill_status,
+            bill_text : bill_text , 
+            bill_number : bill_number
+          },
+          dataType: 'json',
+        }).done(function(results){
+          if (results.status) {
 
         // console.log(results.status);
 
@@ -294,43 +344,32 @@ input.status-active {
 
     }
   })
-    }
+      }
 
-  </script>
+      function countTotal(){
+        $.ajax({
+          url:'/admin/countTotal',
+          type:'get',
+        }).done(function(results){
+
+            // console.log(results)
+
+            var processingBillPercent = Math.ceil((results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
+
+            var completedBillPercent = Math.ceil((results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
+
+            var cancelBillPercent = 100 - (completedBillPercent + processingBillPercent)
 
 
-  <script>
-    // function removeBlog(id){
-    //   $.confirm({
-    //     title : 'Xác nhận !',
-    //     content : 'Bạn có chắc chắn muốn xóa trang trình bày này',
-    //     buttons: {
-    //       'Đồng Ý': function () {
-    //         $.ajax({
-    //           url: '/admin/blog/delete',
-    //           type: 'post',
-    //           data: {
-    //             id : id
-    //           },
-    //           dataType: 'json',
-    //         }).done(function(results){
-    //           if (results.status) {
-    //             $.alert({
-    //               title: 'Thông Báo!',
-    //               content: '<span class="text-success"><strong class="fa fa-check"></strong>Xóa thành công</span>'
-    //             })
-    //             location.reload();
-    //           }else{
-    //             $.alert({
-    //               title: 'Thông Báo!',
-    //               content: '<span class="text-danger"><strong class="fa fa-close"></strong>Xóa thất bại </span>'
-    //             })
-    //           }
-    //         })
-    //       },
-    //       'Hủy Bỏ': function () {
-    //       },
-    //     }
-    //   })
-    // }
-  </script>
+
+            $('.progress-processing input').val(processingBillPercent).trigger('change');
+            $('.progress-success input').val(completedBillPercent).trigger('change');
+            $('.progress-cancel input').val(cancelBillPercent).trigger('change');
+          })
+
+      }
+
+      
+
+    </script>
+

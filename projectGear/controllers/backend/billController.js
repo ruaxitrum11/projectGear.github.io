@@ -8,6 +8,10 @@ const bcrypt = require('bcrypt-nodejs');
 const multer = require('multer');
 const path = require('path');
 const moment = require('moment');
+
+
+
+
 const Bill = require('../../models/Bill');
 const Revenue = require('../../models/Revenue');
 var nodemailer =  require('nodemailer')
@@ -59,12 +63,12 @@ async function sumTotalBill(){
 
 		// console.log(billCountNumber)
 
-		// let revenue = new Revenue({
-		// 	totalBill : sumAllBill,
-		// 	numberOfBill : billCountNumber
-		// })
+		let revenue = new Revenue({
+			totalBill : sumAllBill,
+			numberOfBill : billCountNumber
+		})
 
-		// let saveRevenue = await revenue.save();
+		let saveRevenue = await revenue.save();
 
 		if (saveRevenue) {
 			console.log("CronJob success !")

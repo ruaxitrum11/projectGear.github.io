@@ -22,4 +22,11 @@ router.post('/addUser', userController.validatorUserAdd, userController.postUser
 
 router.post('/uploadAvatar', userController.uploadAvatar);
 
+
+
+router.get('/ipblocked',  userController.listBlocked);
+router.get('/listIpBlocked', userController.listIpBlocked);
+router.post('/postIpBlocked', userController.postIpBlocked);
+router.post('/removeIpBlocked', userController.removeIpBlocked);
+
 module.exports = router;

@@ -5,112 +5,186 @@
 
   <%- include('../include/admin-sidebar') %>
 
+  <style type="">
+  table.table.table-bordered , table.table.table-bordered>thead>tr>th {
+    text-align: center;
+  }
 
+  table.table.table-bordered {
+    width: 80%;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+  .add-newColor {
+    margin : 20px 0;
+    font-size: 3rem;
+  }
+  .add-searchColor {
+    margin : 20px 0;
+  }
+  .add-searchColor input{
+   padding-left: 10px;
+   width: 25%;
+   margin-left: 1%;
+ }
+ .add-searchColor select {
+  width: 13%;
+  margin-left: 1%;
+}
+.add-searchColor span {
+  padding: 10px;
+  font-size: 1.8rem;
+  background-color: #3c8dbc !important;
+  color: #fff;
+  border-radius: 5px;
+}
+
+  /*span.label {
+    font-size: 90%!important;
+    }*/
+    .button-active a {
+      display: inline-block;
+      font-size: 2rem;
+      padding: 10px 30px;
+      background-color: #dd4b39;
+      color: #fff;
+    }
+  </style>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   	<!-- Content Header (Page header) -->
   	<section class="content-header">
   		<h1>
-  			Trạng thái đơn hàng
+  			Đơn hàng bị hủy bỏ
   		</h1>
   	</section>
 
   	<!-- Main content -->
   	<section class="content ">
-  		<div class="col-md-12">
+      <div class="container">
 
-       <div class="box box-solid bg-teal-gradient" style="background:#FF6602!important">
-        <div class="box-header">
-          <i class="fa fa-th"></i>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Địa chỉ IP</th>
+              <th>Số lần hủy đơn hàng</th>
+              <th>Xử lý </th>
+            </tr>
+          </thead>
+          <tbody>
 
-          <h3 class="box-title"></h3>
+          </tbody>
+        </table>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse" style="background-color:#FF6602!important"><i class="fa fa-minus"></i>
-            </button>
-            <button type="button" class="btn bg-teal btn-sm" data-widget="remove" style="background-color:#FF6602!important"><i class="fa fa-times"></i>
-            </button>
-          </div>
+        <div class="col-xs-12" style="text-align: center;" id="pagination-list-color">
+
         </div>
-       <!--        <div class="box-body border-radius-none">
-                <div class="chart" id="line-chart" style="height: 250px;"></div>
-              </div> -->
-
-              <div class="box-footer no-border">
-                <div class="row">
-                  <div class="col-xs-4 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
-                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
-                    data-fgColor="#FF6602">
-
-                    <div class="knob-label">Đang xử lý</div>
-                  </div>
-
-                  <div class="col-xs-4 text-center progress-success" style="border-right: 1px solid #f4f4f4">
-                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
-                    data-fgColor="#FF6602">
-
-                    <div class="knob-label">Đã hoàn thành</div>
-                  </div>
-
-                  <div class="col-xs-4 text-center progress-cancel">
-                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
-                    data-fgColor="#FF6602">
-
-                    <div class="knob-label">Hủy bỏ</div>
-                  </div>
-
-                </div>
-
-              </div>
-              
-            </div>
-          </div>
-
-        </section>
-        <!-- /.content -->
       </div>
-      <!-- /.content-wrapper -->
-
-      <%- include('../include/admin-footer') %>
-
-      <%- include('../include/admin-control-sidebar') %>
-
-      <%- include('../include/admin-js.ejs') %>
-
-      <script>
-
-        function countTotal(){
-          $.ajax({
-            url:'/admin/countTotal',
-            type:'get',
-          }).done(function(results){
-
-            // console.log(results)
-
-            var processingBillPercent = (results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
-
-            var completedBillPercent = (results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
-
-            var cancelBillPercent = (results.countCancelBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
 
 
-            $('.progress-processing input').val(processingBillPercent).trigger('change');
-            $('.progress-success input').val(completedBillPercent).trigger('change');
-            $('.progress-cancel input').val(cancelBillPercent).trigger('change');
-          })
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
 
-        }
+  <%- include('../include/admin-footer') %>
 
-        $( document ).ready(function() {
-          countTotal();
-          $('.bill-main').addClass('active')
-          $('.status-statistical').addClass('active')
-          $('#reservationtime').daterangepicker({
-            timePicker: true, 
-            timePickerIncrement: 5, 
-            locale: {
-              format: 'YYYY/DD/MM h:mm A'
+  <%- include('../include/admin-control-sidebar') %>
+
+  <%- include('../include/admin-js.ejs') %>
+
+  <script>
+
+   $( document ).ready(function() {
+     listIpCancel(1);
+     $('.bill-main').addClass('active')
+     $('.status-statistical').addClass('active')
+   });
+
+   function listIpCancel(page) {
+    var bill_number = $('.bill-search').val();
+    // console.log(bill_number)
+    $.ajax({
+      url: '/admin/statistical/listIpCancel',
+      type: 'GET',
+      data: {
+        page : page
+      },
+      dataType: 'json',
+    }).done(function(results){
+      if (results.status) {
+
+        // console.log(results.status);
+
+        var xhtml = ''; 
+
+        if (results.listIpCancel && results.listIpCancel.length) {
+          for (var i = 0 ;  i <= results.listIpCancel.length - 1; i++) {
+
+
+            xhtml += '<tr>';
+
+
+
+            xhtml += '<td>'+results.listIpCancel[i].clientIp+'</td>';
+            
+            xhtml += '<td>'+results.listIpCancel[i].countClientIp+'</td>';
+
+            xhtml += '<td><a href="javascript:void(0)" onclick="blockIp(\''+results.listIpCancel[i].clientIp+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Chặn</span></a></td>'
+
+
+            xhtml += '</td>'
+            xhtml += '</tr>';
+
+
+
+          }
+          $("table tbody").html(xhtml)
+
+        }else{
+         $("table tbody").html('Không tìm thấy!');
+       }
+
+
+     }
+   })
+  }
+
+  function blockIp (ip){
+    // console.log(ip)
+    $.ajax({
+      url: '/admin/statistical/postIpBlock',
+      type: 'post',
+      data: {
+        ip : ip
+      },
+      dataType: 'json',
+    }).done(function(results){
+      console.log(results)
+      if (results.status == true) {
+        $.confirm({
+          title: 'Thông Báo!',
+          content: '<span class="text-success"><strong class="fa fa-check"></strong>'+results.msg+'</span>',
+          buttons: {
+            Ok: function () {
+              // $.alert('Ok');
+              window.location.replace("/admin/user/ipblocked");
             },
-          });
+          }
+        });
+      }else{
+        $.alert({
+          title: 'Thông Báo !',
+          content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>'
         })
-      </script>
+
+      }
+    })
+  }
+
+
+</script>

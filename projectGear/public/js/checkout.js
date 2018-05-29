@@ -64,7 +64,7 @@ $.ajax({
     xhtmlCheckOut += '<p style="font-size:2rem;color:#000;font-weight:bold;width:25%;">'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
 
     xhtmlCheckOut += '</div>'
-    console.log(userData)
+    // console.log(userData)
     if( userData.level == 0 || userData.level == 1 ){
         xhtmlCheckOut += '<div class="checkOutPromotion">'
         xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'
@@ -159,7 +159,7 @@ function removeCartItem (idColorRemove , idProductRemove){
         xhtmlCheckOut += '<p style="font-size:2rem;color:#000;font-weight:bold;width:25%;">'+totalCart.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</p>'
 
         xhtmlCheckOut += '</div>'
-        console.log(userData)
+        // console.log(userData)
         if( userData.level == 0 || userData.level == 1 ){
             xhtmlCheckOut += '<div class="checkOutPromotion">'
             xhtmlCheckOut += '<h2>Khuyến mãi :</h2>'

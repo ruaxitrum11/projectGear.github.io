@@ -52,6 +52,7 @@
 
 // Models
 const User = require('../../models/User');
+const IpBlocked = require('../../models/IpBlocked');
 // Method
 /**
  * GET /
@@ -291,4 +292,102 @@ exports.uploadAvatar = (req,res) =>{
       return res.send({status:false, msg:'Không tìm thấy ảnh !'});
     }
   })
+}
+
+
+exports.listBlocked = (req, res) => {
+  return res.render('backend/user/listBlocked');
+}
+
+exports.listIpBlocked = async (req,res) =>{
+  let page = 1;
+  let limit = 20;
+  let totalPage = 1;
+  let query = {};
+  if (req.query.page) {
+    page = parseInt(req.query.page);
+  }
+
+  if(req.query.ip_search_text && req.query.ip_search_text !=""){
+    let regex = new RegExp(req.query.ip_search_text.trim(), 'i')
+    query = {ipBlockedAddress: {$regex : regex}}
+  } 
+
+  
+
+  let skip = (page - 1)*limit;
+
+  try{
+    let [count, data] = await Promise.all([
+      IpBlocked.count(query),
+      IpBlocked.find(query).sort({createdAt : -1}).skip(skip).limit(limit)
+      ])
+
+    let listIpBlocked = [];
+
+    if (count && count >0) {
+      totalPage = Math.ceil(count/limit);
+    }
+
+    if (data && data.length) {
+      listIpBlocked = data;
+    }
+
+    res.send({status: true, page : page, totalPage : totalPage, listIpBlocked : listIpBlocked , moment:moment});
+
+  }catch(err){
+    res.send({status:false})
+    // console.log("===============err=========================")
+    console.log(err)
+    // console.log("===============err=========================")
+  }
+}
+
+
+exports.removeIpBlocked = async (req,res) =>{
+  if (req.body.id) {
+    try{
+      let removeIpBlocked = await IpBlocked.remove({_id : req.body.id})
+      if (removeIpBlocked.result) {
+        res.send({status:true})
+      }else{
+        res.send({status:false})
+      }
+    }catch(err){
+      res.send({status:false})
+    }
+  }
+}
+
+
+exports.postIpBlocked = async (req,res) => {
+  try{
+    if (req.body) {
+      
+      let existingIp = await IpBlocked.findOne({ ipBlockedAddress : req.body.ipBlockedAddress});
+
+      if (existingIp && existingIp != "") {
+        let errors = [{msg:'Địa chỉ Ip : '+req.body.ipBlockedAddress+' đã bị chặn'}]
+        return res.send({status:false, errors : errors});
+      }
+
+      const ipblocked = new IpBlocked({
+        ipBlockedAddress : req.body.ipBlockedAddress
+      });
+
+      let saveIp = await ipblocked.save();
+      if (!saveIp) {
+        let errors = [{msg:"Chặn Ip thất bại"}]
+        return res.send({status:false, errors : errors});
+      }
+      return res.send({status:true , msg : 'Chặn địa chỉ Ip : ' +req.body.ipBlockedAddress+' thành công'});
+
+      
+    }
+  }
+  catch(errors){
+    console.log(errors);
+    return res.send({status:false, errors : errors});
+  }
+  
 }

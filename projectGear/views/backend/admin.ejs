@@ -559,12 +559,15 @@
             xhtmlcountTotalPurchased += '<p>Sản phẩm được bán</p>'
             $('.countTotalPurchased').html(xhtmlcountTotalPurchased)
 
-            var processingBillPercent = (results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
+            var processingBillPercent = Math.ceil((results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
 
-            var completedBillPercent = (results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
+            var completedBillPercent = Math.ceil((results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
 
-            var cancelBillPercent = (results.countCancelBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100
+            var cancelBillPercent = 100 - (completedBillPercent + processingBillPercent)
 
+            // console.log(processingBillPercent)
+            // console.log(completedBillPercent)
+            // console.log(cancelBillPercent)
 
             $('.progress-processing input').val(processingBillPercent).trigger('change');
             $('.progress-success input').val(completedBillPercent).trigger('change');

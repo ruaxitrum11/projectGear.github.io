@@ -16,8 +16,8 @@ const statisticalController  = require('../../controllers/backend/statisticalCon
 router.get('/revenue', statisticalController.revenue);
 router.get('/status', statisticalController.status);
 router.get('/product', statisticalController.product);
-// router.get('/edit/:id', slideController.getSlideEdit);
-// router.post('/edit', slideController.postSlideEdit);
+router.get('/listIpCancel', statisticalController.listIpCancel);
+router.post('/postIpBlock', statisticalController.postIpBlock);
 // router.post('/addSlide',  slideController.postSlideAdd);
 
 
