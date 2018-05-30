@@ -206,8 +206,14 @@ exports.postReviewEdit = async (req,res) => {
 					return res.send({status:false, errors : errors});
 				}else if (req.body.reviewContent == ""){
 					let errors = [{msg:"Nội dung đánh giá không được để trống"}]
-					return res.send({status:false, errors : errors});
+					return res.send({status:false, errors : errors});	
 				}else{
+					let countReview = await Review.find({status:1}).count()
+
+					if(req.body.status == 1 && countReview > 9 ){
+						let errors = [{msg:"Chỉ cho phép tối đa 9 đánh giá Active"}]
+						return res.send({status:false,errors:errors})
+					}
 
 					const reviewDataUpdate = {
 						reviewName : req.body.reviewName,
