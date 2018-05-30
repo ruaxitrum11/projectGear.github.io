@@ -91,7 +91,7 @@
 						<%if(productFirst && productFirst.length){%>
 						<%for(var i =0 ; i < productFirst.length ;i++){%>
 						
-						<div class="new-item col-xs-12 col-sm-4  wow fadeInLeft " data-wow-duration="2s">
+						<div class="new-item col-xs-12 col-sm-4">
 							<div class="product-thubnail">
 								<img src="/upload/thumbProduct/<%=productFirst[i].productThumb%>">
 								<div class="product-thubnail-hover product-thubnail-hover-more">
@@ -154,7 +154,7 @@
 				if(results.showProduct && results.showProduct.length){
 					for (var i = 0; i < results.showProduct.length; i++) {
 						
-						xhtml += '<div class="new-item col-xs-12 col-sm-4  wow fadeInLeft" data-wow-duration="2s">';
+						xhtml += '<div class="new-item col-xs-12 col-sm-4 ">';
 						xhtml += '<div class="product-thubnail">';
 						xhtml += '<img src="/upload/thumbProduct/'+results.showProduct[i].productThumb+'">';
 						

@@ -78,7 +78,7 @@ let upload = multer({
 
  exports.listProduct = async (req,res) =>{
  	let page = 1;
- 	let limit = 20;
+ 	let limit = 12;
  	let totalPage = 1;
  	let query = {};
  	if (req.query.page) {
@@ -106,7 +106,7 @@ let upload = multer({
  			.populate('productCategory')
  			.populate('productBrand')
  			.populate('productColor.colorId')
- 			.sort({numberPurchased : -1}).skip(skip).limit(limit)
+ 			.sort({createdAt:-1}).skip(skip).limit(limit)
  			])
 
  		let listProduct = [];
@@ -133,7 +133,7 @@ let upload = multer({
 
 exports.listProductStatistical = async (req,res) =>{
 	let page = 1;
-	let limit = 20;
+	let limit = 12;
 	let totalPage = 1;
 	let query = {};
 	if (req.query.page) {
