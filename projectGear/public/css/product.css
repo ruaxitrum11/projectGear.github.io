@@ -1,6 +1,6 @@
 .product-details-area {
 	background-size: cover;
-	background-position: center;
+	background-position: left center;
 	background-repeat: no-repeat;
 	width: 100%;
 	height: auto;
@@ -14,8 +14,8 @@
 	padding: 60px 60px 120px 0!important;
 }
 .product-details-thumb ul>li {
-	height: 75px;
-	width: 75px;
+	height: 60px;
+	width: 60px;
 	list-style-type: none;
 	cursor: pointer;
 	margin-top: 15px;

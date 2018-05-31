@@ -152,8 +152,14 @@ exports.listProductStatistical = async (req,res) =>{
 		let [count, data1 , data2 ] = await Promise.all([
 			Product.count(query),
 			Product.find(query)
+			.populate('productCategory')
+ 			.populate('productBrand')
+ 			.populate('productColor.colorId')
 			.sort({'productColor.colorNumberPurchased' : -1}).skip(skip).limit(limit),
 			Product.find(query)
+			.populate('productCategory')
+ 			.populate('productBrand')
+ 			.populate('productColor.colorId')
 			.sort({views : -1}).skip(skip).limit(limit)
 			])
 

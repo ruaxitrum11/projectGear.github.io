@@ -115,7 +115,7 @@
       </div>
       <div class="form-product-edit">
         <span>Tổng hóa đơn</span>
-        <input disabled type="text"  value="<%=billInfo.billPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>">
+        <input disabled type="text"  value="<%=(billInfo.billPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})).slice(2).replace(/,/gi, ".")%> ₫%>">
       </div>
       <div class="form-product-edit">
         <span>Khuyến mãi</span>
@@ -123,7 +123,7 @@
       </div>
       <div class="form-product-edit">
         <span>Tổng thanh toán</span>
-        <input disabled type="text"  value="<%=billInfo.totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%>">
+        <input disabled type="text"  value="<%=(billInfo.totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})).slice(2).replace(/,/gi, ".")%> ₫%>">
       </div>
       <div class="form-product-edit">
         <span>Tên khách hàng</span>

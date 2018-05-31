@@ -100,7 +100,8 @@
 							</div>
 							<div class="product-information">
 								<h3><%=productFirst[i].productName%></h3>
-								<p><%=productFirst[i].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>	
+								<%var productPrice = productFirst[i].productColor[0].colorPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'}) %>
+								<p><%=productPrice.slice(2).replace(/,/gi, ".")%> ₫</p>	
 							</div>
 						</div>
 						
@@ -154,7 +155,7 @@
 				if(results.showProduct && results.showProduct.length){
 					for (var i = 0; i < results.showProduct.length; i++) {
 						
-						xhtml += '<div class="new-item col-xs-12 col-sm-4 ">';
+						xhtml += '<div class="new-item col-xs-12 col-sm-4 wow fadeInLeft">';
 						xhtml += '<div class="product-thubnail">';
 						xhtml += '<img src="/upload/thumbProduct/'+results.showProduct[i].productThumb+'">';
 						

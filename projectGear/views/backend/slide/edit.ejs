@@ -122,6 +122,17 @@
         <span class="label label-info">Trang phụ</span>
       </div>
     </div>
+        <div class="form-product-edit">
+      <span>Trạng thái</span>
+      <div class="active">
+        <input class="status-active" type="radio" name="status" value="1" <%if(slide.status==1){%>checked<%}%> >
+        <span class="label label-info">Active</span>
+      </div>
+      <div class="active active-block">
+        <input class="status-active" type="radio" name="status" value="0" <%if(slide.status==0){%>checked<%}%>>
+        <span class="label label-info">Block</span>
+      </div>
+    </div>
 
 
 
