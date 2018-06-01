@@ -236,7 +236,6 @@ exports.postBillEdit = async (req,res) => {
 			  xhtml += '<thead>';
 			  xhtml += '<tr>';
 			  xhtml += '<th style="text-align: center;">Tên sản phẩm</th>';
-			  xhtml += '<th style="text-align: center;">Hình ảnh</th>';
 			  xhtml += '<th style="text-align: center;">Màu sắc</th>';
 			  xhtml += '<th style="text-align: center;">Số lượng </th>';
 			  xhtml += '<th style="text-align: center;">Giá tiền</th>';
@@ -246,7 +245,6 @@ exports.postBillEdit = async (req,res) => {
 			  for (var i = 0; i < billCurrent[0].productInfos.length; i++) {
 			  	xhtml += '<tr>';
 			  	xhtml += '<td style="text-transform:capitalize">'+billCurrent[0].productInfos[i].productName+'</td>';
-			  	xhtml += '<td style="text-transform:capitalize;width:200px"><img style="width:50%" src="/upload/thumbProduct/'+billCurrent[i].productThumb+'"</td>';
 			  	xhtml += '<td><p style="height:20px ;background-color:'+billCurrent[0].productInfos[i].productColorCode+'"></p></td>';
 			  	xhtml += '<td>'+billCurrent[0].productInfos[i].productQuantity+'</td>';
 			  	xhtml += '<td>'+billCurrent[0].productInfos[i].productPrice+' đ</td>';

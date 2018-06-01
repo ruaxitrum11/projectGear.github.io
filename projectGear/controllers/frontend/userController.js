@@ -386,7 +386,7 @@ exports.getUserInfo = async (req,res) => {
         let updateBill = await Bill.update({ _id: req.body.id}, { $set: dataUpdate});
 
         if (!updateBill) {
-          let errors = [{msg:"Cập nhật danh hiệu thất bại"}]
+          let errors = [{msg:"Cập nhật đơn hàng thất bại"}]
           return res.send({status:false,errors : errors});
         }else{
          res.send({status:true});
