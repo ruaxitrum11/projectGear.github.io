@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const blogController = require('../../controllers/backend/blogController');
 
 // Route is : /admin/blog/
-router.get('/list', blogController.list);
+router.get('/list',passportConfig.isAuthAdmin, blogController.list);
 
 router.get('/listBlog',passportConfig.isAuthAdmin, blogController.listBlog);
 router.post('/delete',passportConfig.isAuthAdmin, blogController.deleteBlog);

@@ -236,6 +236,7 @@ const IpBlocked = require('../../models/IpBlocked');
  					xhtml += '<thead>';
  					xhtml += '<tr>';
  					xhtml += '<th style="text-align: center;">Tên sản phẩm</th>';
+ 					xhtml += '<th style="text-align: center;">Hình ảnh</th>';
  					xhtml += '<th style="text-align: center;">Màu sắc</th>';
  					xhtml += '<th style="text-align: center;">Số lượng </th>';
  					xhtml += '<th style="text-align: center;">Giá tiền</th>';
@@ -245,6 +246,7 @@ const IpBlocked = require('../../models/IpBlocked');
  					for (var i = 0; i < checkBillInvalid.length; i++) {
  						xhtml += '<tr>';
  						xhtml += '<td style="text-transform:capitalize">'+checkBillInvalid[i].productName+'</td>';
+ 						xhtml += '<td style="text-transform:capitalize;width:200px"><img style="width:50%" src="/upload/thumbProduct/'+checkBillInvalid[i].productThumb+'"</td>';
  						xhtml += '<td><p style="height:20px ;background-color:'+checkBillInvalid[i].productColorCode+'"></p></td>';
  						xhtml += '<td>'+checkBillInvalid[i].productQuantity+'</td>';
  						xhtml += '<td>'+checkBillInvalid[i].productPrice+' đ</td>';

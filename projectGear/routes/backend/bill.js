@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const billController = require('../../controllers/backend/billController');
 
 // Route is : /admin/bill/
-router.get('/list', billController.list);
+router.get('/list',passportConfig.isAuthAdmin, billController.list);
 
 router.get('/listBill',passportConfig.isAuthAdmin, billController.listBill);
 // router.post('/delete', billController.deleteBlog);

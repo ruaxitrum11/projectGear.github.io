@@ -20,6 +20,18 @@ const Review = require('../../models/Review');
  * Laptop.
  */
  exports.category = async (req, res) => {
+
+ 	// let [categoryMenu, categoryDropDown , category , brand , productFirst
+ 	// , categoryCurrent , review  ] = await Promise.all([
+ 	// 	Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean(), 
+ 	// 	Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean() ,
+ 	// 	Category.find({status:1}).sort({createdAt:1}).lean() , 
+ 	// 	Brand.find({status:1}).sort({createdAt:1}).lean() ,
+ 	// 	Product.find({}).populate('productCategory').sort({createdAt:-1}).limit(3).lean() ,
+ 	// 	Category.find({categoryNameSummary : req.params.summary}) , 
+ 	// 	Review.find({status:1}).sort({createdAt:-1}).lean() , 
+ 	// 	])
+
  	let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
  	let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
  	let category = await Category.find({status:1}).sort({createdAt:1}).lean();
@@ -31,12 +43,16 @@ const Review = require('../../models/Review');
 
 	let review = await Review.find({status:1}).sort({createdAt:-1}).lean();
 
-	// console.log(categoryCurrent)
-	// console.log(categoryCurrent[0]._id)
+	// // console.log(categoryCurrent)
+	// // console.log(categoryCurrent[0]._id)
 	let categoryCurrentId =  categoryCurrent[0]._id
 	
 
-
+	// let [product , categoryBanner ] = await Promise.all([
+	// 	Product.find({productCategory : categoryCurrentId , status:1})
+	// 	.populate('productColor.colorId').sort({'productColor.colorPrice' : -1}).lean(),
+	// 	Category.find({_id : {$ne : categoryCurrentId }}).sort({createdAt:1}).limit(4).lean()
+	// 	])
 	let product = await Product.find({productCategory : categoryCurrentId , status:1})
 	.populate('productColor.colorId').sort({'productColor.colorPrice' : -1}).lean();
 

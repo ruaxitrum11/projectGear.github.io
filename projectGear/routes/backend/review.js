@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const reviewController = require('../../controllers/backend/reviewController');
 
 // Route is : /admin/review/
-router.get('/list', reviewController.list);
+router.get('/list',passportConfig.isAuthAdmin, reviewController.list);
 
 router.get('/listReview', passportConfig.isAuthAdmin,reviewController.listReview);
 router.post('/delete', passportConfig.isAuthAdmin,reviewController.deleteReview);
