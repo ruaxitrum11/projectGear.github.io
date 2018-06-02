@@ -105,6 +105,10 @@
           <span class="label label-info">Đang xử lý</span>
         </div>
         <div class="active active-block">
+          <input class="status-active" type="radio" name="status" value="4" <%if(billInfo.status == 4 ){%>checked<%}%> >
+          <span class="label label-warning">Chờ xác nhận</span>
+        </div>
+        <div class="active active-block">
           <input class="status-active" type="radio" name="status" value="2" <%if(billInfo.status == 2 ){%>checked<%}%> >
           <span class="label label-success">Đã hoàn thành</span>
         </div>
@@ -112,6 +116,7 @@
           <input class="status-active" type="radio" name="status" value="3" <%if(billInfo.status == 3 ){%>checked<%}%> >
           <span class="label label-danger">Hủy bỏ</span>
         </div>
+        
       </div>
       <div class="form-product-edit">
         <span>Tổng hóa đơn</span>
@@ -134,7 +139,7 @@
         <span>Email khách hàng</span>
         <input disabled type="text"  value="<%=billInfo.clientEmail%>">
       </div>
-       <div class="form-product-edit">
+      <div class="form-product-edit">
         <span>IP khách hàng</span>
         <input disabled type="text"  value="<%=billInfo.clientIp%>">
       </div>

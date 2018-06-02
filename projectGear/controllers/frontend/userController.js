@@ -257,6 +257,25 @@ exports.getUserInfo = async (req,res) => {
     })
   }
 
+  exports.getOrderHistory = async (req,res) => {
+  // console.log(req.params)
+  let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+    // console.log(categoryMenu)
+    let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+    let category = await Category.find({status:1}).sort({createdAt:1}).lean(); 
+
+    let userCurrent = await User.find({_id : req.params.userId})
+
+    // console.log(userCurrent)
+    return res.render('frontend/orderHistory' , {
+      categoryMenu : categoryMenu ,
+      categoryDropDown : categoryDropDown , 
+      category : category ,
+      userCurrent : userCurrent[0],
+      moment : moment
+    })
+  }
+
   exports.updateUserInfo = async (req,res) => {
     upload (req,res,async function(err) {
       if(err) {
@@ -285,8 +304,8 @@ exports.getUserInfo = async (req,res) => {
 
             let updateUserInfo = await User.update({ _id: req.body.userIdUpdate}, { $set: userDataUpdate});
 
-            console.log('vao day')
-            console.log(updateUserInfo)
+            // console.log('vao day')
+            // console.log(updateUserInfo)
             if (updateUserInfo) {
               return res.send({status:true});
             }
@@ -300,10 +319,25 @@ exports.getUserInfo = async (req,res) => {
   }
 
   exports.showOderHistory = async (req,res) => {
-    if(req.body) {
+    if(req.query) {
+
+      let limit = 10;
+      let totalPage = 1;
+      let query = {};
+
+      let page = parseInt(req.query.page);
+
+
+      let skip = (page - 1)*limit;
+
       try{
-        let userIdCurrent = mongoose.Types.ObjectId(req.body.userIdCurrent)
-        let userInformation = await User.aggregate([
+
+        let userIdCurrent = mongoose.Types.ObjectId(req.query.userIdCurrent)
+      // console.log(userIdCurrent)
+      // console.log(limit)
+      // console.log(skip)
+      let [count , userInformation ] = await Promise.all([
+        User.aggregate([
           {$match: {_id : userIdCurrent }},
           {$project: {
             email :1,
@@ -313,12 +347,38 @@ exports.getUserInfo = async (req,res) => {
             localField : "email",
             foreignField : "clientEmail",
             as : "emailForeign"
-          }}
+          }},
+          {$unwind : "$emailForeign"},
+          {$count:"count"},
+          ]), 
+        User.aggregate([
+          {$match: {_id : userIdCurrent }},
+          {$project: {
+            email :1,
+          }},
+          {$lookup : {
+            from : "bills",
+            localField : "email",
+            foreignField : "clientEmail",
+            as : "emailForeign"
+          }},
+          {$unwind : "$emailForeign"},
+          {$skip:skip},
+          {$limit:limit}
           ])
+        ]) 
+
+      // console.log(userInformation)
+      // console.log(count[0].count)
+      if (count[0].count && parseInt(count[0].count) >0) {
+        totalPage = Math.ceil(parseInt(count[0].count)/limit);
+      }
         // console.log('aaaaaaaaaaaa')
         // console.log(userInformation)
         // console.log(userInformation[0].emailForeign)
-        res.send({status:true,userInformation : userInformation[0]})
+        // console.log(page)
+        // console.log(totalPage)
+        return res.send({status:true, page : page, totalPage : totalPage , userInformation : userInformation})
       }catch(errors){
         console.log(errors);
         return res.send({status:false, errors : errors});
@@ -326,31 +386,164 @@ exports.getUserInfo = async (req,res) => {
     }
   }
 
-  exports.showInfoUser = async (req,res) => {
+  exports.confirmCompleted = async (req,res) => {
     if(req.body) {
       try{
-        let userIdCurrent = mongoose.Types.ObjectId(req.body.userIdCurrent)
-        let userInforProfile = await User.find({_id : userIdCurrent})
+        let dataUpdate = {
+          status : req.body.status,
+        }
 
-        let userBill = await User.aggregate([
-          {$match: {_id : userIdCurrent }},
-          {$project: {
-            email :1,
-          }},
-          {$lookup : {
-            from : "bills",
-            localField : "email",
-            foreignField : "clientEmail",
-            as : "emailForeign"
-          }}
-          ])
+        let updateBill = await Bill.update({ _id: req.body.id}, { $set: dataUpdate});
 
-        res.send({status:true,userInforProfile : userInforProfile[0] , userBill : userBill[0]})
+        if (!updateBill) {
+          let errors = [{msg:"Cập nhật đơn hàng thất bại"}]
+          return res.send({status:false,errors : errors});
+        }else{
+
+         let billCurrent = await Bill.find({_id:req.body.id})
+         // console.log(billCurrent)
+
+            let transporter =  nodemailer.createTransport({ // config mail server
+              service: 'Gmail',
+              auth: {
+                user: 'ghostgaminggear@gmail.com',
+                pass: 'hieu5894'
+              }
+            });
+
+
+            var xhtml = '';
+
+            xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">Ghost Gaming Gear</span> , </p>';
+            xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billNumber+'</span> đang trong trạng thái chờ xác nhận thành công</p>';
+            xhtml += '<p>Tổng hóa đơn : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPrice+'</span> VNĐ</p>';
+            xhtml += '<p>Khuyến mãi : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPromotion+'</span> %</p>';
+            xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].totalPrice+'</span> VNĐ</p>';
+            xhtml += '<p>Vui lòng xác nhận đơn hàng nhanh nhất có thể !</p>';
+            xhtml += '<p>Mọi ý kiến thắc mắc , xin vui lòng liên hệ : </p>';
+            xhtml += '<ul>';
+            xhtml += '<li><span>Website</span> : ghostgaminggear.com.vn </li>';
+            xhtml += '<br>'
+            xhtml += '<li><span>Email</span> : ghostgaminggear@gmail.com</li>';
+            xhtml += '<br>'
+            xhtml += '<li><span>Facebook</span> : https://www.facebook.com/ghostgamingear</li>';
+            xhtml += '<br>'
+            xhtml += '<li><span>Youtube</span> : https://www.youtube.com/ghostgamingear</li>';
+            xhtml += '<br>'
+            xhtml += '<li><span>Twitter</span> : https://www.twitter.com/ghostgamingear</li>';
+            xhtml += '<br>'
+            xhtml += '<li><span>Twitch</span>: https://www.twitch.com/ghostgamingear</li>';
+            xhtml += '<br>'
+            xhtml += '<li><span>Instagram</span> : https://www.instagram.com/ghostgamingear</li>';
+            xhtml += '</ul>';
+
+            // var mailList = ''+billCurrent[0].clientEmail+',ghostgaminggear@gmail.com';
+            // console.log(mailList)
+
+          let mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+            from: 'Ghost Gaming Gear',
+            to: 'ghostgaminggear@gmail.com',
+            subject: 'GhostGamingGear thông báo đơn hàng , mã hóa đơn : '+billCurrent[0].billNumber+' cần được xác nhận hoàn thành' ,
+            text: 'You recieved message from ' ,
+            html: xhtml
+          }
+
+          transporter.sendMail(mainOptions, function(err, info){
+            if (err) {
+              console.log(err);
+              // res.redirect('/');
+            } else {
+              console.log('Message sent: ' +  info.response);
+              // res.redirect('/');
+            }
+          });
+          return res.send({status:true});
+        } 
+
       }catch(errors){
         console.log(errors);
         return res.send({status:false, errors : errors});
       }
     }
+  }
+
+  // exports.showInfoUser = async (req,res) => {
+  //   if(req.body) {
+  //     try{
+  //       let userIdCurrent = mongoose.Types.ObjectId(req.body.userIdCurrent)
+  //       let userInforProfile = await User.find({_id : userIdCurrent})
+
+  //       let userBill = await User.aggregate([
+  //         {$match: {_id : userIdCurrent }},
+  //         {$project: {
+  //           email :1,
+  //         }},
+  //         {$lookup : {
+  //           from : "bills",
+  //           localField : "email",
+  //           foreignField : "clientEmail",
+  //           as : "emailForeign"
+  //         }},
+  //         {$unwind:"$emailForeign" },
+  //         {$match : {"emailForeign.status":2}}
+  //         ])  
+
+
+
+  //       console.log(userBill)
+  //       return res.send({status:true,userInforProfile : userInforProfile[0] , userBill : userBill})
+  //     }catch(errors){
+  //       console.log(errors);
+  //       return res.send({status:false, errors : errors});
+  //     }
+  //   }
+  // }
+
+  exports.getTrophy = async(req,res) => {
+    // console.log(req.params)
+    let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+    // console.log(categoryMenu)
+    let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+    let category = await Category.find({status:1}).sort({createdAt:1}).lean(); 
+
+    let userCurrent = await User.find({_id : req.params.userId})
+
+    let userIdCurrent = mongoose.Types.ObjectId(req.params.userId)
+    
+
+    let userBill = await User.aggregate([
+      {$match: {_id : userIdCurrent }},
+      {$project: {
+        email :1,
+      }},
+      {$lookup : {
+        from : "bills",
+        localField : "email",
+        foreignField : "clientEmail",
+        as : "emailForeign"
+      }},
+      {$unwind:"$emailForeign" },
+      {$match : {"emailForeign.status":2}}
+      ])  
+
+    let totalPrice = 0;
+
+    if(userBill && userBill.length){
+     for (var i = 0; i < userBill.length; i++) {
+      totalPrice += userBill[i].emailForeign.totalPrice
+    }
+  }
+  // console.log(totalPrice)
+
+    // console.log(userCurrent)
+    return res.render('frontend/trophy' , {
+      categoryMenu : categoryMenu ,
+      categoryDropDown : categoryDropDown , 
+      category : category ,
+      userCurrent : userCurrent[0],
+      totalPrice : totalPrice ,
+      moment : moment
+    })
   }
 
   exports.upLevelUser = async (req,res) => {
@@ -376,108 +569,25 @@ exports.getUserInfo = async (req,res) => {
   }
 
 
-  exports.confirmCompleted = async (req,res) => {
-    if(req.body) {
-      try{
-        let dataUpdate = {
-          status : req.body.status,
-        }
+  exports.getChangePass = async (req,res) => {
+  // console.log(req.params)
+  let categoryMenu = await Category.find({isCategoryMenu : 1 , status : 1}).sort({createdAt:1}).limit(4).lean();
+    // console.log(categoryMenu)
+    let categoryDropDown = await Category.find({isCategoryMenu : 0 , status : 1} ).sort({createdAt:1}).lean();
+    let category = await Category.find({status:1}).sort({createdAt:1}).lean(); 
 
-        let updateBill = await Bill.update({ _id: req.body.id}, { $set: dataUpdate});
+    let userCurrent = await User.find({_id : req.params.userId})
 
-        if (!updateBill) {
-          let errors = [{msg:"Cập nhật đơn hàng thất bại"}]
-          return res.send({status:false,errors : errors});
-        }else{
-         res.send({status:true});
-         let billCurrent = await Bill.find({_id:req.body.id})
-         // console.log(billCurrent)
-
-            let transporter =  nodemailer.createTransport({ // config mail server
-              service: 'Gmail',
-              auth: {
-                user: 'ghostgaminggear@gmail.com',
-                pass: 'hieu5894'
-              }
-            });
-
-
-            var xhtml = '';
-
-            xhtml += '<p>Chào <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].clientName+'</span> , </p>';
-            xhtml += '<p>Cảm ơn bạn đã sử dụng dịch vụ của Ghost Gaming Gear</p>';
-            xhtml += '<p>Mã đơn hàng : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billNumber+'</span> đã được xác nhận thành công</p>';
-            xhtml += '<p>Tổng hóa đơn : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPrice+'</span> VNĐ</p>';
-            xhtml += '<p>Khuyến mãi : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].billPromotion+'</span> %</p>';
-            xhtml += '<p>Tổng thanh toán : <span style="font-size:2rem;font-weight:bold">'+billCurrent[0].totalPrice+'</span> VNĐ</p>';
-            xhtml += '<p>Đơn hàng của bạn gồm : </p>';
-            xhtml += '<table class="table" style="width: 80%;text-align: center;">';
-            xhtml += '<thead>';
-            xhtml += '<tr>';
-            xhtml += '<th style="text-align: center;">Tên sản phẩm</th>';
-            xhtml += '<th style="text-align: center;">Màu sắc</th>';
-            xhtml += '<th style="text-align: center;">Số lượng </th>';
-            xhtml += '<th style="text-align: center;">Giá tiền</th>';
-            xhtml += '</tr>';
-            xhtml += '</thead>';
-            xhtml += '<tbody>';
-            for (var i = 0; i < billCurrent[0].productInfos.length; i++) {
-              xhtml += '<tr>';
-              xhtml += '<td style="text-transform:capitalize">'+billCurrent[0].productInfos[i].productName+'</td>';
-              xhtml += '<td><p style="height:20px ;background-color:'+billCurrent[0].productInfos[i].productColorCode+'"></p></td>';
-              xhtml += '<td>'+billCurrent[0].productInfos[i].productQuantity+'</td>';
-              xhtml += '<td>'+billCurrent[0].productInfos[i].productPrice+' đ</td>';
-              xhtml += '</tr>';
-            }
-            xhtml += '</tbody>';
-            xhtml += '</table>';
-            xhtml += '<p>Mọi ý kiến thắc mắc , xin vui lòng liên hệ : </p>';
-            xhtml += '<ul>';
-            xhtml += '<li><span>Website</span> : ghostgaminggear.com.vn </li>';
-            xhtml += '<br>'
-            xhtml += '<li><span>Email</span> : ghostgaminggear@gmail.com</li>';
-            xhtml += '<br>'
-            xhtml += '<li><span>Facebook</span> : https://www.facebook.com/ghostgamingear</li>';
-            xhtml += '<br>'
-            xhtml += '<li><span>Youtube</span> : https://www.youtube.com/ghostgamingear</li>';
-            xhtml += '<br>'
-            xhtml += '<li><span>Twitter</span> : https://www.twitter.com/ghostgamingear</li>';
-            xhtml += '<br>'
-            xhtml += '<li><span>Twitch</span>: https://www.twitch.com/ghostgamingear</li>';
-            xhtml += '<br>'
-            xhtml += '<li><span>Instagram</span> : https://www.instagram.com/ghostgamingear</li>';
-            xhtml += '</ul>';
-
-            var mailList = ''+billCurrent[0].clientEmail+',ghostgaminggear@gmail.com';
-            console.log(mailList)
-
-          let mainOptions = { // thiết lập đối tượng, nội dung gửi mail
-            from: 'Ghost Gaming Gear',
-            to: mailList,
-            subject: 'GhostGamingGear thông báo đơn hàng , mã hóa đơn : '+billCurrent[0].billNumber+' đã được xác nhận thành công' ,
-            text: 'You recieved message from ' ,
-            html: xhtml
-          }
-
-          transporter.sendMail(mainOptions, function(err, info){
-            if (err) {
-              console.log(err);
-              // res.redirect('/');
-            } else {
-              console.log('Message sent: ' +  info.response);
-              // res.redirect('/');
-            }
-          });
-
-
-        } 
-
-      }catch(errors){
-        console.log(errors);
-        return res.send({status:false, errors : errors});
-      }
-    }
+    // console.log(userCurrent)
+    return res.render('frontend/changePass' , {
+      categoryMenu : categoryMenu ,
+      categoryDropDown : categoryDropDown , 
+      category : category ,
+      userCurrent : userCurrent[0],
+      moment : moment
+    })
   }
+
 
 
   exports.validatorChangePassword = [

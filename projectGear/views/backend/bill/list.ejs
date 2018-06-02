@@ -126,6 +126,7 @@ input.status-active {
           <select class="blog-status">
             <option value="">Trạng Thái</option>
             <option value="1">Đang xử lý</option>
+            <option value="4">Chờ xác nhận</option>
             <option value="2">Đã hoàn thành</option>
             <option value="3">Hủy bỏ</option>
           </select>
@@ -152,26 +153,33 @@ input.status-active {
 
               <div class="box-footer no-border">
                 <div class="row">
-                  <div class="col-xs-4 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
+                  <div class="col-xs-3 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
                     <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
                     data-fgColor="#FF6602">
 
                     <div class="knob-label">Đang xử lý</div>
                   </div>
+                  <div class="col-xs-3 text-center progress-waiting">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
 
-                  <div class="col-xs-4 text-center progress-success" style="border-right: 1px solid #f4f4f4">
+                    <div class="knob-label">Chờ xác nhận</div>
+                  </div>
+                  <div class="col-xs-3 text-center progress-success" style="border-right: 1px solid #f4f4f4">
                     <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
                     data-fgColor="#FF6602">
 
                     <div class="knob-label">Đã hoàn thành</div>
                   </div>
 
-                  <div class="col-xs-4 text-center progress-cancel">
+                  <div class="col-xs-3 text-center progress-cancel">
                     <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
                     data-fgColor="#FF6602">
 
                     <div class="knob-label">Hủy bỏ</div>
                   </div>
+
+
 
                 </div>
 
@@ -283,6 +291,8 @@ input.status-active {
               xhtml += '<td><span class="label label-success">Đã hoàn thành</span></td>';
             }else if (results.listBill[i].status == 3) {
               xhtml += '<td><span class="label label-danger">Hủy bỏ</span></td>';
+            }else if (results.listBill[i].status == 4) {
+              xhtml += '<td><span class="label label-warning">Chờ xác nhận</span></td>';
             }
 
             xhtml += '<td>'+date_createdAt+'</td>'
@@ -354,17 +364,20 @@ input.status-active {
 
             // console.log(results)
 
-            var processingBillPercent = Math.ceil((results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
+            var processingBillPercent = Math.ceil((results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill + results.countWaiting))*100)
 
-            var completedBillPercent = Math.ceil((results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
+            var completedBillPercent = Math.ceil((results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill + results.countWaiting ))*100)
 
-            var cancelBillPercent = 100 - (completedBillPercent + processingBillPercent)
+            var waitingPrecent = Math.ceil((results.countWaiting/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill + results.countWaiting ))*100)
+
+            var cancelBillPercent = 100 - (completedBillPercent + processingBillPercent + waitingPrecent)
 
 
 
             $('.progress-processing input').val(processingBillPercent).trigger('change');
             $('.progress-success input').val(completedBillPercent).trigger('change');
             $('.progress-cancel input').val(cancelBillPercent).trigger('change');
+            $('.progress-waiting input').val(waitingPrecent).trigger('change');
           })
 
       }

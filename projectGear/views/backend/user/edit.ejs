@@ -76,87 +76,87 @@
     <div class="container content-edit">     
       <div class = "form-edit-user">
         <span>Tài khoản</span>
-        <input disabled type="text" name="userName" value="<%=user.userName%>" >
+        <input disabled type="text" name="userName" value="<%=userInfo.userName%>" >
       </div>
       <div class = "form-edit-user">
         <span>Mật khẩu</span>
-        <input  type="password" name="password" value="<%=user.password%>" >
+        <input  type="password" name="password" value="" >
       </div>
       <div class = "form-edit-user">
         <span>Email</span>
-        <input type="text" name="email" value="<%=user.email%>">
+        <input type="text" name="email" value="<%=userInfo.email%>">
       </div>
       <div class = "form-edit-user">
         <span>Họ tên</span>
-        <input type="text" name="nameUser" value="<%=user.nameUser%>">
+        <input type="text" name="nameUser" value="<%=userInfo.nameUser%>">
       </div>
       <div class = "form-edit-user">
         <span>Số điện thoại</span>
-        <input type="number" name="phoneNumber" value="<%=user.phoneNumber%>">
+        <input type="number" name="phoneNumber" value="<%=userInfo.phoneNumber%>">
       </div>
       <div class = "form-edit-user">
         <span>Địa chỉ</span>
-        <input type="text" name="address" value="<%=user.address%>">
+        <input type="text" name="address" value="<%=userInfo.address%>">
       </div>
 
       <div class = "form-edit-user">
         <span>Ngày Sinh</span>
-        <input type="date" name="birthDay" value="<%= moment(user.birthDay).format('YYYY-MM-DD') %>">
+        <input type="date" name="birthDay" value="<%= moment(userInfo.birthDay).format('YYYY-MM-DD') %>">
       </div>
       <div class = "form-edit-user">
         <span>Giới tính</span>
         <div class="active">
-          <input class="status-active" type="radio" name="gender" value="0" <%if(user.gender == 0){%>checked<%}%>>
+          <input class="status-active" type="radio" name="gender" value="0" <%if(userInfo.gender == 0){%>checked<%}%>>
           <span class="label label-info">Nam</span>
         </div>
         <div class="active active-block">
-          <input class="status-active" type="radio" name="gender" value="1" <%if(user.gender == 1){%>checked<%}%>>
+          <input class="status-active" type="radio" name="gender" value="1" <%if(userInfo.gender == 1){%>checked<%}%>>
           <span class="label label-info">Nữ</span>
         </div>
       </div>
       <div class = "form-edit-user">
         <span>Trạng thái</span>
         <div class="active">
-          <input class="status-active" type="radio" name="status" value="1" <%if(user.status == 1){%>checked<%}%>>
+          <input class="status-active" type="radio" name="status" value="1" <%if(userInfo.status == 1){%>checked<%}%>>
           <span class="label label-success">Active</span>
         </div>
         <div class="active active-block">
-          <input class="status-active" type="radio" name="status" value="0" <%if(user.status == 0){%>checked<%}%>>
+          <input class="status-active" type="radio" name="status" value="0" <%if(userInfo.status == 0){%>checked<%}%>>
           <span class="label label-danger">Block</span>
         </div>
       </div>
       <div class = "form-edit-user">
         <span>Cấp Bậc</span>
         <div class="active">
-          <input class="status-active" type="radio" name="level" value="1" <%if(user.level == 1){%>checked<%}%>>
+          <input class="status-active" type="radio" name="level" value="1" <%if(userInfo.level == 1){%>checked<%}%>>
           <span class="label label-info">MemberShip</span>
         </div>
         <div class="active active-block">
-          <input class="status-active" type="radio" name="level" value="2" <%if(user.level == 2){%>checked<%}%>>
+          <input class="status-active" type="radio" name="level" value="2" <%if(userInfo.level == 2){%>checked<%}%>>
           <span class="label label-info">Silver MemberShip</span>
         </div>
         <div class="active active-block">
-          <input class="status-active" type="radio" name="level" value="3" <%if(user.level == 3){%>checked<%}%>>
+          <input class="status-active" type="radio" name="level" value="3" <%if(userInfo.level == 3){%>checked<%}%>>
           <span class="label label-info">Gold MemberShip</span>
         </div>
         <div class="active active-block">
-          <input class="status-active" type="radio" name="level" value="4" <%if(user.level == 4){%>checked<%}%>>
+          <input class="status-active" type="radio" name="level" value="4" <%if(userInfo.level == 4){%>checked<%}%>>
           <span class="label label-info">Platinum MemberShip</span>
         </div>
       </div>
       <div class = "form-edit-user">
         <span>Quyền</span>
         <div class="active">
-          <input class="status-active" type="radio" name="role" value="1" <%if(user.role == 1){%>checked<%}%>>
+          <input class="status-active" type="radio" name="role" value="1" <%if(userInfo.role == 1){%>checked<%}%>>
           <span class="label label-primary">Admin</span>
         </div>
         <div class="active active-block">
-          <input class="status-active" type="radio" name="role" value="0" <%if(user.role == 0){%>checked<%}%>>
+          <input class="status-active" type="radio" name="role" value="0" <%if(userInfo.role == 0){%>checked<%}%>>
           <span class="label label-default">User</span>
         </div>
       </div>
       <div class="form-edit-user button-active">
-        <a href="javascript:void(0)" onclick="updateUser('<%=user._id%>')">Cập Nhật</a>
+        <a href="javascript:void(0)" onclick="updateUser('<%=userInfo._id%>')">Cập Nhật</a>
       </div>
 
 

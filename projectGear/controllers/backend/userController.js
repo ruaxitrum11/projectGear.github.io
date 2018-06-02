@@ -132,8 +132,8 @@ exports.deleteUser = async (req,res) =>{
 exports.getUserEdit = async (req,res) =>{
   if (req.params && req.params.id) {
     try{
-      let user = await User.find({_id : req.params.id});
-      res.render('backend/user/edit', {user:user[0],moment:moment})
+      let userInfo = await User.find({_id : req.params.id});
+      res.render('backend/user/edit', {userInfo:userInfo[0],moment:moment})
     }catch(err){
     }
   }
@@ -168,15 +168,12 @@ exports.getUserAdd = async (req,res) =>{
       // console.log(req.body)
       let existingEmail = await User.findOne({_id : {$ne: req.body.id}, email: req.body.new_email});
       if (existingEmail) {   
-        res.send({status:false, errors : 'Email đã tồn tại'});
+        return res.send({status:false, errors : 'Email đã tồn tại'});
       } 
-
-
 
       let dataUpdate = {
         email : req.body.new_email,
         userName : req.body.new_userName,
-        password : req.body.new_password,
         nameUser : req.body.new_nameUser,
         phoneNumber : req.body.new_phoneNumber,
         address : req.body.new_address,
@@ -186,7 +183,12 @@ exports.getUserAdd = async (req,res) =>{
         level : req.body.new_level,
         role : req.body.new_role
       }
-
+      if ( req.body.new_password != "") {
+        if(req.body.new_password.length < 4) {
+          return res.send({status:false, errors : 'Mật khẩu cần ít nhất 4 ký tự'});
+        }
+        dataUpdate.password =  req.body.new_password
+      }
 
       let updateUser = await User.update({ _id: req.body.id}, { $set: dataUpdate});
 
@@ -363,7 +365,7 @@ exports.removeIpBlocked = async (req,res) =>{
 exports.postIpBlocked = async (req,res) => {
   try{
     if (req.body) {
-      
+
       let existingIp = await IpBlocked.findOne({ ipBlockedAddress : req.body.ipBlockedAddress});
 
       if (existingIp && existingIp != "") {

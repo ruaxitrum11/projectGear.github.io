@@ -15,14 +15,22 @@ const userController = require('../../controllers/frontend/userController');
 router.post('/create', userController.validatorCreateUser, userController.create);
 router.post('/login',  userController.postLogin);
 router.get('/logout', userController.logOut);
-router.get('/:userId', passportConfig.isAuthenticated, userController.getUserInfo);
 router.post('/forgotPassword' , userController.forgotPassword);
-router.post('/updateUserInfo' , userController.updateUserInfo)
-router.post('/showInfoUser' , userController.showInfoUser)
-router.post('/showOderHistory' , userController.showOderHistory)
-router.post('/upLevelUser' , userController.upLevelUser)
-router.post('/confirmCompleted' , userController.confirmCompleted)
-router.post('/changePassword' , userController.validatorChangePassword , userController.changePassword)
 
+
+router.get('/:userId', passportConfig.isAuthenticated , userController.getUserInfo);
+router.post('/updateUserInfo' ,passportConfig.isAuthenticated, userController.updateUserInfo)
+// router.post('/showInfoUser' , userController.showInfoUser)
+
+
+router.get('/order/:userId' , passportConfig.isAuthenticated, userController.getOrderHistory)
+router.get('/showOrderHistory/list' , passportConfig.isAuthenticated, userController.showOderHistory)
+router.post('/order/confirmCompleted' ,passportConfig.isAuthenticated, userController.confirmCompleted)
+
+router.get('/trophy/:userId' , passportConfig.isAuthenticated, userController.getTrophy)
+router.post('/upLevelUser' ,passportConfig.isAuthenticated, userController.upLevelUser)
+
+router.get('/change-pass/:userId' , passportConfig.isAuthenticated, userController.getChangePass)
+router.post('/changePassword' ,passportConfig.isAuthenticated, userController.validatorChangePassword , userController.changePassword)
 
 module.exports = router;

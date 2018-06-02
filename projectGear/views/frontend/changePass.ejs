@@ -35,7 +35,7 @@
 			<div class="user-info-left col-sm-3">
 				<ul>
 					
-					<li class="user-info-left-profile  user-info-left-active" onclick="location.href='/user/<%=userCurrent._id%>'">
+					<li class="user-info-left-profile  user-info-left" onclick="location.href='/user/<%=userCurrent._id%>'">
 						<i class="fa fa-user"></i>
 						<span>Thông tin cá nhân</span>
 					</li>
@@ -47,7 +47,7 @@
 						<i class="fa fa-trophy"></i>
 						<span>Danh Hiệu</span>
 					</li>
-					<li class="user-info-left-pass" onclick="location.href='/user/change-pass/<%=userCurrent._id%>'">
+					<li class="user-info-left-pass user-info-left-active" onclick="location.href='/user/change-pass/<%=userCurrent._id%>'">
 						<i class="fa fa-key"></i>
 						<span>Mật khẩu</span>
 					</li>
@@ -55,43 +55,19 @@
 			</div>
 			<div class="user-info-right col-sm-9">
 				<div class="user-info-main" style="float: left;width: 100%;">
-					<div class="user-info-profile">
-						<h2 class="user-info-right-title">
-							Thông tin cá nhân
-						</h2>
+					<div class="user-info-pass">
+						<h2 class="user-info-right-title">Mật khẩu</h2>
 						<div class="user-right-content">
-							<div class="user-right-item">
-								<p>Họ tên</p>
-								<input type="text" name="nameUser" value="<%=userCurrent.nameUser%>">
+							<div class="user-right-item user-newpass">
+								<p>Mật khẩu mới</p>
+								<input type="password" name="new_pass">
 							</div>
-							<div class="user-right-item">
-								<p>Ảnh đại diện</p>
-								<input id="fileAvatar" type="file" name="file">
-								<img id="avatarPreview" src="" style="width: 25%; margin : 15px 0" >
-							</div>	
-							<div class="user-right-item">
-								<p>Email</p>
-								<input type="text" disabled name="email" value="<%=userCurrent.email%>">
-							</div>
-							<div class="user-right-item">
-								<p>Số điện thoại</p>
-								<input type="text"  name="phoneNumber" value="<%=userCurrent.phoneNumber%>">
-							</div>	
-							<div class="user-right-item">
-								<p>Địa chỉ</p>
-								<input type="text" name="address" value="<%=userCurrent.address%>">
-							</div>	
-							<div class="user-right-item">
-								<p>Ngày Sinh</p>
-								<input type="date" name="birthDay" value="<%= moment(userCurrent.birthDay).format('YYYY-MM-DD')%>">
-							</div>
-							<div class="user-right-item">
-								<p>Giới Tính</p>
-								<input type="radio" name="gender" value="0" style="width: 5%" <%if (userCurrent.gender == 0){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nam</span>
-								<input type="radio" name="gender" value="1" style="width: 5%;margin-left: 25px" <%if (userCurrent.gender == 1){%>checked<%}%>><span style="font-size: 1.6rem;font-weight: 600" >Nữ</span>
+							<div class="user-right-item user-confirmpass">
+								<p>xác nhận mật khẩu mới</p>
+								<input type="password" name="confirm_new_pass">
 							</div>
 							<div class="user-right-item user-right-item-button">
-								<input type="button" name="" value="Cập nhật" onclick="updateUserInfo('<%=userCurrent._id%>')">
+								<input type="button" onclick="postChangePass('<%=userCurrent._id%>')" value="Cập nhật">
 							</div>
 						</div>
 					</div>

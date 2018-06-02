@@ -409,21 +409,26 @@
 
               <div class="box-footer no-border">
                 <div class="row">
-                  <div class="col-xs-4 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
+                  <div class="col-xs-3 text-center progress-processing" style="border-right: 1px solid #f4f4f4">
                     <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
                     data-fgColor="#FF6602">
 
                     <div class="knob-label">Đang xử lý</div>
                   </div>
+                  <div class="col-xs-3 text-center progress-waiting" style="border-right: 1px solid #f4f4f4">
+                    <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
+                    data-fgColor="#FF6602">
 
-                  <div class="col-xs-4 text-center progress-success" style="border-right: 1px solid #f4f4f4">
+                    <div class="knob-label">Chờ xác nhận</div>
+                  </div>
+                  <div class="col-xs-3 text-center progress-success" style="border-right: 1px solid #f4f4f4">
                     <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
                     data-fgColor="#FF6602">
 
                     <div class="knob-label">Đã hoàn thành</div>
                   </div>
 
-                  <div class="col-xs-4 text-center progress-cancel">
+                  <div class="col-xs-3 text-center progress-cancel">
                     <input type="text" class="knob" data-readonly="true" value="" data-width="60" data-height="60"
                     data-fgColor="#FF6602">
 
@@ -559,19 +564,20 @@
             xhtmlcountTotalPurchased += '<p>Sản phẩm được bán</p>'
             $('.countTotalPurchased').html(xhtmlcountTotalPurchased)
 
-            var processingBillPercent = Math.ceil((results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
+            var processingBillPercent = Math.ceil((results.countProcessingBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill + results.countWaiting))*100)
 
-            var completedBillPercent = Math.ceil((results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill))*100)
+            var completedBillPercent = Math.ceil((results.countCompletedBill/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill + results.countWaiting ))*100)
 
-            var cancelBillPercent = 100 - (completedBillPercent + processingBillPercent)
+            var waitingPrecent = Math.ceil((results.countWaiting/(results.countProcessingBill+results.countCompletedBill + results.countCancelBill + results.countWaiting ))*100)
 
-            // console.log(processingBillPercent)
-            // console.log(completedBillPercent)
-            // console.log(cancelBillPercent)
+            var cancelBillPercent = 100 - (completedBillPercent + processingBillPercent + waitingPrecent)
+
+
 
             $('.progress-processing input').val(processingBillPercent).trigger('change');
             $('.progress-success input').val(completedBillPercent).trigger('change');
             $('.progress-cancel input').val(cancelBillPercent).trigger('change');
+            $('.progress-waiting input').val(waitingPrecent).trigger('change');
           })
         }
         // function countTotalBill(){

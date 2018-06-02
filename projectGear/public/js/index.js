@@ -77,8 +77,6 @@ $(document).ready(function(){
 
 
 
-
-
 //review 
 
 

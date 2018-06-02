@@ -50,9 +50,9 @@
 							<% var oldPrice=((product[j].productColor[0].colorPrice)/(1-product[j].productColor[0].colorPromotion/100)).toLocaleString('vi', {style : 'currency', currency : 'VND'}) %>
 							<div class="product-category-price new-product-category-price-<%=product[j]._id%> col-xs-5">
 								<%if(product[j].productColor[0].colorPromotion > 0){%>
-								<p style="font-size: 1.4rem;color:#a5a7aa;text-decoration: line-through;"><%=oldPrice.slice(2).replace(/,/gi, ".")%> ₫%></p>
+								<p style="font-size: 1.4rem;color:#a5a7aa;text-decoration: line-through;"><%=oldPrice.slice(2).replace(/,/gi, ".")%> ₫</p>
 								<%}%>
-								<p><%=promotionPrice.slice(2).replace(/,/gi, ".")%> ₫%></p>
+								<p><%=promotionPrice.slice(2).replace(/,/gi, ".")%> ₫</p>
 							</div>
 						</div>
 					</div>

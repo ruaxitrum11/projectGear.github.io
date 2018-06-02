@@ -85,6 +85,8 @@ exports.countTotal = async (req,res) => {
 
 		let countCancelBill = await Bill.count({status:3})
 
+		let countWaiting = await Bill.count({status:4})
+
 		// console.log(countProcessingBill)
 		// console.log(countCompletedBill)
 		// console.log(countCancelBill)
@@ -98,6 +100,7 @@ exports.countTotal = async (req,res) => {
 			countProcessingBill : countProcessingBill ,
 			countCompletedBill : countCompletedBill , 
 			countCancelBill : countCancelBill,
+			countWaiting : countWaiting
 		})
 		
 

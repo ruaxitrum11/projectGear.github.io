@@ -53,7 +53,11 @@ input[type=number]::-webkit-outer-spin-button {
 						<span style="padding-top: 20px;">Đăng nhập / Đăng ký</span>
 					</a>
 					<%}else{%>
-					<img src="/upload/avatar/<%=user.avatar%>" style="width:65px;height:65px;border-radius: 50%;float: right;">
+					<%if(user.avatar == "" || user.avatar == "undefined" || user.avatar == undefined){%>
+					<img src="/upload/avatar/noimage.jpg" style="width:65px;height:65px;border-radius: 50%;float: right;border: 2px solid">
+					<%}else{%>
+					<img src="/upload/avatar/<%=user.avatar%>" style="width:65px;height:65px;border-radius: 50%;float: right;border: 2px solid">
+					<%}%>
 					<div class="checkout-user-logged" style="float: right;margin-right: 30px;">
 						<p style=" font-size: 2.4rem;"><%=user.userName%></p>
 						<a href="/user/logout" style="color: #FF6602;text-decoration: none;">Đăng xuất</a>
@@ -140,6 +144,12 @@ input[type=number]::-webkit-outer-spin-button {
 								<span>*</span>
 							</p>
 							<input type="text" name="address" value="<%=user.address%>">
+						</div>
+						<div class="checkout-information-form">
+							<p>Ghi chú
+								<span> </span>
+							</p>
+							<textarea style="height: 100px;"></textarea>
 						</div>
 					</div>
 					<%}%>

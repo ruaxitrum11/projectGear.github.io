@@ -1,0 +1,210 @@
+<%- include('include/header-top') %>
+<link rel="stylesheet" href="/css/homepage.css">
+<link rel="stylesheet" href="/css/user.css">
+
+<%- include('include/header')%>
+
+<section>
+	<div class="user-recommend-area">
+		<div class="user-recommend">
+			
+			<%if(userCurrent.avatar == "" || userCurrent.avatar == "undefined" || userCurrent.avatar == undefined){%>
+			<div class="user-recommend-thumb" style="background-image: url('/upload/avatar/noimage.jpg');">
+			</div>
+			<%}else{%>
+			<div class="user-recommend-thumb" style="background-image: url('/upload/avatar/<%=userCurrent.avatar%>');">
+			</div>
+			<%}%>
+			<div class="user-recommend-content">
+				<p><%=userCurrent.userName%></p>
+				<%if(userCurrent.level == 1 ){%>
+				<span>Member</span>
+				<%}else if(userCurrent.level == 2){%>
+				<span>Silver Member</span>
+				<%}else if(userCurrent.level == 3){%>
+				<span>Gold Member</span>
+				<%}else if(userCurrent.level == 4){%>
+				<span>Platinum Member</span>
+				<%}%>
+
+			</div>
+		</div>
+	</div>
+	<div class="user-info-area">
+		<div class="container-fluid">
+			<div class="user-info-left col-sm-3">
+				<ul>
+					
+					<li class="user-info-left-profile user-info-left" onclick="location.href='/user/<%=userCurrent._id%>'">
+						<i class="fa fa-user"></i>
+						<span>Thông tin cá nhân</span>
+					</li>
+					<li class="user-info-left-order" onclick="location.href='/user/order/<%=userCurrent._id%>'">
+						<i class="fa fa-shopping-cart"></i>
+						<span>Lịch sử giao dịch</span>
+					</li>
+					<li class="user-info-left-trophy user-info-left-active"  onclick="location.href='/user/trophy/<%=userCurrent._id%>'" >
+						<i class="fa fa-trophy"></i>
+						<span>Danh Hiệu</span>
+					</li>
+					<li class="user-info-left-pass" onclick="location.href='/user/change-pass/<%=userCurrent._id%>'">
+						<i class="fa fa-key"></i>
+						<span>Mật khẩu</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="user-info-right col-sm-9">
+				<div class="user-info-main" style="float: left;width: 100%;">
+					<div class="user-info-trophy">
+						<h2 class="user-info-right-title">Danh Hiệu</h2>
+						<div class="user-right-content">
+							<%if(totalPrice){%>
+							<%var totalMoney = totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'}) %>
+							<%}%>
+							<%if (userCurrent.level == 1) {%>
+							<div class="user-trophy-content trophy-type">
+								<p>Loại danh hiệu</p>
+								<span>Member</span>
+							</div>
+							<div class="user-trophy-content trophy-thumb">
+								<p>Ảnh danh hiệu</p>
+								<span>
+									<img src="/img/homepage/member.png">
+								</span>
+							</div>
+							<div class="user-trophy-content trophy-discount">
+								<p>Giảm Giá</p>
+								<span>0%</span>
+							</div>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
+							</div>
+							<%}%>
+							<%if (userCurrent.level == 2) {%>
+							<div class="user-trophy-content trophy-type">
+								<p>Loại danh hiệu</p>
+								<span>Silver Member</span>
+							</div>
+							<div class="user-trophy-content trophy-thumb">
+								<p>Ảnh danh hiệu</p>
+								<span>
+									<img src="/img/homepage/silver.png">
+								</span>
+							</div>
+							<div class="user-trophy-content trophy-discount">
+								<p>Giảm Giá</p>
+								<span>3%</span>
+							</div>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
+							</div>
+							<%}%>
+							<%if (userCurrent.level == 3) {%>
+							<div class="user-trophy-content trophy-type">
+								<p>Loại danh hiệu</p>
+								<span>Gold Member</span>
+							</div>
+							<div class="user-trophy-content trophy-thumb">
+								<p>Ảnh danh hiệu</p>
+								<span>
+									<img src="/img/homepage/gold.png">
+								</span>
+							</div>
+							<div class="user-trophy-content trophy-discount">
+								<p>Giảm Giá</p>
+								<span>6%</span>
+							</div>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
+							</div>
+							<%}%>
+							<%if (userCurrent.level == 4 ) {%>
+							<div class="user-trophy-content trophy-type">
+								<p>Loại danh hiệu</p>
+								<span>Platinum Member</span>
+							</div>
+							<div class="user-trophy-content trophy-thumb">
+								<p>Ảnh danh hiệu</p>
+								<span>
+									<img src="/img/homepage/platinum.png">
+								</span>
+							</div>
+							<div class="user-trophy-content trophy-discount">
+								<p>Giảm Giá</p>
+								<span>10%</span>
+							</div>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
+							</div>
+							<%}%>
+							<div class="user-trophy-content trophy-info">
+								<%if (userCurrent.level == 1 && (parseInt(totalPrice)-15000000 >= 0) ){%>
+								<p>Nâng cấp danh hiệu</p>
+								<div class="input-level" style="width:100%;float:left;margin:20px 0;">'
+									<input checked type="radio" name="level" value="2" style="width: 5%;float:left"><span style="font-size: 1.6rem;" >Silver Member</span>
+								</div>
+								<button onclick="upLevelUser('<%=userCurrent._id%>')" style="float:left;margin-top:20px;padding: 15px 30px;background-color: #FF6602;"><i class="fa fa-arrow-up" style="font-size:2rem;color:#fff;"></i></button>
+								<%}%>
+
+								<%if (userCurrent.level == 2 && (parseInt(totalPrice)-25000000 >= 0 )){%>
+								<p>Nâng cấp danh hiệu</p>
+								<div class="input-level" style="width:100%;float:left;margin:20px 0;">
+									<input checked type="radio" name="level" value="3" style="width: 5%;float:left"><span style="font-size: 1.6rem;" >Gold Member</span>
+								</div>
+								<button onclick="upLevelUser('<%=userCurrent._id%>')" style="float:left;margin-top:20px;padding: 15px 30px;background-color: #FF6602;"><i class="fa fa-arrow-up" style="font-size:2rem;color:#fff;"></i></button>
+								<%}%>
+								<%if(userCurrent.level == 3 && ( parseInt(totalPrice)-50000000 >= 0 ) ) {%>
+								<p>Nâng cấp danh hiệu</p>
+								<div class="input-level" style="width:100%;float:left;margin:20px 0;">
+									<input checked type="radio" name="level" value="4" style="width: 5%;float:left"><span style="font-size: 1.6rem;" >Platinum Member</span>
+								</div>
+								<button onclick="upLevelUser('<%=userCurrent._id%>')" style="float:left;margin-top:20px;padding: 15px 30px;background-color: #FF6602;"><i class="fa fa-arrow-up" style="font-size:2rem;color:#fff;"></i></button>
+								<%}%>
+								<div class="user-trophy-content trophy-info">
+									<h3>Thông tin danh hiệu</h3>
+									<p>Khi đăng ký tài khoản tại GHOSTGAMINGGEAR , khách hàng có thể đạt được danh hiệu riêng tương ứng với ưu đãi tài khoản khi đạt đủ điều kiện sau :</p>
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Loại tài khoản</th>
+												<th>Ưu đãi mỗi đơn hàng</th>
+												<th>Tổng tiền giao dịch cần</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Silver Member</td>
+												<td>3%</td>
+												<td>Lớn hơn hoặc bằng : 15.000.000 đ</td>
+											</tr>
+											<tr>
+												<td>Gold Member</td>
+												<td>6%</td>
+												<td>Lớn hơn hoặc bằng : 25.000.000 đ</td>
+											</tr>
+											<tr>
+												<td>Platinum Member</td>
+												<td>10%</td>
+												<td>Lớn hơn hoặc bằng : 50.000.000 đ</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</section>
+
+		<%- include('include/all-modal') %>
+
+		<%- include('include/footer') %>
+		<script src="/js/user.js"></script>

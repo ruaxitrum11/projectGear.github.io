@@ -25,7 +25,7 @@ const billSchema = new mongoose.Schema({
 	clientPhoneNumber : Number ,
 	clientAddress : String ,
 	clientDescription : String,
-  status : {type : Number , default : 1 } //1 : processing , 2 : completed , 3 : canceled
+  status : {type : Number , default : 1 } //1 : processing , 2 : completed , 3 : canceled , 4 : chờ xác nhận
 } , { timestamps: true });
 
 const Bill = mconnect.model('Bill', billSchema);
