@@ -600,8 +600,6 @@ exports.getUserInfo = async (req,res) => {
   exports.changePassword = async(req,res) => {
 
     if(req.body) {
-
-
       try{
 
         let user_password = await User.find({_id:req.body.userIdCurrent}).select({password:1})
@@ -618,7 +616,7 @@ exports.getUserInfo = async (req,res) => {
           if (!errors.isEmpty()) {
             return res.send({status:false, errors : errors.array()});
           }
-          
+
           let dataUpdate = {
             password : req.body.new_pass,
           }

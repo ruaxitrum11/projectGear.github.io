@@ -359,6 +359,7 @@ function upLevelUser (userIdCurrent) {
     url: '/user/changePassword',
     type: 'post',
     data: {
+
      userIdCurrent : userIdCurrent,
      current_pass : current_pass,
      new_pass : new_pass ,
@@ -369,7 +370,7 @@ function upLevelUser (userIdCurrent) {
     }).done(function(results){
      if (results.status == true) {
       $.confirm({
-       title: 'Thông báo!',
+       title: 'Thông báo !',
        content:'<span class="text-success"><strong class="fa fa-check"></strong> Đổi mật khẩu thành công !</span>',
        buttons: {
         'Ok': function () {
