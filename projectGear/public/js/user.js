@@ -68,7 +68,7 @@ function updateUserInfo(userIdUpdate){
   }
 
 
- 
+  
   // function showInfoProfile(userIdCurrent){
   //  $.ajax({
   //   url: '/user/showInfoUser',
@@ -118,7 +118,7 @@ function updateUserInfo(userIdUpdate){
   // 	}else {
   // 		xhtml += '<input type="radio" name="gender" value="0" style="width: 5%"><span style="font-size: 1.6rem;font-weight: 600" >Nam</span>';
   // 		xhtml += '<input type="radio" name="gender" value="1" style="width: 5%;margin-left: 25px" checked><span style="font-size: 1.6rem;font-weight: 600" >Nữ</span>';
-  		
+  
   // 	}
   // 	xhtml += '</div>';
   // 	xhtml += '<div class="user-right-item user-right-item-button">';
@@ -245,7 +245,7 @@ function updateUserInfo(userIdUpdate){
 //       xhtml += '</div>';
 //     }
 //     xhtml += '<div class="user-trophy-content trophy-info">';
-    
+
 
 //   	//check level silver
 
@@ -275,7 +275,7 @@ function updateUserInfo(userIdUpdate){
 //   	}else {
 //   		xhtml += ''
 //   	}
-  	
+
 //   	xhtml += '</div>';
 //   	xhtml += '<div class="user-trophy-content trophy-info">';
 //   	xhtml += '<a href="/aboutUs#upMedals">Thông tin danh hiệu</a>';
@@ -285,7 +285,7 @@ function updateUserInfo(userIdUpdate){
 
 //   	$('.user-info-main').html(xhtml)
 //   })
-  
+
 // }
 
 
@@ -347,14 +347,14 @@ function upLevelUser (userIdCurrent) {
   })
   }
 
- 
+  
 
- function postChangePass(userIdCurrent) {
+  function postChangePass(userIdCurrent) {
 
    var current_pass = $("input[name=current_pass]").val();
    var new_pass = $("input[name=new_pass]").val();
    var confirm_new_pass = $("input[name=confirm_new_pass]").val();
-  
+   
    $.ajax({
     url: '/user/changePassword',
     type: 'post',
@@ -366,27 +366,26 @@ function upLevelUser (userIdCurrent) {
      confirm_new_pass : confirm_new_pass
    },
    dataType: 'json',
-      // dataType: 'json',
-    }).done(function(results){
-     if (results.status == true) {
-      $.confirm({
-       title: 'Thông báo !',
-       content:'<span class="text-success"><strong class="fa fa-check"></strong> Đổi mật khẩu thành công !</span>',
-       buttons: {
-        'Ok': function () {
-         window.location.reload();
-       }
+ }).done(function(results){
+   if (results.status == true) {
+    $.confirm({
+     title: 'Thông báo !',
+     content:'<span class="text-success"><strong class="fa fa-check"></strong> Đổi mật khẩu thành công !</span>',
+     buttons: {
+      'Ok': function () {
+       window.location.reload();
      }
+   }
 
-   });
+ });
 
-    }else{
-      console.log(results)
-      $.alert({
-       title: 'Thông Báo !',
-       content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>'
-     })
+  }else{
+    console.log(results)
+    $.alert({
+     title: 'Thông Báo !',
+     content: '<span class="text-danger"><strong class="fa fa-close"></strong>'+results.errors[0].msg+'</span>'
+   })
 
-    }
-  })
   }
+})
+}
