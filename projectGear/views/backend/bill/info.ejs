@@ -178,7 +178,7 @@
             <input style="text-align: center; width: 80%;" disabled type="number" value="<%=billInfo.productInfos[i].productQuantity%>">
           </div>
           <div class="cart-price col-xs-3" style="padding-top: 30px">
-            <p style="font-size: 1.8rem;"><%=billInfo.productInfos[i].productPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})%></p>
+            <p style="font-size: 1.8rem;"><%=(billInfo.productInfos[i].productPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})).slice(2).replace(/,/gi, ".")%> ₫%>%></p>
           </div>
         </div>
       </div>
