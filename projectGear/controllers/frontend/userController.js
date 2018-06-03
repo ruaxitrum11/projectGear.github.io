@@ -127,7 +127,7 @@ exports.postLogin = async (req,res, next)=>{
       }
       if (!user) {
         // console.log('ERROR ========== 002');
-        return res.send({status: false, msg: 'Đăng nhập thất bại. Vui lòng thử lại!  '});
+        return res.send({status: false, msg: 'Tài khoản hoặc mật khẩu không đúng !  '});
       }
 
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
@@ -363,6 +363,7 @@ exports.getUserInfo = async (req,res) => {
             as : "emailForeign"
           }},
           {$unwind : "$emailForeign"},
+          {$sort:{"emailForeign.createdAt":-1}},
           {$skip:skip},
           {$limit:limit}
           ])
@@ -591,6 +592,7 @@ exports.getUserInfo = async (req,res) => {
 
 
   exports.validatorChangePassword = [
+  check('current_pass' , 'Mật khẩu hiện tại không được để trống').isLength({min:1}),
   check('new_pass', 'Mật khẩu mới phải có ít nhất 4 ký tự').isLength({ min: 4 }),
   check('confirm_new_pass', 'Mật khẩu mới không trùng khớp').custom((value, { req }) => value === req.body.new_pass)
   ]
@@ -598,22 +600,34 @@ exports.getUserInfo = async (req,res) => {
   exports.changePassword = async(req,res) => {
 
     if(req.body) {
-      const errors = validationResult(req);
 
-      if (!errors.isEmpty()) {
-        return res.send({status:false, errors : errors.array()});
-      }
 
       try{
 
-        let dataUpdate = {
-          password : req.body.new_pass,
+        let user_password = await User.find({_id:req.body.userIdCurrent}).select({password:1})
+        // console.log(user_password[0].password)
+        // console.log(req.body.current_pass)
+
+        if (!bcrypt.compareSync(req.body.current_pass, user_password[0].password)) {
+          let errors = [{msg:"Mật khẩu hiện tại không đúng"}]
+          return res.send({status:false,errors : errors});
         }
+        else {
+          const errors = validationResult(req);
 
-        let updateUser = await User.update({ _id: req.body.userIdCurrent}, { $set: dataUpdate});
+          if (!errors.isEmpty()) {
+            return res.send({status:false, errors : errors.array()});
+          }
+          
+          let dataUpdate = {
+            password : req.body.new_pass,
+          }
 
-        if (updateUser) {
-         return res.send({status:true});
+          let updateUser = await User.update({ _id: req.body.userIdCurrent}, { $set: dataUpdate});
+
+          if (updateUser) {
+           return res.send({status:true});
+         }
        }
 
      }catch(errors){

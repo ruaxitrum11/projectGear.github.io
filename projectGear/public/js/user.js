@@ -351,6 +351,7 @@ function upLevelUser (userIdCurrent) {
 
  function postChangePass(userIdCurrent) {
 
+   var current_pass = $("input[name=current_pass]").val();
    var new_pass = $("input[name=new_pass]").val();
    var confirm_new_pass = $("input[name=confirm_new_pass]").val();
   
@@ -359,6 +360,7 @@ function upLevelUser (userIdCurrent) {
     type: 'post',
     data: {
      userIdCurrent : userIdCurrent,
+     current_pass : current_pass,
      new_pass : new_pass ,
      confirm_new_pass : confirm_new_pass
    },
