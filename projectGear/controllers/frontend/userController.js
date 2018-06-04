@@ -371,6 +371,11 @@ exports.getUserInfo = async (req,res) => {
 
       // console.log(userInformation)
       // console.log(count[0].count)
+
+      if (count == "" || count == undefined) {
+        return res.send({status:false , msg : "Bạn chưa thực hiện giao dịch nào !"})
+      }
+
       if (count[0].count && parseInt(count[0].count) >0) {
         totalPage = Math.ceil(parseInt(count[0].count)/limit);
       }

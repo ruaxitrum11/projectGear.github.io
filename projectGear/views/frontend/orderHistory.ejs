@@ -108,7 +108,8 @@
 					dataType: 'json',
       // dataType: 'json',
     }).done(function(results){
-     if(results.status){
+      // console.log(results.status)
+     if(results.status == true){
       var xhtml = '';
   		// console.log(results.userInformation)
 
@@ -233,8 +234,9 @@
   				xhtml += '</tr>';
   			}
   			$('.user-right-content table tbody').html(xhtml)
-  		}else {
-  			xhtml += '<tr><td>Không tìm thấy giao dịch của bạn !</td></tr>'
+  		} else {
+        console.log(results.status)
+  			xhtml += '<tr><td>Bạn chưa có giao dịch nào !</td></tr>'
   		}
 
   		if(results.totalPage > 1) {
@@ -273,7 +275,9 @@
   		} else {
   			$('#pagination-list-user').html('');
   		}
-  	}
+  	}else {
+      $('.user-right-content table tbody').html(results.msg)
+    }
   })
 }
 

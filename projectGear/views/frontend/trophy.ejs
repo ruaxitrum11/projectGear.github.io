@@ -59,6 +59,7 @@
 					<div class="user-info-trophy">
 						<h2 class="user-info-right-title">Danh Hiệu</h2>
 						<div class="user-right-content">
+
 							<%if(totalPrice){%>
 							<%var totalMoney = totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'}) %>
 							<%}%>
@@ -77,10 +78,17 @@
 								<p>Giảm Giá</p>
 								<span>0%</span>
 							</div>
+							<%if(totalPrice == 0 ) {%>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important">0 ₫</span>
+							</div>
+							<%}else{%>
 							<div class="user-trophy-content trophy-totalmoney">
 								<p>Tổng tiền giao dịch</p>
 								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
 							</div>
+							<%}%>
 							<%}%>
 							<%if (userCurrent.level == 2) {%>
 							<div class="user-trophy-content trophy-type">
@@ -97,10 +105,17 @@
 								<p>Giảm Giá</p>
 								<span>3%</span>
 							</div>
+							<%if(totalPrice == 0 ) {%>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important">0 ₫</span>
+							</div>
+							<%}else{%>
 							<div class="user-trophy-content trophy-totalmoney">
 								<p>Tổng tiền giao dịch</p>
 								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
 							</div>
+							<%}%>
 							<%}%>
 							<%if (userCurrent.level == 3) {%>
 							<div class="user-trophy-content trophy-type">
@@ -117,10 +132,17 @@
 								<p>Giảm Giá</p>
 								<span>6%</span>
 							</div>
+							<%if(totalPrice == 0 ) {%>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important">0 ₫</span>
+							</div>
+							<%}else{%>
 							<div class="user-trophy-content trophy-totalmoney">
 								<p>Tổng tiền giao dịch</p>
 								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
 							</div>
+							<%}%>
 							<%}%>
 							<%if (userCurrent.level == 4 ) {%>
 							<div class="user-trophy-content trophy-type">
@@ -137,10 +159,17 @@
 								<p>Giảm Giá</p>
 								<span>10%</span>
 							</div>
+							<%if(totalPrice == 0 ) {%>
+							<div class="user-trophy-content trophy-totalmoney">
+								<p>Tổng tiền giao dịch</p>
+								<span style="color:#FF6602!important">0 ₫</span>
+							</div>
+							<%}else{%>
 							<div class="user-trophy-content trophy-totalmoney">
 								<p>Tổng tiền giao dịch</p>
 								<span style="color:#FF6602!important"><%=totalMoney.slice(2).replace(/,/gi, ".")%> ₫</span>
 							</div>
+							<%}%>
 							<%}%>
 							<div class="user-trophy-content trophy-info">
 								<%if (userCurrent.level == 1 && (parseInt(totalPrice)-15000000 >= 0) ){%>
@@ -167,7 +196,7 @@
 								<%}%>
 								<div class="user-trophy-content trophy-info">
 									<h3>Thông tin danh hiệu</h3>
-									<p>Khi đăng ký tài khoản tại GHOSTGAMINGGEAR , khách hàng có thể đạt được danh hiệu riêng tương ứng với ưu đãi tài khoản khi đạt đủ điều kiện sau :</p>
+									<p style="width: 100%;float : left;font-size: 1.4rem;text-transform: none;font-weight: normal;">Khi đăng ký tài khoản tại GHOSTGAMINGGEAR , khách hàng có thể đạt được danh hiệu riêng tương ứng với ưu đãi tài khoản khi đạt đủ điều kiện sau :</p>
 									<table class="table">
 										<thead>
 											<tr>
