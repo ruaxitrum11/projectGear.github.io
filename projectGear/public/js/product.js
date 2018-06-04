@@ -19,11 +19,19 @@ function showProduct(idColor , idProduct){
 		},
 		dataType: 'json',
 	}).done(function(results){
-		// console.log(results)
+		// console.log(results.dataProductColor.colorImages[0])
 		if (results.status) {
-
-			$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+results.dataProductColor.colorImages[0]+')'})
-
+			// console.log(results)
+			if(results.dataProductColor.colorImages && results.dataProductColor.colorImages.length) {
+				var ext = results.dataProductColor.colorImages[0].split('.').pop()
+				if(ext == "png") {
+					$('.product-details-area').addClass('product-details-area-80')
+					$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+results.dataProductColor.colorImages[0]+')'})
+				}else {
+					$('.product-details-area').removeClass('product-details-area-80')
+					$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+results.dataProductColor.colorImages[0]+')'})
+				}
+			}
 			//show price product
 			var xhtmlPrice = '';
 			xhtmlPrice += results.dataProductColor.colorPrice.
@@ -90,8 +98,16 @@ $('.product-color').click(function(e) {
 // 	});
 // });
 function showBanner(name){
-	console.log(name)
-	$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+name+')'})
+	// console.log(name)
+	var ext = name.split('.').pop()
+	console.log(ext)
+	if(ext == 'png') {
+		$('.product-details-area').addClass('product-details-area-80')
+		$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+name+')'})
+	}else {
+		$('.product-details-area').removeClass('product-details-area-80')
+		$('.product-details-area').css({'background-image':'url(/upload/thumbProduct/'+name+')'})
+	}
 }
 
 //scroll fixed
