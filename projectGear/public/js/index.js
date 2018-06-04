@@ -361,6 +361,15 @@ function loginUser() {
 		})
 	}
 }
+$(document).ready(function(){
+	$('.modal-form-login').keypress(function (e) {
+		var key = e.which;
+		if(key == 13)  {
+			$('#loginUserButton').click();
+			return false;  
+		}
+	});
+});
 
 function forgotPassword  (){
 	var userName = $('input[name=username]').val()
