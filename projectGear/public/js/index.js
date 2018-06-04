@@ -417,6 +417,7 @@ $('.searchProduct').keyup(function(){
 		} ,
 		dataType: 'json'
 	}).done(function(results){
+		// console.log(results.status)
 		if(results.status == true) {
 			var xhtml = '';
 			if(results.productSearch && results.productSearch.length){
@@ -433,6 +434,8 @@ $('.searchProduct').keyup(function(){
 				xhtml += '<li style="list-style-type: none; float: left;width: 90%;padding:10px 0;border-bottom:1px solid #eee;">Không tìm thấy!</li>';
 				$('.modal-search-product ul').html(xhtml)
 			}	
+		}else{
+			$('.modal-search-product ul').html("")
 		}
 	})
 })
