@@ -53,12 +53,16 @@ const Specifications = require('../../models/Specifications')
 
  exports.search = async (req,res) => {
  	// console.log('vao day')
- 	console.log(req.query.search_product)
+ 	// console.log(req.query.search_product)
  	if(req.query.search_product && req.query.search_product !=""){
  		let regex = new RegExp(req.query.search_product.trim(), 'i')
 
- 		let categorySearch = await Category.find({categoryName:regex,status:1})
+ 		let [categorySearch , brandSearch] = await Promise.all([
+ 			Category.find({categoryName:regex,status:1}).select({_id : 1}) , 
+ 			Brand.find({brandName : regex , status:1}).select({_id:1})
+ 			]) 
 
+ 		// console.log(brandSearch)
  		if(categorySearch && categorySearch.length) {
 
  			let productSearch = await Product
@@ -66,6 +70,14 @@ const Specifications = require('../../models/Specifications')
  			.select({productName:1,productThumb:1})
  			.sort({views:-1}).limit(6).lean()
  			// console.log(productSearch)
+ 			return res.send({status:true,productSearch:productSearch})
+
+ 		}else if(brandSearch && brandSearch.length){
+ 			// console.log('vao day')
+ 			let productSearch = await Product
+ 			.find({$or:[{productName:regex},{productBrand:brandSearch[0]._id}],status:1})
+ 			.select({productName:1,productThumb:1})
+ 			.sort({views:-1}).limit(6).lean()
  			return res.send({status:true,productSearch:productSearch})
  		}else{
  			let productSearch = await Product

@@ -11,6 +11,7 @@ const passportConfig = require('./config/passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const json2xls = require('json2xls');
 const requestIp = require('request-ip');
 
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 app.use(cookieParser('keyboard cat'));
 app.use(requestIp.mw())
+app.use(json2xls.middleware);
+
 
 // var csrf = require('csurf');
 

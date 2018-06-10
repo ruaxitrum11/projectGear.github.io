@@ -534,6 +534,8 @@ exports.getUserInfo = async (req,res) => {
 
     let totalPrice = 0;
 
+    console.log(userBill)
+
     if(userBill && userBill.length){
      for (var i = 0; i < userBill.length; i++) {
       totalPrice += userBill[i].emailForeign.totalPrice

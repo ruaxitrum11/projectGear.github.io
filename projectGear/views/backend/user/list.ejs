@@ -117,10 +117,10 @@ span.form-userInfo-content  {
             <th>Tài Khoản</th>
             <th>Email</th>
             <th>Avatar</th>
+            <th>Tổng giao dịch</th>
             <th>Cấp Bậc</th>
             <th>Quyền</th>
             <th>Trạng thái</th>
-            <th>Thời Gian Tạo</th>
             <th>Xử Lý</th>
           </tr>
         </thead>
@@ -183,7 +183,7 @@ span.form-userInfo-content  {
       dataType: 'json',
     }).done(function(results){
       if (results.status) {
-
+        // console.log(results)
         // console.log(results.status);
 
         var xhtml = '';
@@ -191,10 +191,7 @@ span.form-userInfo-content  {
         if (results.listUser && results.listUser.length) {
           for (var i = 0 ;  i <= results.listUser.length - 1; i++) {
 
-            if(results.listUser[i].createdAt){
-              var date = new Date(results.listUser[i].createdAt);
-              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
-            }
+
 
             xhtml += '<tr>';
             xhtml += '<td>'+results.listUser[i].userName+'</td>';
@@ -206,7 +203,20 @@ span.form-userInfo-content  {
             }else{
               xhtml += '<td><img src="/upload/avatar/noimage.jpg" style="height:60px; width:60px;border-radius:50%"/><button class="upload-avatar btn btn-xs btn-default" data-toggle="modal" data-target="#modal-'+results.listUser[i]._id+'-upload"><i class="fa fa-upload"></i></button></td>';
             }
-
+            if(results.listUser[i].emailForeign){
+              var totalMoney = 0;
+              if(results.listUser[i].emailForeign == ""){
+                xhtml += '<td>'+totalMoney.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</td>'
+              }else{
+                // console.log(totalMoney)
+                for (var j = 0; j < results.listUser[i].emailForeign.length; j++) {
+                  if(results.listUser[i].emailForeign[j].status == 2){
+                    totalMoney += results.listUser[i].emailForeign[j].totalPrice
+                  }
+                }  
+                xhtml += '<td><span class="label label-warning">'+totalMoney.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</span></td>'
+              }
+            }
 
             if (results.listUser[i].level == 1) {
               xhtml += '<td><span class="label label-info">MemberShip</span></td>';
@@ -237,7 +247,7 @@ span.form-userInfo-content  {
               xhtml += '<td><span class="label label-danger">Block</span></td>';
             }
 
-            xhtml += '<td>'+date_createdAt+'</td>';
+
 
             xhtml += '<td><a style="cursor:pointer" data-toggle="modal" data-target="#modal-'+results.listUser[i]._id+'-userInfo"><span class="label label-default"><span class="glyphicon glyphicon-check"></span>Xem</span></a><a href="/admin/user/edit/'+results.listUser[i]._id+'"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span> Sửa</span></a> <a href="javascript:void(0)" onclick="removeUser(\''+results.listUser[i]._id+'\')"><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span> Xóa</span></a>';
 
@@ -290,7 +300,11 @@ span.form-userInfo-content  {
             xhtml += '<div class="form-userInfo">';
             xhtml += '<span class="form-userInfo-tilte">Họ tên</span>';
             xhtml += '<span class="form-userInfo-icon">:</span>';
-            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].nameUser+'</span>';
+             if(results.listUser[i].nameUser == '' || results.listUser[i].nameUser == undefined ){
+              xhtml += ''
+            }else{
+              xhtml += '<span class="form-userInfo-content">'+results.listUser[i].nameUser+'</span>';
+            }
             xhtml += '</div>';
 
             xhtml += '<div class="form-userInfo">';
@@ -309,22 +323,55 @@ span.form-userInfo-content  {
             xhtml += '<span class="form-userInfo-content">'+results.listUser[i].email+'</span>';
             xhtml += '</div>';
 
+
+            xhtml += '<div class="form-userInfo">';
+            xhtml += '<span class="form-userInfo-tilte">Tổng giao dịch</span>';
+            xhtml += '<span class="form-userInfo-icon">:</span>';
+            if(results.listUser[i].emailForeign){
+              var totalMoney = 0;
+              if(results.listUser[i].emailForeign == ""){
+                xhtml += '<span class="form-userInfo-content">'+totalMoney.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</span>'
+              }else{
+                // console.log(totalMoney)
+                for (var j = 0; j < results.listUser[i].emailForeign.length; j++) {
+                  if(results.listUser[i].emailForeign[j].status == 2){
+                    totalMoney += results.listUser[i].emailForeign[j].totalPrice
+                  }
+                }  
+                xhtml += '<span class="form-userInfo-content">'+totalMoney.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</span>'
+              }
+            }
+            xhtml += '</div>'
+
+
             xhtml += '<div class="form-userInfo">';
             xhtml += '<span class="form-userInfo-tilte">Số điện thoại</span>';
             xhtml += '<span class="form-userInfo-icon">:</span>';
-            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].phoneNumber+'</span>';
+            if(results.listUser[i].phoneNumber == '' || results.listUser[i].phoneNumber == undefined ){
+              xhtml += ''
+            }else{
+              xhtml += '<span class="form-userInfo-content">0'+results.listUser[i].phoneNumber+'</span>';
+            }
             xhtml += '</div>';
 
             xhtml += '<div class="form-userInfo">';
             xhtml += '<span class="form-userInfo-tilte">Địa chỉ</span>';
             xhtml += '<span class="form-userInfo-icon">:</span>';
-            xhtml += '<span class="form-userInfo-content">'+results.listUser[i].address+'</span>';
+             if(results.listUser[i].address == '' || results.listUser[i].address == undefined ){
+              xhtml += ''
+            }else{
+              xhtml += '<span class="form-userInfo-content">'+results.listUser[i].address+'</span>';
+            }
             xhtml += '</div>';
 
             xhtml += '<div class="form-userInfo">';
             xhtml += '<span class="form-userInfo-tilte">Ngày sinh</span>';
             xhtml += '<span class="form-userInfo-icon">:</span>';
-            xhtml += '<span class="form-userInfo-content">'+moment(results.listUser[i].birthDay).format('DD-MM-YYYY')+'</span>';
+            if(results.listUser[i].birthDay == '' || results.listUser[i].birthDay == undefined ){
+              xhtml += '';
+            }else{
+              xhtml += '<span class="form-userInfo-content">'+moment(results.listUser[i].birthDay).format('DD-MM-YYYY')+'</span>';
+            }
             xhtml += '</div>';
 
             xhtml += '<div class="form-userInfo">';
@@ -366,7 +413,7 @@ span.form-userInfo-content  {
             xhtml += '<div class="form-userInfo">';
             xhtml += '<span class="form-userInfo-tilte">Quyền</span>';
             xhtml += '<span class="form-userInfo-icon">:</span>';
-            if (results.listUser[i].status == 0) {
+            if (results.listUser[i].role == 0) {
               xhtml += '<span class="form-userInfo-content">User</span>';
             }else{
               xhtml += '<span class="form-userInfo-content">Admin</span>';

@@ -13,6 +13,7 @@ const adminController = require('../../controllers/backend/adminController');
 
 router.get('/',passportConfig.isAuthAdmin, adminController.admin);
 router.post('/revenue' , passportConfig.isAuthAdmin, adminController.revenue)
+router.get('/revenue/creatExcelFile' , passportConfig.isAuthAdmin, adminController.creatExcelFile)
 router.get('/countTotal' ,passportConfig.isAuthAdmin, adminController.countTotal)
 
 

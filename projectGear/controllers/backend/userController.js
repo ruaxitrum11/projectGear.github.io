@@ -53,6 +53,7 @@
 // Models
 const User = require('../../models/User');
 const IpBlocked = require('../../models/IpBlocked');
+const Bill = require('../../models/Bill');
 // Method
 /**
  * GET /
@@ -77,13 +78,13 @@ exports.listUser = async (req,res) =>{
   } 
 
   if (req.query.user_status && req.query.user_status !="") {
-    query['status'] = req.query.user_status;
+    query['status'] = parseInt(req.query.user_status);
   }
   if(req.query.user_level && req.query.user_level !=""){
-    query['level'] = req.query.user_level;
+    query['level'] = parseInt(req.query.user_level);
   }
   if(req.query.user_role && req.query.user_role !=""){
-    query['role'] = req.query.user_role;
+    query['role'] = parseInt(req.query.user_role);
   } 
 
   let skip = (page - 1)*limit;
@@ -91,9 +92,22 @@ exports.listUser = async (req,res) =>{
   try{
     let [count, data] = await Promise.all([
       User.count(query),
-      User.find(query).sort({createdAt : -1}).skip(skip).limit(limit)
+      User.aggregate([
+        {$match: query},
+        {$lookup : {
+          from : "bills",
+          localField : "email",
+          foreignField : "clientEmail",
+          as : "emailForeign"
+        }},
+        {$sort:{createdAt:-1}},
+        {$skip:skip},
+        {$limit:limit}
+        ])  
       ])
 
+    console.log(query)
+    console.log(data)
     let listUser = [];
 
     if (count && count >0) {
@@ -103,6 +117,8 @@ exports.listUser = async (req,res) =>{
     if (data && data.length) {
       listUser = data;
     }
+    // console.log(listUser)
+    // console.log(listUser[0].emailForeign)
 
     res.send({status: true, page : page, totalPage : totalPage, listUser : listUser , moment:moment});
 

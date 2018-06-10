@@ -8,6 +8,11 @@
  const download = require('download');
  const async = require('async');
  const moment = require('moment');
+ const json2xls = require('json2xls');
+ const path = require('path');
+ const mime = require('mime');
+
+
 
 
 // Models
@@ -36,6 +41,46 @@ exports.revenue = async (req,res) => {
 		let revenue = await Revenue.find({createdAt:{$gte:req.body.timeBegin , $lte:req.body.timeEnd}}).lean()
 		// console.log(revenue)
 		return res.send({status:true,revenue:revenue,moment:moment})
+
+	}catch(errors){
+		return res.send({status:false,errors:errors})
+	}
+}
+
+exports.creatExcelFile = async (req,res) => {
+	// console.log(req.query)
+	try {
+		let revenue = await Revenue.find({createdAt:{$gte:req.query.timeBegin , $lte:req.query.timeEnd}})
+		.select({createdAt:1,totalBill:1}).sort({createdAt:1}).lean()
+		// console.log(revenue)
+		// console.log('here')
+		
+		for(var i = 0; i < revenue.length; i++){
+			revenue[i].Thoi_gian = moment(revenue[i]['createdAt']).format('DD-MM-YYYY');
+			revenue[i].Tong_tien = revenue[i]['totalBill'];
+			delete revenue[i]._id;
+			delete revenue[i].createdAt;
+			delete revenue[i].totalBill;
+		}	
+
+		// revenue = JSON.stringify([obj]);
+		// console.log(revenue)
+	
+		let xls = json2xls(revenue);
+		// console.log(xls)
+		let ext = Date.now()
+		fs.writeFileSync('public/excelRevenue/doanhthu.xlsx',xls,'binary')
+		res.download('public/excelRevenue/doanhthu.xlsx', 'doanhthu.xlsx', function(err){
+			if (err) {
+				console.log(err)
+			} else {
+				console.log('saved')
+			}
+		});
+
+		// res.setHeader('Content-disposition', 'attachment; filename=doanhthu_'+Date.now()+'.xlsx');
+		// res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		// return res.sendFile('Downloads/doanhthu_'+Date.now()+'.xlsx');
 
 	}catch(errors){
 		return res.send({status:false,errors:errors})
@@ -90,7 +135,7 @@ exports.countTotal = async (req,res) => {
 		// console.log(countProcessingBill)
 		// console.log(countCompletedBill)
 		// console.log(countCancelBill)
-	
+
 
 		return res.send({status:true,
 			countTotalBill:countTotalBill , 

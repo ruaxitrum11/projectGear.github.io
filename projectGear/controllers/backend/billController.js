@@ -47,19 +47,19 @@ async function sumTotalBill(){
 			// let startDay = new Date(${year}-${month}-${day} 00:00:00);
 		// let endDay = new Date(${year}-${month}-${day} 23:59:59);
 
-		let billTotal = await Bill.find({createdAt:{$gte:startDay , $lte:endDay},status:2}).select({createdAt:1,totalPrice:1}).lean();
+		let billTotal = await Bill.find({updatedAt:{$gte:startDay , $lte:endDay},status:2}).select({updatedAt:1,totalPrice:1}).lean();
 
 		let sumAllBill = 0;
 
 		if (billTotal && billTotal.length) {
 
 			for (var i = 0; i < billTotal.length; i++) {
-				if(billTotal[i].createdAt){
+				if(billTotal[i].updatedAt){
 					sumAllBill += billTotal[i].totalPrice;
 				}
 			}
 		}
-		let billCountNumber = await Bill.find({createdAt:{$gte:startDay , $lte:endDay},status:2}).count({status:2})
+		let billCountNumber = await Bill.find({updatedAt:{$gte:startDay , $lte:endDay},status:2}).count({status:2})
 
 		// console.log(billCountNumber)
 

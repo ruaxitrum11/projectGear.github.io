@@ -196,6 +196,7 @@ input.status-active {
                 <th>Địa chỉ IP</th>
                 <th>Trạng thái</th>
                 <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
                 <th>Tổng tiền</th>
                 <th>Xử Lý</th>
               </tr>
@@ -272,8 +273,12 @@ input.status-active {
         if (results.listBill && results.listBill.length) {
           for (var i = 0 ;  i <= results.listBill.length - 1; i++) {
             if(results.listBill[i].createdAt){
-              var date = new Date(results.listBill[i].createdAt);
-              var date_createdAt = moment(date).format('HH:mm | DD-MM-YYYY');
+              var dateCreate = new Date(results.listBill[i].createdAt);
+              var date_createdAt = moment(dateCreate).format('HH:mm | DD-MM-YYYY');
+            }
+            if(results.listBill[i].updatedAt){
+              var dateUpdate = new Date(results.listBill[i].updatedAt);
+              var date_updatedAt = moment(dateUpdate).format('HH:mm | DD-MM-YYYY')
             } 
 
             xhtml += '<tr>';
@@ -296,6 +301,7 @@ input.status-active {
             }
 
             xhtml += '<td>'+date_createdAt+'</td>'
+            xhtml += '<td>'+date_updatedAt+'</td>'
 
             xhtml += '<td>'+results.listBill[i].totalPrice.toLocaleString('vi', {style : 'currency', currency : 'VND'})+'</td>'
 

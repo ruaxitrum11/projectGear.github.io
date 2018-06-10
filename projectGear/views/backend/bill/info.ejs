@@ -145,7 +145,7 @@
       </div>
       <div class="form-product-edit">
         <span>Số điện thoại</span>
-        <input disabled type="text"  value="<%=billInfo.clientPhoneNumber%>">
+        <input disabled type="text"  value="<%=parseInt(0)%><%=billInfo.clientPhoneNumber%>">
       </div>
       <div class="form-product-edit">
         <span>Địa chỉ</span>
@@ -190,7 +190,11 @@
   </div>
 
   <div class="form-user-add button-active">
+    <%if(billInfo.status == 2){%>
+    <a href="javascript:void(0)" onclick="rejectBillEdit()">Cập Nhật</a>
+    <%}else{%>
     <a href="javascript:void(0)" onclick="postBillEdit('<%=billInfo._id%>')">Cập Nhật</a>
+    <%}%>
   </div>
 
 
@@ -214,10 +218,17 @@
   $('.bill-info').addClass('active')
 
 });
- function postBillEdit(id){
+
+ function rejectBillEdit(){
+  $.alert({
+    title: 'Thông Báo !',
+    content: '<span class="text-danger"><strong class="fa fa-close"></strong>Bạn không thể sửa trạng thái của đơn hàng đã hoàn thành</span>',
+  })
+}
+
+function postBillEdit(id){
 
   var status = $('input[name=status]:checked').val();
-
 
   $.ajax({
     url: '/admin/bill/edit',

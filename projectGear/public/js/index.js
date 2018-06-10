@@ -299,6 +299,7 @@ function registerUser() {
 									typeAnimated: true,
 								});
 								$('#singin-modal').modal('hide');
+								$('#login-modal').modal('show')
 							}
 						})
 					}

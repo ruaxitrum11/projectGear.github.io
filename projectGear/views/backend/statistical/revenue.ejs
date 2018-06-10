@@ -28,7 +28,9 @@
   				</div>
   			</div>
 
-  			<button onclick="postTime()">Thống kê</button>
+  			<button class="btn btn-info" onclick="postTime()" style="margin-right: 10px;">Thống kê</button>
+        <button class="btn btn-primary" onclick="creatExcelFile()">Xuất ra Excel</button>
+        
 
         <!-- AREA CHART -->
         <div class="nav-tabs-custom" style="margin-top: 50px;">
@@ -151,8 +153,8 @@
           	// var timeBegin = timeInput[0]
           	// var timeEnd = timeInput[1]
 
-          	console.log(timeEnd)
-          	console.log(timeBegin)
+          	// console.log(timeEnd)
+          	// console.log(timeBegin)
 
           	$.ajax({
           		url: '/admin/revenue',
@@ -202,5 +204,28 @@
             $('.total-revenue li span').html(sumDataChart.toLocaleString('vi', {style : 'currency', currency : 'VND'})) 
             $('.text-revenue-chart').text( moment(dataChart[0].x).format('DD/MM/YYYY') +' -- ' +moment(dataChart[dataChart.length-1].x).format('DD/MM/YYYY'));
           })
+          }
+          function creatExcelFile(){
+            // var timeInput = $('#reservationtime').val().split("-")
+            var timeBegin = new Date($('#reservationtime').data('daterangepicker').startDate._d).toISOString();
+            var timeEnd = new Date($('#reservationtime').data('daterangepicker').endDate._d).toISOString();
+            // var timeBegin = timeInput[0]
+            // var timeEnd = timeInput[1]
+
+            console.log(timeEnd);
+            console.log(timeBegin);
+            url = `/admin/revenue/creatExcelFile?timeBegin=${timeBegin}&timeEnd=${timeEnd}`
+            window.open(url,"_blank");
+            // $.ajax({
+            //   url: '/admin/revenue/creatExcelFile',
+            //   type: 'get',
+            //   data: {
+            //     timeBegin : timeBegin , 
+            //     timeEnd : timeEnd
+            //   },
+            //   dataType: 'json',
+            // }).done(function(results){
+
+            // })
           }
         </script>
