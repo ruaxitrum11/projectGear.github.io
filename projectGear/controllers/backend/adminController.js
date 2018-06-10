@@ -65,13 +65,14 @@ exports.creatExcelFile = async (req,res) => {
 
 		// revenue = JSON.stringify([obj]);
 		// console.log(revenue)
-	
+
 		let xls = json2xls(revenue);
 		// console.log(xls)
 		let ext = Date.now()
 		fs.writeFileSync('public/excelRevenue/doanhthu.xlsx',xls,'binary')
 		res.download('public/excelRevenue/doanhthu.xlsx', 'doanhthu.xlsx', function(err){
 			if (err) {
+				// console.log(revenue)
 				console.log(err)
 			} else {
 				console.log('saved')
